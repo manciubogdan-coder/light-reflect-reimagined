@@ -55,7 +55,6 @@ const Nav = () => {
         <div className="hidden md:flex gap-1 md:gap-6 text-lg font-tech">
           <NavLinkStyled to="/" active={location.pathname === "/"}>Acasă</NavLinkStyled>
           <NavLinkStyled to="/servicii" active={location.pathname.startsWith("/servicii")}>Servicii</NavLinkStyled>
-          <NavLinkStyled to="/projects" active={location.pathname === "/projects"}>Proiecte</NavLinkStyled>
           <NavLinkStyled to="/about" active={location.pathname === "/about"}>Despre</NavLinkStyled>
           <NavLinkStyled to="/contact" active={location.pathname === "/contact"}>Contact</NavLinkStyled>
         </div>
@@ -69,7 +68,6 @@ const Nav = () => {
           <div className="py-4 px-6 flex flex-col gap-4">
             <MobileNavLink to="/" active={location.pathname === "/"} onClick={() => setMenuOpen(false)}>Acasă</MobileNavLink>
             <MobileNavLink to="/servicii" active={location.pathname.startsWith("/servicii")} onClick={() => setMenuOpen(false)}>Servicii</MobileNavLink>
-            <MobileNavLink to="/projects" active={location.pathname === "/projects"} onClick={() => setMenuOpen(false)}>Proiecte</MobileNavLink>
             <MobileNavLink to="/about" active={location.pathname === "/about"} onClick={() => setMenuOpen(false)}>Despre</MobileNavLink>
             <MobileNavLink to="/contact" active={location.pathname === "/contact"} onClick={() => setMenuOpen(false)}>Contact</MobileNavLink>
           </div>

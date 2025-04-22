@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +10,6 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Servicii from "./pages/Servicii";
 import CustomCursor from "./components/CustomCursor";
-import CyberScanner from "./components/CyberScanner";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +19,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <CustomCursor />
-      <CyberScanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
