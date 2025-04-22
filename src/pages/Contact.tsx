@@ -73,7 +73,7 @@ const Contact = () => {
         <div className="relative z-20 max-w-xl w-full tech-panel shadow-xl p-8">
           <ElectricText text="Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue text-center" />
           <p className="text-white/70 mb-8 font-future text-lg text-center">
-            Trimite-ne un mesaj și vei primi răspunsul direct din viitor ⚡
+            Trimite-ne un mesaj și revenim cât mai curând posibil ⚡
           </p>
           
           {sent ? (

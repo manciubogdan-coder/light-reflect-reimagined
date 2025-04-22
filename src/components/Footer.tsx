@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Linkedin, Youtube, Mail, Phone, MapPin, Bolt } from "lucide-react";
+import { Facebook, Youtube, Mail, Phone, MapPin, Bolt } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -9,7 +8,6 @@ const Footer = () => {
       
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Company Info */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 flex items-center justify-center relative">
@@ -28,14 +26,11 @@ const Footer = () => {
               oferind servicii de înaltă calitate în România și Europa.
             </p>
             <div className="flex items-center gap-4">
-              <SocialLink href="https://facebook.com" icon={<Facebook className="w-4 h-4" />} />
-              <SocialLink href="https://instagram.com" icon={<Instagram className="w-4 h-4" />} />
-              <SocialLink href="https://linkedin.com" icon={<Linkedin className="w-4 h-4" />} />
-              <SocialLink href="https://youtube.com" icon={<Youtube className="w-4 h-4" />} />
+              <SocialLink href="https://www.facebook.com/profile.php?id=61550260625143" icon={<Facebook className="w-4 h-4" />} />
+              <SocialLink href="https://www.youtube.com/@lightreflectelectrical" icon={<Youtube className="w-4 h-4" />} />
             </div>
           </div>
           
-          {/* Services */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Servicii</h3>
             <ul className="space-y-2">
@@ -48,7 +43,6 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Company */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Companie</h3>
             <ul className="space-y-2">
@@ -61,26 +55,25 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Contact */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-electric-blue shrink-0 mt-1" />
                 <span className="text-white/70">
-                  Str. Electricienilor 42, București, România
+                  România, Salonta, Str. Andrei Mureșanu nr. 32
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-electric-blue shrink-0" />
-                <a href="tel:+40722123456" className="text-white/70 hover:text-white transition-colors duration-300">
-                  +40 722 123 456
+                <a href="tel:0752954772" className="text-white/70 hover:text-white transition-colors duration-300">
+                  0752 954 772
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-electric-blue shrink-0" />
-                <a href="mailto:contact@lightreflect.ro" className="text-white/70 hover:text-white transition-colors duration-300">
-                  contact@lightreflect.ro
+                <a href="mailto:manciubogdan999@gmail.com" className="text-white/70 hover:text-white transition-colors duration-300">
+                  manciubogdan999@gmail.com
                 </a>
               </li>
             </ul>
