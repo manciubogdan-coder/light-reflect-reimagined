@@ -26,11 +26,11 @@ serve(async (req) => {
 
     // Send email to site owner (you)
     const resultOwner = await resend.emails.send({
-      from: "Futurist <onboarding@resend.dev>",
+      from: "Light Reflect Electrical <onboarding@resend.dev>",
       to: ["manciubogdan999@gmail.com"],
       subject: `Contact nou de la ${nume}`,
       html: `
-        <h2>Ai primit un mesaj de pe formularul Futurist:</h2>
+        <h2>Ai primit un mesaj de pe formularul Light Reflect Electrical:</h2>
         <p><strong>Nume:</strong> ${nume}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Mesaj:</strong></p>
@@ -40,13 +40,13 @@ serve(async (req) => {
 
     // Send confirmation email to sender (optional)
     await resend.emails.send({
-      from: "Futurist <onboarding@resend.dev>",
+      from: "Light Reflect Electrical <onboarding@resend.dev>",
       to: [email],
       subject: "Am primit mesajul tău!",
       html: `
         <h2>Salut, ${nume}!</h2>
         <p>Iți mulțumim că ne-ai contactat. Am primit mesajul tău și vom răspunde cât mai rapid.</p>
-        <p>Echipa Futurist</p>
+        <p>Echipa Light Reflect Electrical</p>
       `
     });
 

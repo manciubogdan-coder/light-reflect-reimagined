@@ -90,6 +90,7 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 disabled={loading}
+                autoComplete="off"
               />
               <Input
                 className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
@@ -100,6 +101,7 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 disabled={loading}
+                autoComplete="off"
               />
               <Textarea
                 className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all"
@@ -110,6 +112,7 @@ const Contact = () => {
                 rows={4}
                 required
                 disabled={loading}
+                autoComplete="off"
               />
               <button
                 className="w-full electric-button font-tech text-lg tracking-wider relative overflow-hidden disabled:opacity-70 disabled:pointer-events-none"
