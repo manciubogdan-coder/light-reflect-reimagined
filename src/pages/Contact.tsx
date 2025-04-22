@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nume: "",
     email: "",
@@ -19,25 +20,40 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate form data
+
     if (!formData.nume || !formData.email || !formData.mesaj) {
       toast.error("Te rugăm să completezi toate câmpurile!");
       return;
     }
-    
-    // Simulate form submission
-    console.log("Form data submitted:", formData);
-    toast.success("Mesajul tău a fost trimis cu succes!");
-    setSent(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSent(false);
-      setFormData({ nume: "", email: "", mesaj: "" });
-    }, 3000);
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("https://acmknwxnyibvbbltfdxh.functions.supabase.co/send-contact-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Eroare la trimiterea mesajului.");
+      }
+
+      toast.success("Mesajul tău a fost trimis cu succes!");
+      setSent(true);
+      setLoading(false);
+
+      setTimeout(() => {
+        setSent(false);
+        setFormData({ nume: "", email: "", mesaj: "" });
+      }, 3000);
+    } catch (error: any) {
+      setLoading(false);
+      toast.error(error.message || "A apărut o eroare. Încearcă din nou!");
+    }
   };
 
   return (
@@ -71,6 +87,7 @@ const Contact = () => {
                 value={formData.nume}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
               <input
                 className="w-full px-4 py-3 rounded bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
@@ -80,6 +97,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
               <textarea
                 className="w-full px-4 py-3 rounded bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all"
@@ -89,12 +107,16 @@ const Contact = () => {
                 onChange={handleChange}
                 rows={4}
                 required
+                disabled={loading}
               />
               <button
-                className="w-full electric-button font-tech text-lg tracking-wider relative overflow-hidden"
+                className="w-full electric-button font-tech text-lg tracking-wider relative overflow-hidden disabled:opacity-70 disabled:pointer-events-none"
                 type="submit"
+                disabled={loading}
               >
-                <span className="relative z-10">Transmite În Viitor</span>
+                <span className="relative z-10">
+                  {loading ? "Se trimite..." : "Transmite În Viitor"}
+                </span>
                 <Rocket className="absolute right-3 top-1/2 -translate-y-1/2 text-electric-blue animate-float" />
               </button>
             </form>
