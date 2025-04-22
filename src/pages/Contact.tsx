@@ -5,9 +5,6 @@ import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
@@ -60,14 +57,14 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-matter overflow-hidden">
+    <div className="min-h-screen bg-dark-matter">
       <Nav />
-      <section className="relative min-h-[80vh] flex flex-col items-center justify-center py-24 hologram">
+      <section className="relative min-h-[80vh] flex flex-col items-center justify-center py-24">
         {/* Fundal cu linii și particule */}
         <div className="absolute inset-0 bg-circuit-pattern bg-cover bg-center opacity-20 z-0" />
         <div className="absolute inset-0 bg-gradient-to-br from-dark-matter/80 via-hologram-blue/10 to-electric-blue/10 z-0" />
 
-        <div className="relative z-10 max-w-xl w-full tech-panel shadow-xl animate-float">
+        <div className="relative z-10 max-w-xl w-full tech-panel shadow-xl">
           <ElectricText text="Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue" />
           <p className="text-white/70 mb-8 font-future text-lg text-center">
             Trimite-ne un mesaj și vei primi răspunsul direct din viitor ⚡
@@ -84,7 +81,7 @@ const Contact = () => {
               onSubmit={handleSubmit}
             >
               <div className="form-group">
-                <Label htmlFor="nume" className="text-white mb-1 block">Nume</Label>
+                <label htmlFor="nume" className="text-white mb-1 block">Nume</label>
                 <input
                   id="nume"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
@@ -98,7 +95,7 @@ const Contact = () => {
               </div>
               
               <div className="form-group">
-                <Label htmlFor="email" className="text-white mb-1 block">Email</Label>
+                <label htmlFor="email" className="text-white mb-1 block">Email</label>
                 <input
                   id="email"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
@@ -113,7 +110,7 @@ const Contact = () => {
               </div>
               
               <div className="form-group">
-                <Label htmlFor="mesaj" className="text-white mb-1 block">Mesaj</Label>
+                <label htmlFor="mesaj" className="text-white mb-1 block">Mesaj</label>
                 <textarea
                   id="mesaj"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all rounded-md"
@@ -128,14 +125,14 @@ const Contact = () => {
               </div>
               
               <button
-                className="w-full electric-button font-tech text-lg tracking-wider relative overflow-hidden disabled:opacity-70 disabled:pointer-events-none"
+                className="w-full electric-button font-tech text-lg tracking-wider"
                 type="submit"
                 disabled={loading}
               >
                 <span className="relative z-10">
                   {loading ? "Se trimite..." : "Transmite În Viitor"}
                 </span>
-                <Rocket className="absolute right-3 top-1/2 -translate-y-1/2 text-electric-blue animate-float" />
+                <Rocket className="absolute right-3 top-1/2 -translate-y-1/2 text-electric-blue" />
               </button>
             </form>
           )}
