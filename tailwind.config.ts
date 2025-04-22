@@ -126,6 +126,34 @@ export default {
                     '50%': {
                         textShadow: '0 0 15px rgba(234, 56, 76, 1), 0 0 20px rgba(234, 56, 76, 0.8)'
                     }
+                },
+                'holographic-shine': {
+                    '0%': { transform: 'translate(-50%, -50%) rotate(0deg)' },
+                    '100%': { transform: 'translate(-50%, -50%) rotate(360deg)' }
+                },
+                'glitch': {
+                    '0%': { transform: 'translate(0)' },
+                    '20%': { transform: 'translate(-2px, 2px)' },
+                    '40%': { transform: 'translate(-2px, -2px)' },
+                    '60%': { transform: 'translate(2px, 2px)' },
+                    '80%': { transform: 'translate(2px, -2px)' },
+                    '100%': { transform: 'translate(0)' }
+                },
+                'spin-slow': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' }
+                },
+                'scanHorizontal': {
+                    '0%': { top: '-10px' },
+                    '50%': { top: '100vh' },
+                    '50.1%': { top: '100vh' },
+                    '100%': { top: '-10px' }
+                },
+                'scanVertical': {
+                    '0%': { left: '-10px' },
+                    '50%': { left: '100vw' },
+                    '50.1%': { left: '100vw' },
+                    '100%': { left: '-10px' }
                 }
 			},
 			animation: {
@@ -136,15 +164,20 @@ export default {
                 'circuit-flow': 'circuit-flow 8s linear infinite',
                 'flicker': 'flicker 0.3s ease-in-out infinite',
                 'scale-in': 'scale-in 0.3s ease-out',
-                'neon-pulse': 'neon-pulse 2s infinite'
+                'neon-pulse': 'neon-pulse 2s infinite',
+                'holographic-shine': 'holographic-shine 10s linear infinite',
+                'glitch': 'glitch 0.5s infinite',
+                'spin-slow': 'spin-slow 15s linear infinite',
+                'scanHorizontal': 'scanHorizontal 8s linear infinite',
+                'scanVertical': 'scanVertical 12s linear infinite'
 			},
             backgroundImage: {
                 'circuit-pattern': "url('/src/assets/circuit-background.png')",
                 'grid-lines': 'linear-gradient(to right, rgba(30, 58, 138, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 58, 138, 0.1) 1px, transparent 1px)'
             },
             fontFamily: {
-                'tech': ['Orbitron', 'sans-serif'],
-                'future': ['Rajdhani', 'sans-serif']
+                'tech': ['Orbitron', 'Audiowide', 'sans-serif'],
+                'future': ['Rajdhani', 'Exo', 'sans-serif']
             }
 		}
 	},

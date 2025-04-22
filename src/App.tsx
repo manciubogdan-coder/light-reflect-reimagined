@@ -10,6 +10,8 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Servicii from "./pages/Servicii";
+import CustomCursor from "./components/CustomCursor";
+import CyberScanner from "./components/CyberScanner";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +20,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <CustomCursor />
+      <CyberScanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
