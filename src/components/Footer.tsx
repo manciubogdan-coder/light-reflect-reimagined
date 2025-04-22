@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Youtube, Mail, Phone, MapPin, Bolt } from "lucide-react";
 
@@ -7,9 +6,7 @@ const Footer = () => {
     <footer className="pt-16 pb-6 bg-dark-matter relative">
       <div className="circuit-line absolute top-0 w-full"></div>
       <div className="container mx-auto px-4">
-        {/* Remove grid-cols-4 and leave only three columns: Logo+desc, Companie, Contact */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {/* LOGO & SOCIALS */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 flex items-center justify-center relative">
@@ -24,15 +21,15 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-white/60 mb-6">
-              Lider în instalații electrice inteligente și soluții Smart Home, 
-              oferind servicii de înaltă calitate în România și Europa.
+              Light Reflect Electrical este o companie românească în plină expansiune, specializată în instalații electrice moderne pentru locuințe și spații comerciale.
+              Combinăm rigurozitatea testelor profesionale cu tehnologia actuală pentru a livra lucrări sigure, curate și pregătite pentru viitor.<br/>
+              Ne-am propus să construim cea mai eficientă rețea de electricieni din Europa – un sistem unde calitatea, transparența și digitalizarea devin standard.
             </p>
             <div className="flex items-center gap-4">
               <SocialLink href="https://www.facebook.com/profile.php?id=61550260625143" icon={<Facebook className="w-4 h-4" />} />
               <SocialLink href="https://www.youtube.com/@lightreflectelectrical" icon={<Youtube className="w-4 h-4" />} />
             </div>
           </div>
-          {/* COMPANIE */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Companie</h3>
             <ul className="space-y-2">
@@ -44,7 +41,6 @@ const Footer = () => {
               <FooterLink href="/contact">Contact</FooterLink>
             </ul>
           </div>
-          {/* CONTACT */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Contact</h3>
             <ul className="space-y-4">
@@ -124,4 +120,3 @@ const FooterLink = ({ href, children }: FooterLinkProps) => (
 );
 
 export default Footer;
-

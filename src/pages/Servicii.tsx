@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Lightbulb, 
@@ -60,6 +59,16 @@ const Servicii = () => {
               icon={<Zap />}
               title="Încărcătoare Vehicule Electrice"
               description="Stații de încărcare pentru vehicule electrice, integrate cu sistemul electric al locuinței."
+            />
+            <ServiceCard 
+              icon={<Settings />}
+              title="Montaj Linii Industriale de Ambalat"
+              description="Instalare și punere în funcțiune a liniilor industriale de ambalat pentru diverse domenii de producție."
+            />
+            <ServiceCard
+              icon={<Settings />}
+              title="Mentenanță Utilaje de Ambalat & Industriale"
+              description="Servicii de mentenanță și reparații pentru utilaje de ambalat și echipamente industriale."
             />
           </div>
 
@@ -140,4 +149,3 @@ const ProcessStep = ({ number, title, description }: ProcessStepProps) => (
 );
 
 export default Servicii;
-

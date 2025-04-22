@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Lightbulb, 
@@ -53,6 +52,16 @@ const ServicesSection = () => {
             icon={<Settings />}
             title="Siguranțe Automate"
             description="Siguranțe electrice cu întrerupere automată în caz de defecte, protejând echipamentele și locuința."
+          />
+          <ServiceCard 
+            icon={<Settings />}
+            title="Montaj Linii Industriale de Ambalat"
+            description="Instalare și punere în funcțiune a liniilor industriale de ambalat pentru diverse domenii de producție."
+          />
+          <ServiceCard 
+            icon={<Settings />}
+            title="Mentenanță Utilaje de Ambalat & Industriale"
+            description="Servicii de mentenanță și reparații pentru utilaje de ambalat și echipamente industriale."
           />
         </div>
 

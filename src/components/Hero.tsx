@@ -59,10 +59,14 @@ const Hero = () => {
           </h1>
 
           <ElectricText 
-            text="Aducem lumină în casa ta"
-            className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8"
-            delay={800}
-            glitchProb={0}
+-            text="Aducem lumină în casa ta"
+-            className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8"
+-            delay={800}
+-            glitchProb={0}
++            text="Instalații electrice făcute ca la carte. Cu oameni serioși, echipamente moderne și un plan clar: să devenim rețeaua #1 de electricieni din Europa."
++            className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8"
++            delay={800}
++            glitchProb={0}
           />
 
           <p className="text-white/70 mb-5 max-w-xl backdrop-blur-sm bg-dark-matter/20 p-2 rounded-lg border border-electric-blue/5 text-base lg:mb-8 lg:bg-dark-matter/30 lg:p-4 lg:border-electric-blue/10">
