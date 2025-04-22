@@ -70,7 +70,7 @@ const Contact = () => {
         <div className="absolute inset-0 bg-circuit-pattern bg-cover bg-center opacity-20 z-0" />
         <div className="absolute inset-0 bg-gradient-to-br from-dark-matter/80 via-hologram-blue/10 to-electric-blue/10 z-0" />
 
-        <div className="relative z-10 max-w-xl w-full tech-panel shadow-xl p-8">
+        <div className="relative z-20 max-w-xl w-full tech-panel shadow-xl p-8">
           <ElectricText text="Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue text-center" />
           <p className="text-white/70 mb-8 font-future text-lg text-center">
             Trimite-ne un mesaj și vei primi răspunsul direct din viitor ⚡
@@ -82,7 +82,7 @@ const Contact = () => {
               <p className="text-white/80">Iți vom răspunde în cel mai scurt timp.</p>
             </div>
           ) : (
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5 relative z-30" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="nume" className="block text-white text-sm font-medium mb-2">Nume</label>
                 <input 
@@ -92,7 +92,7 @@ const Contact = () => {
                   value={formData.nume}
                   onChange={handleChange}
                   placeholder="Nume"
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue relative z-30"
                   disabled={loading}
                   required
                   autoComplete="off"
@@ -109,7 +109,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue relative z-30"
                   disabled={loading}
                   required
                   autoComplete="off"
@@ -126,7 +126,7 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="Mesajul tău"
                   rows={4}
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue resize-none"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue resize-none relative z-30"
                   disabled={loading}
                   required
                   autoComplete="off"
@@ -135,7 +135,7 @@ const Contact = () => {
               </div>
               
               <button 
-                className="w-full electric-button font-tech text-lg tracking-wider py-3" 
+                className="w-full electric-button font-tech text-lg tracking-wider py-3 relative z-30" 
                 type="submit" 
                 disabled={loading}
               >
