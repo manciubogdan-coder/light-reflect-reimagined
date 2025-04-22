@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Rocket, Atom, Zap } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Rocket, Zap } from "lucide-react";
 import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -16,6 +16,19 @@ const Contact = () => {
     email: "",
     mesaj: ""
   });
+
+  // Force input focus to ensure inputs are active
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const firstInput = document.querySelector('input[name="nume"]') as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+        firstInput.blur();
+      }
+    }, 100);
+    
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -82,38 +95,47 @@ const Contact = () => {
               className="space-y-5"
               onSubmit={handleSubmit}
             >
-              <Input
-                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
-                placeholder="Nume"
-                name="nume"
-                value={formData.nume}
-                onChange={handleChange}
-                required
-                disabled={loading}
-                autoComplete="off"
-              />
-              <Input
-                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={loading}
-                autoComplete="off"
-              />
-              <Textarea
-                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all"
-                placeholder="Mesajul tău"
-                name="mesaj"
-                value={formData.mesaj}
-                onChange={handleChange}
-                rows={4}
-                required
-                disabled={loading}
-                autoComplete="off"
-              />
+              <div className="form-group">
+                <input
+                  className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
+                  placeholder="Nume"
+                  name="nume"
+                  value={formData.nume}
+                  onChange={handleChange}
+                  required
+                  disabled={loading}
+                  autoComplete="off"
+                />
+              </div>
+              
+              <div className="form-group">
+                <input
+                  className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  disabled={loading}
+                  autoComplete="off"
+                />
+              </div>
+              
+              <div className="form-group">
+                <textarea
+                  className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all rounded-md"
+                  placeholder="Mesajul tău"
+                  name="mesaj"
+                  value={formData.mesaj}
+                  onChange={handleChange}
+                  rows={4}
+                  required
+                  disabled={loading}
+                  autoComplete="off"
+                />
+              </div>
+              
               <button
                 className="w-full electric-button font-tech text-lg tracking-wider relative overflow-hidden disabled:opacity-70 disabled:pointer-events-none"
                 type="submit"
