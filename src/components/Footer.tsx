@@ -124,3 +124,4 @@ const FooterLink = ({ href, children }: FooterLinkProps) => (
 );
 
 export default Footer;
+
