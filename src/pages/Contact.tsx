@@ -83,8 +83,8 @@ const Contact = () => {
             </div>
           ) : (
             <form className="space-y-5" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <label htmlFor="nume" className="block text-white text-sm font-medium">Nume</label>
+              <div>
+                <label htmlFor="nume" className="block text-white text-sm font-medium mb-2">Nume</label>
                 <input 
                   id="nume"
                   name="nume"
@@ -92,14 +92,16 @@ const Contact = () => {
                   value={formData.nume}
                   onChange={handleChange}
                   placeholder="Nume"
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
                   disabled={loading}
                   required
+                  autoComplete="off"
+                  style={{cursor: "text"}}
                 />
               </div>
               
-              <div className="space-y-2">
-                <label htmlFor="email" className="block text-white text-sm font-medium">Email</label>
+              <div>
+                <label htmlFor="email" className="block text-white text-sm font-medium mb-2">Email</label>
                 <input 
                   id="email"
                   name="email"
@@ -107,14 +109,16 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
                   disabled={loading}
                   required
+                  autoComplete="off"
+                  style={{cursor: "text"}}
                 />
               </div>
               
-              <div className="space-y-2">
-                <label htmlFor="mesaj" className="block text-white text-sm font-medium">Mesaj</label>
+              <div>
+                <label htmlFor="mesaj" className="block text-white text-sm font-medium mb-2">Mesaj</label>
                 <textarea 
                   id="mesaj"
                   name="mesaj"
@@ -122,9 +126,11 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="Mesajul tău"
                   rows={4}
-                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue resize-none"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-electric-blue focus:border-electric-blue resize-none"
                   disabled={loading}
                   required
+                  autoComplete="off"
+                  style={{cursor: "text"}}
                 />
               </div>
               
