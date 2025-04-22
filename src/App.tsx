@@ -10,6 +10,9 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Servicii from "./pages/Servicii";
 import CustomCursor from "./components/CustomCursor";
+import TermeniSiConditii from "./pages/TermeniSiConditii";
+import PoliticaDeConfidentialitate from "./pages/PoliticaDeConfidentialitate";
+import Cookies from "./pages/Cookies";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,9 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/servicii" element={<Servicii />} />
+          <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
+          <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
+          <Route path="/cookies" element={<Cookies />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

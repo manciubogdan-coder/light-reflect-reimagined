@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Facebook, Youtube, Mail, Phone, MapPin, Bolt } from "lucide-react";
 
@@ -5,9 +6,10 @@ const Footer = () => {
   return (
     <footer className="pt-16 pb-6 bg-dark-matter relative">
       <div className="circuit-line absolute top-0 w-full"></div>
-      
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        {/* Remove grid-cols-4 and leave only three columns: Logo+desc, Companie, Contact */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {/* LOGO & SOCIALS */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 flex items-center justify-center relative">
@@ -30,19 +32,7 @@ const Footer = () => {
               <SocialLink href="https://www.youtube.com/@lightreflectelectrical" icon={<Youtube className="w-4 h-4" />} />
             </div>
           </div>
-          
-          <div>
-            <h3 className="text-lg font-tech font-bold text-white mb-4">Servicii</h3>
-            <ul className="space-y-2">
-              <FooterLink href="/servicii/tablouri-electrice">Tablouri Electrice Smart</FooterLink>
-              <FooterLink href="/servicii/smart-home">Smart Home</FooterLink>
-              <FooterLink href="/servicii/panouri-solare">Panouri Solare</FooterLink>
-              <FooterLink href="/servicii/sigurante">Siguranțe Automate</FooterLink>
-              <FooterLink href="/servicii/iluminat-inteligent">Iluminat Inteligent</FooterLink>
-              <FooterLink href="/servicii/proiectare">Proiectare Electrică</FooterLink>
-            </ul>
-          </div>
-          
+          {/* COMPANIE */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Companie</h3>
             <ul className="space-y-2">
@@ -54,7 +44,7 @@ const Footer = () => {
               <FooterLink href="/contact">Contact</FooterLink>
             </ul>
           </div>
-          
+          {/* CONTACT */}
           <div>
             <h3 className="text-lg font-tech font-bold text-white mb-4">Contact</h3>
             <ul className="space-y-4">
@@ -79,23 +69,21 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
         <div className="circuit-line mb-6"></div>
-        
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-white/50 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Light Reflect Electrical. Toate drepturile rezervate.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="/termeni-si-conditii" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
+            <Link to="/termeni-si-conditii" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
               Termeni și Condiții
-            </a>
-            <a href="/politica-de-confidentialitate" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
+            </Link>
+            <Link to="/politica-de-confidentialitate" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
               Politica de Confidențialitate
-            </a>
-            <a href="/cookies" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
+            </Link>
+            <Link to="/cookies" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
               Cookies
-            </a>
+            </Link>
           </div>
         </div>
       </div>
