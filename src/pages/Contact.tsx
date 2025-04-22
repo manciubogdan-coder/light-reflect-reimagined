@@ -1,12 +1,13 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Rocket, Zap } from "lucide-react";
 import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
@@ -16,19 +17,6 @@ const Contact = () => {
     email: "",
     mesaj: ""
   });
-
-  // Force input focus to ensure inputs are active
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const firstInput = document.querySelector('input[name="nume"]') as HTMLInputElement;
-      if (firstInput) {
-        firstInput.focus();
-        firstInput.blur();
-      }
-    }, 100);
-    
-    return () => clearTimeout(timeout);
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -80,7 +68,7 @@ const Contact = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-dark-matter/80 via-hologram-blue/10 to-electric-blue/10 z-0" />
 
         <div className="relative z-10 max-w-xl w-full tech-panel shadow-xl animate-float">
-          <ElectricText text="Contact Futurist" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue" />
+          <ElectricText text="Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue" />
           <p className="text-white/70 mb-8 font-future text-lg text-center">
             Trimite-ne un mesaj și vei primi răspunsul direct din viitor ⚡
           </p>
@@ -96,7 +84,9 @@ const Contact = () => {
               onSubmit={handleSubmit}
             >
               <div className="form-group">
+                <Label htmlFor="nume" className="text-white mb-1 block">Nume</Label>
                 <input
+                  id="nume"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
                   placeholder="Nume"
                   name="nume"
@@ -104,12 +94,13 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   disabled={loading}
-                  autoComplete="off"
                 />
               </div>
               
               <div className="form-group">
+                <Label htmlFor="email" className="text-white mb-1 block">Email</Label>
                 <input
+                  id="email"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all rounded-md"
                   type="email"
                   placeholder="Email"
@@ -118,12 +109,13 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   disabled={loading}
-                  autoComplete="off"
                 />
               </div>
               
               <div className="form-group">
+                <Label htmlFor="mesaj" className="text-white mb-1 block">Mesaj</Label>
                 <textarea
+                  id="mesaj"
                   className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all rounded-md"
                   placeholder="Mesajul tău"
                   name="mesaj"
@@ -132,7 +124,6 @@ const Contact = () => {
                   rows={4}
                   required
                   disabled={loading}
-                  autoComplete="off"
                 />
               </div>
               
