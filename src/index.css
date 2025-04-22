@@ -1,8 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -55,7 +54,7 @@
   body {
     @apply bg-dark-matter text-foreground font-future;
     background: linear-gradient(rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.95)), 
-                url('/public/lovable-uploads/8b58c6ff-8f20-411a-8947-fbe7a3b60173.png');
+                url('./assets/circuit-background.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;

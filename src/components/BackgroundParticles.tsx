@@ -51,7 +51,8 @@ function ParticleField({ count = 1000, radius = 10 }) {
         size={0.06}
         sizeAttenuation={true}
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        // Using NormalBlending instead of AdditiveBlending for compatibility
+        blending={THREE.NormalBlending}
       />
     </Points>
   );

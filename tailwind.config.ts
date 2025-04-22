@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -138,7 +139,7 @@ export default {
                 'neon-pulse': 'neon-pulse 2s infinite'
 			},
             backgroundImage: {
-                'circuit-pattern': "url('/public/lovable-uploads/8b58c6ff-8f20-411a-8947-fbe7a3b60173.png')",
+                'circuit-pattern': "url('/src/assets/circuit-background.png')",
                 'grid-lines': 'linear-gradient(to right, rgba(30, 58, 138, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 58, 138, 0.1) 1px, transparent 1px)'
             },
             fontFamily: {
