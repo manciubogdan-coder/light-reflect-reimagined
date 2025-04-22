@@ -41,21 +41,23 @@ const CyberScanner = () => {
       <div className="absolute bottom-5 left-5 w-12 h-12 border-l-2 border-b-2 border-electric-blue/70" />
       <div className="absolute bottom-5 right-5 w-12 h-12 border-r-2 border-b-2 border-electric-blue/70" />
       
-      <style jsx>{`
-        @keyframes scanHorizontal {
-          0% { top: -10px; }
-          50% { top: 100vh; }
-          50.1% { top: 100vh; }
-          100% { top: -10px; }
-        }
-        
-        @keyframes scanVertical {
-          0% { left: -10px; }
-          50% { left: 100vw; }
-          50.1% { left: 100vw; }
-          100% { left: -10px; }
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes scanHorizontal {
+            0% { top: -10px; }
+            50% { top: 100vh; }
+            50.1% { top: 100vh; }
+            100% { top: -10px; }
+          }
+          
+          @keyframes scanVertical {
+            0% { left: -10px; }
+            50% { left: 100vw; }
+            50.1% { left: 100vw; }
+            100% { left: -10px; }
+          }
+        `}
+      </style>
     </div>
   );
 };
