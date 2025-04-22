@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+                // Light Reflect brand colors
+                'electric-blue': '#0077FF',
+                'electric-blue-dark': '#0055CC',
+                'electric-blue-light': '#33AAFF',
+                'neon-red': '#ea384c',
+                'neon-red-light': '#FF5A6E',
+                'dark-matter': '#121212',
+                'circuit-blue': '#1E3A8A',
+                'hologram-blue': '#00FFFF',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,12 +93,58 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'float': {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-10px)' }
+                },
+                'pulse-glow': {
+                    '0%, 100%': { 
+                        boxShadow: '0 0 5px rgba(0, 119, 255, 0.5), 0 0 20px rgba(0, 119, 255, 0.3)'
+                    },
+                    '50%': {
+                        boxShadow: '0 0 15px rgba(0, 119, 255, 0.8), 0 0 30px rgba(0, 119, 255, 0.5)'
+                    }
+                },
+                'circuit-flow': {
+                    '0%': { backgroundPosition: '0% 0%' },
+                    '100%': { backgroundPosition: '200% 0%' }
+                },
+                'flicker': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.8' }
+                },
+                'scale-in': {
+                    '0%': { transform: 'scale(0.95)', opacity: '0' },
+                    '100%': { transform: 'scale(1)', opacity: '1' }
+                },
+                'neon-pulse': {
+                    '0%, 100%': { 
+                        textShadow: '0 0 5px rgba(234, 56, 76, 0.7), 0 0 10px rgba(234, 56, 76, 0.5)'
+                    },
+                    '50%': {
+                        textShadow: '0 0 15px rgba(234, 56, 76, 1), 0 0 20px rgba(234, 56, 76, 0.8)'
+                    }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'float': 'float 6s ease-in-out infinite',
+                'pulse-glow': 'pulse-glow 3s infinite',
+                'circuit-flow': 'circuit-flow 8s linear infinite',
+                'flicker': 'flicker 0.3s ease-in-out infinite',
+                'scale-in': 'scale-in 0.3s ease-out',
+                'neon-pulse': 'neon-pulse 2s infinite'
+			},
+            backgroundImage: {
+                'circuit-pattern': "url('/public/lovable-uploads/8b58c6ff-8f20-411a-8947-fbe7a3b60173.png')",
+                'grid-lines': 'linear-gradient(to right, rgba(30, 58, 138, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 58, 138, 0.1) 1px, transparent 1px)'
+            },
+            fontFamily: {
+                'tech': ['Orbitron', 'sans-serif'],
+                'future': ['Rajdhani', 'sans-serif']
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

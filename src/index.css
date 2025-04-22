@@ -2,67 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 220 70% 5%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 220 70% 7%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 220 70% 5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 210 100% 50%;
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -70,7 +24,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 180 100% 50%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -79,13 +33,16 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 70% 5%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-accent: 180 100% 50%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 70% 15%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -96,6 +53,79 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-dark-matter text-foreground font-future;
+    background: linear-gradient(rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.95)), 
+                url('/public/lovable-uploads/8b58c6ff-8f20-411a-8947-fbe7a3b60173.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-tech;
+  }
+}
+
+@layer components {
+  .tech-border {
+    @apply relative border border-electric-blue/30 rounded-md overflow-hidden;
+  }
+
+  .tech-border::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-electric-blue/10 to-hologram-blue/10 animate-circuit-flow;
+    background-size: 200% 100%;
+  }
+
+  .tech-panel {
+    @apply tech-border bg-dark-matter/80 backdrop-blur-sm p-6;
+  }
+
+  .neon-text {
+    @apply text-neon-red animate-neon-pulse;
+  }
+
+  .hoverable-card {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_15px_rgba(0,119,255,0.5)];
+  }
+
+  .electric-button {
+    @apply bg-electric-blue text-white py-3 px-6 rounded-md font-tech uppercase tracking-wider
+           transition-all duration-300 hover:bg-electric-blue-light hover:shadow-[0_0_15px_rgba(0,119,255,0.7)]
+           relative overflow-hidden;
+  }
+
+  .electric-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-electric-blue to-hologram-blue opacity-0
+           transition-opacity duration-300;
+  }
+
+  .electric-button:hover::before {
+    @apply opacity-30;
+  }
+
+  .hologram {
+    @apply relative before:absolute before:inset-0 before:bg-gradient-to-b
+           before:from-hologram-blue/20 before:to-transparent before:opacity-50;
+  }
+
+  .circuit-line {
+    @apply h-px bg-gradient-to-r from-transparent via-electric-blue/50 to-transparent;
+  }
+}
+
+/* Animated blinking cursor effect */
+.blinking-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
