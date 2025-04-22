@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 const AboutSection = () => {
@@ -14,7 +15,7 @@ const AboutSection = () => {
             </h2>
             
             <p className="text-white/70 mb-6">
-              Cu o experiență de peste 10 ani în domeniu, am dezvoltat sisteme inovatoare 
+              Avem o experiență solidă în domeniu și am dezvoltat sisteme inovatoare 
               care redefinesc standardele de confort și eficiență energetică în România și Europa.
             </p>
             

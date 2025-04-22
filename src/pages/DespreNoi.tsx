@@ -11,7 +11,7 @@ const DespreNoi = () => (
         <Info className="mx-auto mb-4 text-hologram-blue w-10 h-10" />
         <h1 className="font-tech text-3xl md:text-4xl text-hologram-blue mb-4">Despre Noi</h1>
         <p className="text-white/80 mb-3">
-          Light Reflect Electrical – Echipa de profesioniști care aduce standarde superioare în instalații electrice, cu peste 10 ani de experiență și sute de proiecte realizate cu succes.
+          Light Reflect Electrical – Echipa de profesioniști care aduce standarde superioare în instalații electrice, cu experiență vastă în domeniu și sute de proiecte realizate cu succes.
         </p>
         <p className="text-white/70">
           Descoperă povestea, valorile și viziunea noastră în domeniu!
