@@ -5,6 +5,8 @@ import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
@@ -80,8 +82,8 @@ const Contact = () => {
               className="space-y-5"
               onSubmit={handleSubmit}
             >
-              <input
-                className="w-full px-4 py-3 rounded bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
+              <Input
+                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
                 placeholder="Nume"
                 name="nume"
                 value={formData.nume}
@@ -89,8 +91,8 @@ const Contact = () => {
                 required
                 disabled={loading}
               />
-              <input
-                className="w-full px-4 py-3 rounded bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
+              <Input
+                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue transition-all"
                 type="email"
                 placeholder="Email"
                 name="email"
@@ -99,8 +101,8 @@ const Contact = () => {
                 required
                 disabled={loading}
               />
-              <textarea
-                className="w-full px-4 py-3 rounded bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all"
+              <Textarea
+                className="w-full px-4 py-3 bg-dark-matter/60 border border-hologram-blue text-white focus:outline-none focus:border-electric-blue resize-none transition-all"
                 placeholder="Mesajul tău"
                 name="mesaj"
                 value={formData.mesaj}
