@@ -3,9 +3,8 @@ import { useState } from "react";
 import { 
   Lightbulb, 
   Home, 
-  Bolt, 
   Settings,
-  MonitorSmartphone,
+  Award, // Lucide icon for quality
   Zap
 } from "lucide-react";
 import Nav from "../components/Nav";
@@ -48,19 +47,14 @@ const Servicii = () => {
               description="Sisteme complete de automatizare a locuinței, controlabile prin smartphone sau voce."
             />
             <ServiceCard 
-              icon={<Bolt />}
-              title="Panouri Solare"
-              description="Soluții de energie regenerabilă cu panouri fotovoltaice de ultimă generație și sisteme de stocare a energiei."
+              icon={<Award className="text-yellow-300" />}
+              title="Accent pe Calitate"
+              description="Folosim doar materiale premium și asigurăm standarde superioare pentru fiecare proiect."
             />
             <ServiceCard 
               icon={<Settings />}
               title="Siguranțe Automate"
               description="Siguranțe electrice cu întrerupere automată în caz de defecte, protejând echipamentele și locuința."
-            />
-            <ServiceCard 
-              icon={<MonitorSmartphone />}
-              title="Control de la Distanță"
-              description="Sisteme de control și monitorizare de la distanță pentru toate instalațiile electrice din locuință."
             />
             <ServiceCard 
               icon={<Zap />}
@@ -146,3 +140,4 @@ const ProcessStep = ({ number, title, description }: ProcessStepProps) => (
 );
 
 export default Servicii;
+
