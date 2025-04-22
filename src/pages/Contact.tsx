@@ -1,13 +1,10 @@
 
 import { useState } from "react";
-import { Rocket, Zap } from "lucide-react";
+import { Rocket } from "lucide-react";
 import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
@@ -18,7 +15,7 @@ const Contact = () => {
     mesaj: ""
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -26,7 +23,7 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.nume || !formData.email || !formData.mesaj) {
       toast.error("Te rugăm să completezi toate câmpurile!");
@@ -59,7 +56,7 @@ const Contact = () => {
           mesaj: ""
         });
       }, 3000);
-    } catch (error: any) {
+    } catch (error) {
       setLoading(false);
       toast.error(error.message || "A apărut o eroare. Încearcă din nou!");
     }
@@ -81,51 +78,51 @@ const Contact = () => {
           
           {sent ? (
             <div className="flex flex-col items-center gap-3">
-              <Zap className="w-12 h-12 text-hologram-blue animate-pulse" />
               <span className="text-xl font-tech text-electric-blue">Mesaj trimis cu succes!</span>
               <p className="text-white/80">Iți vom răspunde în cel mai scurt timp.</p>
             </div>
           ) : (
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <Label htmlFor="nume" className="text-white">Nume</Label>
-                <Input 
+                <label htmlFor="nume" className="block text-white text-sm font-medium">Nume</label>
+                <input 
                   id="nume"
                   name="nume"
+                  type="text"
                   value={formData.nume}
                   onChange={handleChange}
                   placeholder="Nume"
-                  className="bg-dark-matter/60 border-hologram-blue text-white placeholder:text-white/50 focus-visible:ring-electric-blue focus-visible:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
                   disabled={loading}
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">Email</Label>
-                <Input 
+                <label htmlFor="email" className="block text-white text-sm font-medium">Email</label>
+                <input 
                   id="email"
                   name="email"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  className="bg-dark-matter/60 border-hologram-blue text-white placeholder:text-white/50 focus-visible:ring-electric-blue focus-visible:border-electric-blue"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue"
                   disabled={loading}
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="mesaj" className="text-white">Mesaj</Label>
-                <Textarea 
+                <label htmlFor="mesaj" className="block text-white text-sm font-medium">Mesaj</label>
+                <textarea 
                   id="mesaj"
                   name="mesaj"
                   value={formData.mesaj}
                   onChange={handleChange}
                   placeholder="Mesajul tău"
                   rows={4}
-                  className="bg-dark-matter/60 border-hologram-blue text-white placeholder:text-white/50 focus-visible:ring-electric-blue focus-visible:border-electric-blue resize-none"
+                  className="w-full p-3 rounded-md bg-dark-matter/60 border border-hologram-blue text-white placeholder:text-white/50 focus:ring-2 focus:ring-electric-blue focus:border-electric-blue resize-none"
                   disabled={loading}
                   required
                 />
