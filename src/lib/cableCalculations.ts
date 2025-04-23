@@ -20,11 +20,11 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Calculate minimum section based on voltage drop
   // For monophasic: S = (2 * ρ * L * I) / (ΔU)
   // For triphasic: S = (√3 * ρ * L * I) / (ΔU)
-  const voltageDrop = voltage * maxVoltageDrop / 100; // Convert % to actual voltage
+  const maxAllowedVoltageDrop = voltage * maxVoltageDrop / 100; // Convert % to actual voltage
   
   const sectionByVoltageDrop = data.currentType === "monofazic"
-    ? (2 * resistivity * length * current) / voltageDrop
-    : (Math.sqrt(3) * resistivity * length * current) / voltageDrop;
+    ? (2 * resistivity * length * current) / maxAllowedVoltageDrop
+    : (Math.sqrt(3) * resistivity * length * current) / maxAllowedVoltageDrop;
 
   // Calculate minimum section based on current density (A/mm²)
   // Using values from I7 normative
@@ -52,9 +52,31 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Apply installation factor
   baseSection *= installationFactors[data.installationType as keyof typeof installationFactors];
 
-  // Round up to nearest standard section
+  // Standard sections (mm²)
   const standardSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120];
-  const section = standardSections.find(s => s >= baseSection) || standardSections[standardSections.length - 1];
+  
+  // Find the smallest standard section that satisfies both current and voltage drop requirements
+  let section = standardSections[standardSections.length - 1]; // Default to largest if none fits
+  
+  for (const stdSection of standardSections) {
+    // Calculate voltage drop with this section
+    const testVoltageDrop = data.currentType === "monofazic"
+      ? (2 * length * current * resistivity) / stdSection
+      : (Math.sqrt(3) * length * current * resistivity) / stdSection;
+    
+    const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
+    
+    // Calculate current capacity
+    const currentCapacity = data.material === "cupru" 
+      ? stdSection * (data.installationType === "aer" ? 5 : 4)
+      : stdSection * (data.installationType === "aer" ? 3 : 2.5);
+      
+    // If this section satisfies both conditions, use it
+    if (testVoltageDropPercentage <= maxVoltageDrop && current <= currentCapacity) {
+      section = stdSection;
+      break;
+    }
+  }
 
   // Calculate actual voltage drop with the selected section
   const actualVoltageDrop = data.currentType === "monofazic"
@@ -63,15 +85,14 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   
   const voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
 
-  // Determine recommended fuse rating based on I7 normative
-  // Using the next standard value above calculated current, but also considering cable capacity
-  const standardFuses = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250];
-  
-  // Maximum current capacity for the selected section (according to I7)
+  // Maximum current capacity for the selected section
   const maxCurrentCapacity = data.material === "cupru" 
     ? section * (data.installationType === "aer" ? 5 : 4)
     : section * (data.installationType === "aer" ? 3 : 2.5);
-    
+
+  // Determine recommended fuse rating based on I7 normative
+  const standardFuses = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250];
+  
   // Find a fuse that's above the calculated current but below the cable's capacity
   const fuseRating = standardFuses.find(f => f >= current && f <= maxCurrentCapacity) || 
                     standardFuses.find(f => f >= current) || 
@@ -80,7 +101,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Generate warnings if needed
   let warnings = "";
   if (voltageDropPercentage > maxVoltageDrop) {
-    warnings += "ATENȚIE: Căderea de tensiune depășește limita admisibilă! ";
+    warnings += "ATENȚIE: Cu toate secțiunile standard, căderea de tensiune depășește limita admisibilă! ";
   }
   if (section >= 95) {
     warnings += "ATENȚIE: Secțiune mare - recomandăm consultarea unui specialist! ";
