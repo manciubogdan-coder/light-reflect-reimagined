@@ -62,28 +62,32 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     };
   });
 
-  // Find first section that meets both requirements
+  // Find FIRST (smallest) section that meets both requirements
   for (const section of standardSections) {
+    // Calculate max current capacity based on section
     const maxCurrentCapacity = section * currentDensity;
-    const currentCapacityMet = current <= maxCurrentCapacity;
     
-    let testVoltageDrop;
-    if (data.currentType === "monofazic") {
-      testVoltageDrop = (2 * length * current * resistivity) / section;
-    } else {
-      testVoltageDrop = (Math.sqrt(3) * length * current * resistivity) / section;
-    }
-    
-    const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
-    const voltageDropMet = testVoltageDropPercentage <= maxVoltageDrop;
-    
-    // If both requirements are met, this is our selection
-    if (currentCapacityMet && voltageDropMet) {
-      selectedSection = section;
-      actualVoltageDrop = testVoltageDrop;
-      voltageDropPercentage = testVoltageDropPercentage;
-      reasonForSelection = `Secțiunea ${section} mm² este prima secțiune care îndeplinește ambele cerințe`;
-      break;
+    // Check if section meets current capacity requirement
+    if (current <= maxCurrentCapacity) {
+      // If it meets current capacity, check voltage drop
+      let testVoltageDrop;
+      if (data.currentType === "monofazic") {
+        testVoltageDrop = (2 * length * current * resistivity) / section;
+      } else {
+        testVoltageDrop = (Math.sqrt(3) * length * current * resistivity) / section;
+      }
+      
+      const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
+      
+      // Check if section meets voltage drop requirement
+      if (testVoltageDropPercentage <= maxVoltageDrop) {
+        // This is the first section that meets both requirements
+        selectedSection = section;
+        actualVoltageDrop = testVoltageDrop;
+        voltageDropPercentage = testVoltageDropPercentage;
+        reasonForSelection = `Secțiunea ${section} mm² este prima secțiune standard care îndeplinește ambele cerințe`;
+        break; // Exit the loop - we found our section
+      }
     }
   }
 
@@ -120,6 +124,28 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   if (current > maxCurrentCapacity) {
     warnings += "ATENȚIE: Curentul nominal depășește capacitatea cablului! ";
   }
+
+  // Debug information
+  console.log("Calculând pentru:", {
+    power,
+    currentType: data.currentType,
+    voltage,
+    length,
+    material: data.material,
+    installationType: data.installationType,
+    simultaneityFactor,
+    maxVoltageDrop,
+    calculationType: data.calculationType,
+    current
+  });
+  
+  console.log("Rezultat:", {
+    selectedSection,
+    current,
+    actualVoltageDrop,
+    voltageDropPercentage,
+    reasonForSelection
+  });
 
   return {
     section: selectedSection,
