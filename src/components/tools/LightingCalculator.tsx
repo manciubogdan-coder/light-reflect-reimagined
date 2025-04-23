@@ -96,16 +96,14 @@ const LightingCalculator = () => {
       setActiveTab("result");
       
       // Afișarea unui toast de succes
-      toast({
-        title: "Calcul finalizat cu succes!",
+      toast("Calcul finalizat cu succes!", {
         description: "Rezultatele calculului de iluminat sunt gata.",
       });
     } catch (error) {
       console.error("Eroare la calcularea iluminatului:", error);
-      toast({
-        variant: "destructive",
-        title: "Eroare la calculare",
+      toast("Eroare la calculare", {
         description: "A apărut o eroare la procesarea datelor. Verificați valorile introduse.",
+        variant: "destructive",
       });
     }
   };
