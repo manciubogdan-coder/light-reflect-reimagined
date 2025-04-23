@@ -304,14 +304,6 @@ const CableCalculator = () => {
               <p className="text-neon-red">{result.warnings}</p>
             </div>
           )}
-          <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
-            <Button variant="outline" className="w-full md:w-auto" onClick={handleEmailResults}>
-              Trimite rezultatele pe email
-            </Button>
-            <Button variant="outline" className="w-full md:w-auto" onClick={handleContactRequest}>
-              Contactează-ne pentru un deviz oficial
-            </Button>
-          </div>
         </div>
       )}
     </div>
