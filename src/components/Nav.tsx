@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -8,6 +7,29 @@ const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   
+  const items = [
+    {
+      title: "Acasă",
+      url: "/",
+    },
+    {
+      title: "Servicii",
+      url: "/servicii",
+    },
+    {
+      title: "Tools",
+      url: "/tools",
+    },
+    {
+      title: "Despre",
+      url: "/about",
+    },
+    {
+      title: "Contact",
+      url: "/contact",
+    }
+  ];
+
   // Track scroll for navbar background change
   useEffect(() => {
     const handleScroll = () => {
@@ -53,10 +75,9 @@ const Nav = () => {
         
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-1 md:gap-6 text-lg font-tech">
-          <NavLinkStyled to="/" active={location.pathname === "/"}>Acasă</NavLinkStyled>
-          <NavLinkStyled to="/servicii" active={location.pathname.startsWith("/servicii")}>Servicii</NavLinkStyled>
-          <NavLinkStyled to="/about" active={location.pathname === "/about"}>Despre</NavLinkStyled>
-          <NavLinkStyled to="/contact" active={location.pathname === "/contact"}>Contact</NavLinkStyled>
+          {items.map(item => (
+            <NavLinkStyled key={item.url} to={item.url} active={location.pathname === item.url}>{item.title}</NavLinkStyled>
+          ))}
         </div>
         
         {/* Mobile Menu */}
@@ -66,10 +87,9 @@ const Nav = () => {
           }`}
         >
           <div className="py-4 px-6 flex flex-col gap-4">
-            <MobileNavLink to="/" active={location.pathname === "/"} onClick={() => setMenuOpen(false)}>Acasă</MobileNavLink>
-            <MobileNavLink to="/servicii" active={location.pathname.startsWith("/servicii")} onClick={() => setMenuOpen(false)}>Servicii</MobileNavLink>
-            <MobileNavLink to="/about" active={location.pathname === "/about"} onClick={() => setMenuOpen(false)}>Despre</MobileNavLink>
-            <MobileNavLink to="/contact" active={location.pathname === "/contact"} onClick={() => setMenuOpen(false)}>Contact</MobileNavLink>
+            {items.map(item => (
+              <MobileNavLink key={item.url} to={item.url} active={location.pathname === item.url} onClick={() => setMenuOpen(false)}>{item.title}</MobileNavLink>
+            ))}
           </div>
         </div>
       </div>

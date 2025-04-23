@@ -17,6 +17,7 @@ import Proiecte from "./pages/Proiecte";
 import Franciza from "./pages/Franciza";
 import Blog from "./pages/Blog";
 import Cariere from "./pages/Cariere";
+import Tools from "./pages/Tools";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/franciza" element={<Franciza />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/cariere" element={<Cariere />} />
+          <Route path="/tools" element={<Tools />} />
           <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
           <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
           <Route path="/cookies" element={<Cookies />} />
