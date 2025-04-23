@@ -23,11 +23,6 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Calculate maximum allowed voltage drop in volts
   const maxAllowedVoltageDrop = voltage * maxVoltageDrop / 100;
 
-  // Find the smallest standard section that satisfies both current and voltage drop requirements
-  let selectedSection = 0;
-  let actualVoltageDrop = 0;
-  let voltageDropPercentage = 0;
-
   // Current density based on material and installation (A/mm²)
   let currentDensity;
   if (data.material === "cupru") {
@@ -37,39 +32,57 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     currentDensity = data.installationType === "aer" ? 3 : 2.5;
   }
 
-  // Test each standard section
-  for (const section of standardSections) {
-    // Calculate voltage drop with this section
-    const testVoltageDrop = data.currentType === "monofazic"
-      ? (2 * length * current * resistivity) / section
-      : (Math.sqrt(3) * length * current * resistivity) / section;
-    
-    const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
-    
-    // Calculate current capacity for this section
-    const testCurrentCapacity = section * currentDensity;
-    
-    console.log(`Testing section ${section} mm²: Voltage drop = ${testVoltageDropPercentage.toFixed(2)}%, max allowed = ${maxVoltageDrop}%, current = ${current.toFixed(2)}A, capacity = ${testCurrentCapacity.toFixed(2)}A`);
-    
-    // If this section meets both voltage drop and current requirements
-    if (testVoltageDropPercentage <= maxVoltageDrop && current <= testCurrentCapacity) {
-      selectedSection = section;
-      actualVoltageDrop = testVoltageDrop;
-      voltageDropPercentage = testVoltageDropPercentage;
-      console.log(`Selected section: ${selectedSection} mm² - meets both requirements`);
-      break; // Found the smallest suitable section
-    }
-  }
-
-  // If no section was found that meets both requirements, use the largest available
-  if (selectedSection === 0) {
+  // Initialize values
+  let selectedSection = 0;
+  let actualVoltageDrop = 0;
+  let voltageDropPercentage = 0;
+  
+  // First, find all sections that satisfy current carrying capacity
+  const sectionsMeetingCurrent = standardSections.filter(section => {
+    const sectionCurrentCapacity = section * currentDensity;
+    return current <= sectionCurrentCapacity;
+  });
+  
+  console.log(`Sections meeting current capacity (${current.toFixed(2)}A):`, sectionsMeetingCurrent);
+  
+  if (sectionsMeetingCurrent.length === 0) {
+    // If no section meets current requirements, use the largest available
     selectedSection = standardSections[standardSections.length - 1];
-    // Recalculate voltage drop with the largest section
-    actualVoltageDrop = data.currentType === "monofazic"
-      ? (2 * length * current * resistivity) / selectedSection
-      : (Math.sqrt(3) * length * current * resistivity) / selectedSection;
-    voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
-    console.log(`No section meets both requirements, using largest: ${selectedSection} mm²`);
+  } else {
+    // Among sections meeting current requirements, find the smallest that meets voltage drop
+    for (const section of sectionsMeetingCurrent) {
+      // Calculate voltage drop with this section
+      const testVoltageDrop = data.currentType === "monofazic"
+        ? (2 * length * current * resistivity) / section
+        : (Math.sqrt(3) * length * current * resistivity) / section;
+      
+      const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
+      
+      console.log(`Testing section ${section} mm²: Current capacity OK, Voltage drop = ${testVoltageDropPercentage.toFixed(2)}%, max allowed = ${maxVoltageDrop}%`);
+      
+      // If this section meets voltage drop requirement
+      if (testVoltageDropPercentage <= maxVoltageDrop) {
+        selectedSection = section;
+        actualVoltageDrop = testVoltageDrop;
+        voltageDropPercentage = testVoltageDropPercentage;
+        console.log(`Selected section: ${selectedSection} mm² - meets both requirements`);
+        break; // Found the smallest suitable section
+      }
+    }
+    
+    // If no section met voltage drop requirements
+    if (selectedSection === 0) {
+      // Use the largest section that meets current requirements
+      selectedSection = sectionsMeetingCurrent[sectionsMeetingCurrent.length - 1];
+      
+      // Recalculate voltage drop with this section
+      actualVoltageDrop = data.currentType === "monofazic"
+        ? (2 * length * current * resistivity) / selectedSection
+        : (Math.sqrt(3) * length * current * resistivity) / selectedSection;
+      
+      voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
+      console.log(`No section meets voltage drop requirements, using largest that meets current: ${selectedSection} mm²`);
+    }
   }
 
   // Maximum current capacity for the selected section
