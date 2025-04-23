@@ -24,5 +24,6 @@ export interface CalculationResult {
     currentCapacity: number;
     voltageDropPercentage: number;
     meetsRequirements: boolean;
+    reason: string;
   }>;
 }

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Calculator } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -10,6 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { calculateCableSection } from "@/lib/cableCalculations";
 import { CableCalculatorForm } from "@/lib/types";
 import { toast } from "@/components/ui/use-toast";
@@ -257,30 +266,32 @@ const CableCalculator = () => {
           {showAdvancedTable && result.comparisonTable && (
             <div className="mt-6 overflow-x-auto">
               <h4 className="text-lg font-tech text-hologram-blue mb-3">Tabel comparativ secțiuni</h4>
-              <table className="w-full text-sm">
-                <thead className="border-b border-electric-blue/30">
-                  <tr>
-                    <th className="p-2 text-left text-white/70">Secțiune (mm²)</th>
-                    <th className="p-2 text-left text-white/70">Capacitate curent (A)</th>
-                    <th className="p-2 text-left text-white/70">Cădere tensiune (%)</th>
-                    <th className="p-2 text-left text-white/70">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-electric-blue/30">
+                    <TableHead className="text-white/70">Secțiune (mm²)</TableHead>
+                    <TableHead className="text-white/70">Capacitate curent (A)</TableHead>
+                    <TableHead className="text-white/70">Cădere tensiune (%)</TableHead>
+                    <TableHead className="text-white/70">Status</TableHead>
+                    <TableHead className="text-white/70">Motivare</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {result.comparisonTable.map((row) => (
-                    <tr key={row.section} className="border-b border-electric-blue/20">
-                      <td className="p-2">{row.section}</td>
-                      <td className="p-2">{row.currentCapacity.toFixed(2)}</td>
-                      <td className="p-2">{row.voltageDropPercentage.toFixed(2)}%</td>
-                      <td className="p-2">
+                    <TableRow key={row.section} className={row.section === result.section ? "bg-hologram-blue/10 border-b border-electric-blue/20" : "border-b border-electric-blue/20"}>
+                      <TableCell>{row.section}</TableCell>
+                      <TableCell>{row.currentCapacity.toFixed(1)}</TableCell>
+                      <TableCell>{row.voltageDropPercentage.toFixed(2)}%</TableCell>
+                      <TableCell>
                         <span className={row.meetsRequirements ? "text-green-500" : "text-red-500"}>
-                          {row.meetsRequirements ? "✓ OK" : "✗ Nu îndeplinește"}
+                          {row.meetsRequirements ? "✓ OK" : "✗ Respins"}
                         </span>
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell>{row.reason}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
           
