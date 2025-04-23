@@ -16,5 +16,6 @@ export interface CalculationResult {
   voltageDrop: number;
   voltageDropPercentage: number;
   fuseRating: number;
+  reasonForSelection?: string;
   warnings?: string;
 }

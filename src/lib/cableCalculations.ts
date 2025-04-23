@@ -36,6 +36,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   let selectedSection = 0;
   let actualVoltageDrop = 0;
   let voltageDropPercentage = 0;
+  let reasonForSelection = "";
   
   console.log(`Calculating for: ${current.toFixed(2)}A, ${maxVoltageDrop}% max voltage drop`);
   
@@ -60,11 +61,17 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     
     console.log(`Testing section ${section} mm²: Current capacity: ${maxCurrentCapacity.toFixed(2)}A (${currentCapacityMet ? "OK" : "FAIL"}), Voltage drop = ${testVoltageDropPercentage.toFixed(2)}% (${voltageDropMet ? "OK" : "FAIL"})`);
     
-    // If this section meets BOTH requirements
-    if (currentCapacityMet && voltageDropMet) {
+    // Track reasons for selection or rejection
+    if (!currentCapacityMet) {
+      reasonForSelection = `Secțiunea ${section} mm² nu suportă curentul necesar de ${current.toFixed(2)}A (max: ${maxCurrentCapacity.toFixed(2)}A)`;
+    } else if (!voltageDropMet) {
+      reasonForSelection = `Secțiunea ${section} mm² ar cauza o cădere de tensiune de ${testVoltageDropPercentage.toFixed(2)}% (max: ${maxVoltageDrop}%)`;
+    } else {
+      // Both requirements are met
       selectedSection = section;
       actualVoltageDrop = testVoltageDrop;
       voltageDropPercentage = testVoltageDropPercentage;
+      reasonForSelection = `Secțiunea ${section} mm² este cea mai economică care îndeplinește ambele cerințe`;
       console.log(`Selected section: ${selectedSection} mm² - meets both requirements`);
       break; // Found the smallest suitable section, stop here
     }
@@ -74,6 +81,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   if (selectedSection === 0) {
     console.log("No section meets both requirements, selecting largest available");
     selectedSection = standardSections[standardSections.length - 1];
+    reasonForSelection = "Nicio secțiune standard nu îndeplinește ambele cerințe. Se recomandă consultarea unui specialist.";
     
     // Recalculate voltage drop with this section
     if (data.currentType === "monofazic") {
@@ -114,6 +122,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     voltageDrop: parseFloat(actualVoltageDrop.toFixed(2)),
     voltageDropPercentage: parseFloat(voltageDropPercentage.toFixed(2)),
     fuseRating,
+    reasonForSelection,
     warnings: warnings || undefined
   };
 };

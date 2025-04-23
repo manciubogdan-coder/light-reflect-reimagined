@@ -225,6 +225,13 @@ const CableCalculator = () => {
               <p className="text-xl font-tech text-electric-blue">{result.fuseRating} A</p>
             </div>
           </div>
+          
+          {result.reasonForSelection && (
+            <div className="mt-4 p-4 border border-hologram-blue/50 rounded-md bg-hologram-blue/10">
+              <p className="text-hologram-blue font-tech">Justificare: {result.reasonForSelection}</p>
+            </div>
+          )}
+          
           {result.warnings && (
             <div className="mt-4 p-4 border border-neon-red rounded-md">
               <p className="text-neon-red">{result.warnings}</p>
