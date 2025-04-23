@@ -27,7 +27,8 @@ const Tools = () => {
       title: "Calculator Putere Electrică",
       description: "Estimează necesarul de putere pentru instalațiile electrice",
       icon: <Calculator className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/power-calculator"
+      link: "/tools/power-calculator",
+      comingSoon: false // Changed from true
     },
     {
       id: "lighting-calculator",
