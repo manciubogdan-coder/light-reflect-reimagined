@@ -20,6 +20,7 @@ import Blog from "./pages/Blog";
 import Cariere from "./pages/Cariere";
 import Tools from "./pages/Tools";
 import CableCalculatorTool from "./pages/CableCalculatorTool";
+import PowerCalculatorTool from "./pages/PowerCalculatorTool";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/cariere" element={<Cariere />} />
           <Route path="/tools" element={<Tools />} />
           <Route path="/tools/cable-calculator" element={<CableCalculatorTool />} />
+          <Route path="/tools/power-calculator" element={<PowerCalculatorTool />} />
           <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
           <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
           <Route path="/cookies" element={<Cookies />} />

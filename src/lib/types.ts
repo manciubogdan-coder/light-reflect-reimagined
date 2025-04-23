@@ -1,5 +1,3 @@
-
-
 export interface CableCalculatorForm {
   power: string;
   currentType: string;
@@ -27,6 +25,47 @@ export interface CalculationResult {
     meetsRequirements: boolean;
     reason: string;
   }>;
-  contextualRecommendation?: string;  // Add new optional field
+  contextualRecommendation?: string;
 }
 
+export interface PowerCalculatorForm {
+  buildingType: string;
+  simultaneityFactor: number;
+  includePowerFactor: boolean;
+  appliances: PowerAppliance[];
+}
+
+export interface PowerAppliance {
+  id: string;
+  type: string;
+  name: string;
+  quantity: number;
+  power: number;
+  powerFactor?: number;
+  group?: string;
+}
+
+export interface PowerCalculationResult {
+  totalPower: number;
+  totalPowerKW: number;
+  recommendedSupplyType: string;
+  recommendedContractPower: number;
+  recommendedMainBreaker: string;
+  warnings: string[];
+  applianceGroups?: {
+    [key: string]: {
+      groupName: string;
+      totalPower: number;
+      appliances: PowerAppliance[];
+    }
+  };
+}
+
+export interface ApplianceTemplate {
+  id: string;
+  name: string;
+  defaultPower: number;
+  defaultPowerFactor?: number;
+  icon?: string;
+  category: string;
+}
