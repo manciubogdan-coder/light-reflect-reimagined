@@ -53,7 +53,7 @@ const CableCalculator = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Power Input */}
           <div className="space-y-2">
@@ -65,6 +65,7 @@ const CableCalculator = () => {
               onChange={(e) => handleChange("power", e.target.value)}
               placeholder="ex: 2000"
               required
+              className="bg-dark-matter border-electric-blue/30 relative z-20"
             />
           </div>
 
@@ -75,10 +76,10 @@ const CableCalculator = () => {
               value={formData.currentType}
               onValueChange={(value) => handleChange("currentType", value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
                 <SelectValue placeholder="Selectează tipul de curent" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
                 <SelectItem value="monofazic">Monofazic</SelectItem>
                 <SelectItem value="trifazic">Trifazic</SelectItem>
               </SelectContent>
@@ -94,6 +95,7 @@ const CableCalculator = () => {
               value={formData.voltage}
               onChange={(e) => handleChange("voltage", e.target.value)}
               placeholder={formData.currentType === "monofazic" ? "230" : "400"}
+              className="bg-dark-matter border-electric-blue/30 relative z-20"
             />
           </div>
 
@@ -107,6 +109,7 @@ const CableCalculator = () => {
               onChange={(e) => handleChange("length", e.target.value)}
               placeholder="ex: 25"
               required
+              className="bg-dark-matter border-electric-blue/30 relative z-20"
             />
           </div>
 
@@ -117,10 +120,10 @@ const CableCalculator = () => {
               value={formData.material}
               onValueChange={(value) => handleChange("material", value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
                 <SelectValue placeholder="Selectează materialul" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
                 <SelectItem value="cupru">Cupru</SelectItem>
                 <SelectItem value="aluminiu">Aluminiu</SelectItem>
               </SelectContent>
@@ -134,10 +137,10 @@ const CableCalculator = () => {
               value={formData.installationType}
               onValueChange={(value) => handleChange("installationType", value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
                 <SelectValue placeholder="Selectează modul de pozare" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
                 <SelectItem value="aer">În aer</SelectItem>
                 <SelectItem value="ingropat">Îngropat</SelectItem>
                 <SelectItem value="tub">În tub</SelectItem>
@@ -158,6 +161,7 @@ const CableCalculator = () => {
               min="0"
               max="1"
               step="0.1"
+              className="bg-dark-matter border-electric-blue/30 relative z-20"
             />
           </div>
 
@@ -173,12 +177,13 @@ const CableCalculator = () => {
               min="0"
               max="10"
               step="0.1"
+              className="bg-dark-matter border-electric-blue/30 relative z-20"
             />
           </div>
         </div>
 
         <div className="flex justify-center gap-4">
-          <Button type="submit" className="w-full md:w-auto">
+          <Button type="submit" className="w-full md:w-auto relative z-20">
             Calculează
           </Button>
         </div>
