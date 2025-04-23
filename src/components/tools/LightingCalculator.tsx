@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -27,7 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { Lightbulb, Info, ArrowRight } from "lucide-react";
 import { calculateLighting, ROOM_TYPES } from "@/lib/lightingCalculations";
-import { LightingCalculationResult } from "@/lib/types";
+import { LightingCalculationResult, LightingCalculatorForm } from "@/lib/types";
 
 // Definirea schemei de validare cu Zod
 const formSchema = z.object({
@@ -74,8 +75,18 @@ const LightingCalculator = () => {
   // Funcția pentru calcularea rezultatului
   const onSubmit = (data: FormValues) => {
     try {
+      // Ensure all required fields are present and cast to LightingCalculatorForm type
+      const calculationData: LightingCalculatorForm = {
+        roomType: data.roomType,
+        area: data.area,
+        roomHeight: data.roomHeight || "",
+        lightingLevel: data.lightingLevel,
+        lightSourceType: data.lightSourceType,
+        fixtureType: data.fixtureType,
+      };
+      
       // Calcularea rezultatului
-      const calculationResult = calculateLighting(data);
+      const calculationResult = calculateLighting(calculationData);
       setResult(calculationResult);
       setActiveTab("result");
       
