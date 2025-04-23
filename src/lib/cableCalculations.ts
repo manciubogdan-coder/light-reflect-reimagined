@@ -17,17 +17,18 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Material resistivity (Ω·mm²/m)
   const resistivity = data.material === "cupru" ? 0.0175 : 0.028;
 
-  // Calculate minimum section based on voltage drop
-  // For monophasic: S = (2 * ρ * L * I) / (ΔU)
-  // For triphasic: S = (√3 * ρ * L * I) / (ΔU)
-  const maxAllowedVoltageDrop = voltage * maxVoltageDrop / 100; // Convert % to actual voltage
+  // Standard sections (mm²)
+  const standardSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120];
   
-  const sectionByVoltageDrop = data.currentType === "monofazic"
-    ? (2 * resistivity * length * current) / maxAllowedVoltageDrop
-    : (Math.sqrt(3) * resistivity * length * current) / maxAllowedVoltageDrop;
+  // Calculate maximum allowed voltage drop in volts
+  const maxAllowedVoltageDrop = voltage * maxVoltageDrop / 100;
 
-  // Calculate minimum section based on current density (A/mm²)
-  // Using values from I7 normative
+  // Find the smallest standard section that satisfies both current and voltage drop requirements
+  let selectedSection = 0;
+  let actualVoltageDrop = 0;
+  let voltageDropPercentage = 0;
+
+  // Current density based on material and installation (A/mm²)
   let currentDensity;
   if (data.material === "cupru") {
     currentDensity = data.installationType === "aer" ? 5 : 4;
@@ -35,34 +36,44 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     // Aluminum
     currentDensity = data.installationType === "aer" ? 3 : 2.5;
   }
-  
-  const sectionByCurrent = current / currentDensity;
 
-  // Take the larger of the two calculated sections
-  const baseSection = Math.max(sectionByVoltageDrop, sectionByCurrent);
+  // Test each standard section
+  for (const section of standardSections) {
+    // Calculate voltage drop with this section
+    const testVoltageDrop = data.currentType === "monofazic"
+      ? (2 * length * current * resistivity) / section
+      : (Math.sqrt(3) * length * current * resistivity) / section;
+    
+    const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
+    
+    // Calculate current capacity for this section
+    const testCurrentCapacity = section * currentDensity;
+    
+    console.log(`Testing section ${section} mm²: Voltage drop = ${testVoltageDropPercentage.toFixed(2)}%, max allowed = ${maxVoltageDrop}%, current = ${current.toFixed(2)}A, capacity = ${testCurrentCapacity.toFixed(2)}A`);
+    
+    // If this section meets both voltage drop and current requirements
+    if (testVoltageDropPercentage <= maxVoltageDrop && current <= testCurrentCapacity) {
+      selectedSection = section;
+      actualVoltageDrop = testVoltageDrop;
+      voltageDropPercentage = testVoltageDropPercentage;
+      console.log(`Selected section: ${selectedSection} mm² - meets both requirements`);
+      break; // Found the smallest suitable section
+    }
+  }
 
-  console.log(`Base section: ${baseSection}, Section by voltage drop: ${sectionByVoltageDrop}, Section by current: ${sectionByCurrent}`);
-  
-  // Standard sections (mm²)
-  const standardSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120];
-  
-  // Find the smallest standard section that is greater than or equal to our base section
-  // This ensures we meet both the current capacity and maximum voltage drop requirements
-  let section = standardSections.find(s => s >= baseSection) || standardSections[standardSections.length - 1];
-
-  // Calculate actual voltage drop with the selected section
-  const actualVoltageDrop = data.currentType === "monofazic"
-    ? (2 * length * current * resistivity) / section
-    : (Math.sqrt(3) * length * current * resistivity) / section;
-  
-  const voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
-
-  console.log(`Selected section: ${section}, Actual voltage drop: ${actualVoltageDrop}V (${voltageDropPercentage}%), Max allowed: ${maxVoltageDrop}%`);
+  // If no section was found that meets both requirements, use the largest available
+  if (selectedSection === 0) {
+    selectedSection = standardSections[standardSections.length - 1];
+    // Recalculate voltage drop with the largest section
+    actualVoltageDrop = data.currentType === "monofazic"
+      ? (2 * length * current * resistivity) / selectedSection
+      : (Math.sqrt(3) * length * current * resistivity) / selectedSection;
+    voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
+    console.log(`No section meets both requirements, using largest: ${selectedSection} mm²`);
+  }
 
   // Maximum current capacity for the selected section
-  const maxCurrentCapacity = data.material === "cupru" 
-    ? section * (data.installationType === "aer" ? 5 : 4)
-    : section * (data.installationType === "aer" ? 3 : 2.5);
+  const maxCurrentCapacity = selectedSection * currentDensity;
 
   // Determine recommended fuse rating based on I7 normative
   const standardFuses = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250];
@@ -77,7 +88,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   if (voltageDropPercentage > maxVoltageDrop) {
     warnings += "ATENȚIE: Cu secțiunea selectată, căderea de tensiune depășește limita admisibilă! ";
   }
-  if (section >= 95) {
+  if (selectedSection >= 95) {
     warnings += "ATENȚIE: Secțiune mare - recomandăm consultarea unui specialist! ";
   }
   if (current > maxCurrentCapacity) {
@@ -85,7 +96,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   }
 
   return {
-    section,
+    section: selectedSection,
     current: parseFloat(current.toFixed(2)),
     voltageDrop: parseFloat(actualVoltageDrop.toFixed(2)),
     voltageDropPercentage: parseFloat(voltageDropPercentage.toFixed(2)),
