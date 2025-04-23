@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -127,7 +128,7 @@ const LightingCalculator = () => {
               </div>
 
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -332,7 +333,7 @@ const LightingCalculator = () => {
                   <div className="flex justify-center mt-6">
                     <Button 
                       type="submit" 
-                      className="bg-electric-blue hover:bg-electric-blue-light text-white font-tech flex items-center gap-2 px-8 py-6"
+                      className="bg-electric-blue hover:bg-electric-blue-light text-white font-tech flex items-center gap-2 px-8 py-6 relative z-50"
                     >
                       Calculează necesarul <ArrowRight className="w-5 h-5" />
                     </Button>
