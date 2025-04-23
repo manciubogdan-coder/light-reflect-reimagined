@@ -39,44 +39,16 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   const sectionByCurrent = current / currentDensity;
 
   // Take the larger of the two calculated sections
-  let baseSection = Math.max(sectionByVoltageDrop, sectionByCurrent);
+  const baseSection = Math.max(sectionByVoltageDrop, sectionByCurrent);
 
-  // Adjust section based on installation type (applies correction factors from I7)
-  const installationFactors = {
-    aer: 1,
-    ingropat: 1.2,
-    tub: 1.3,
-    canal: 1.15
-  };
+  console.log(`Base section: ${baseSection}, Section by voltage drop: ${sectionByVoltageDrop}, Section by current: ${sectionByCurrent}`);
   
-  // Apply installation factor
-  baseSection *= installationFactors[data.installationType as keyof typeof installationFactors];
-
   // Standard sections (mm²)
   const standardSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120];
   
-  // Find the smallest standard section that satisfies both current and voltage drop requirements
-  let section = standardSections[standardSections.length - 1]; // Default to largest if none fits
-  
-  for (const stdSection of standardSections) {
-    // Calculate voltage drop with this section
-    const testVoltageDrop = data.currentType === "monofazic"
-      ? (2 * length * current * resistivity) / stdSection
-      : (Math.sqrt(3) * length * current * resistivity) / stdSection;
-    
-    const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
-    
-    // Calculate current capacity
-    const currentCapacity = data.material === "cupru" 
-      ? stdSection * (data.installationType === "aer" ? 5 : 4)
-      : stdSection * (data.installationType === "aer" ? 3 : 2.5);
-      
-    // If this section satisfies both conditions, use it
-    if (testVoltageDropPercentage <= maxVoltageDrop && current <= currentCapacity) {
-      section = stdSection;
-      break;
-    }
-  }
+  // Find the smallest standard section that is greater than or equal to our base section
+  // This ensures we meet both the current capacity and maximum voltage drop requirements
+  let section = standardSections.find(s => s >= baseSection) || standardSections[standardSections.length - 1];
 
   // Calculate actual voltage drop with the selected section
   const actualVoltageDrop = data.currentType === "monofazic"
@@ -84,6 +56,8 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     : (Math.sqrt(3) * length * current * resistivity) / section;
   
   const voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
+
+  console.log(`Selected section: ${section}, Actual voltage drop: ${actualVoltageDrop}V (${voltageDropPercentage}%), Max allowed: ${maxVoltageDrop}%`);
 
   // Maximum current capacity for the selected section
   const maxCurrentCapacity = data.material === "cupru" 
@@ -101,7 +75,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   // Generate warnings if needed
   let warnings = "";
   if (voltageDropPercentage > maxVoltageDrop) {
-    warnings += "ATENȚIE: Cu toate secțiunile standard, căderea de tensiune depășește limita admisibilă! ";
+    warnings += "ATENȚIE: Cu secțiunea selectată, căderea de tensiune depășește limita admisibilă! ";
   }
   if (section >= 95) {
     warnings += "ATENȚIE: Secțiune mare - recomandăm consultarea unui specialist! ";
