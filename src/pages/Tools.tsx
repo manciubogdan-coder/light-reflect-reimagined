@@ -1,7 +1,7 @@
 
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Calculator, Cable, Grid2X2, Settings } from "lucide-react";
+import { Calculator, Cable, Grid2X2, Settings, Lightbulb } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -28,14 +28,15 @@ const Tools = () => {
       description: "Estimează necesarul de putere pentru instalațiile electrice",
       icon: <Calculator className="w-12 h-12 text-hologram-blue" />,
       link: "/tools/power-calculator",
-      comingSoon: false // Changed from true
+      comingSoon: false
     },
     {
       id: "lighting-calculator",
       title: "Calculator Iluminat",
       description: "Determină necesarul de corpuri de iluminat pentru spațiul tău",
-      icon: <Grid2X2 className="w-12 h-12 text-hologram-blue" />,
-      comingSoon: true
+      icon: <Lightbulb className="w-12 h-12 text-hologram-blue" />,
+      link: "/tools/lighting-calculator",
+      comingSoon: false // Actualizat din true în false pentru a activa tool-ul
     },
     {
       id: "energy-efficiency",

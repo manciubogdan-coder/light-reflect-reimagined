@@ -1,3 +1,4 @@
+
 export interface CableCalculatorForm {
   power: string;
   currentType: string;
@@ -68,4 +69,35 @@ export interface ApplianceTemplate {
   defaultPowerFactor?: number;
   icon?: string;
   category: string;
+}
+
+// Noi interfețe pentru calculatorul de iluminat
+export interface LightingCalculatorForm {
+  roomType: string;
+  area: string;
+  roomHeight?: string;
+  lightingLevel: string;
+  lightSourceType: string;
+  fixtureType: string;
+}
+
+export interface LightingCalculationResult {
+  totalPower: number;
+  recommendedFixtures: LightingFixtureRecommendation[];
+  professionalRecommendation: string;
+  warnings: string[];
+}
+
+export interface LightingFixtureRecommendation {
+  fixtureType: string;
+  fixtureCount: number;
+  fixtureFlux: number;
+  totalFlux: number;
+  power: number;
+}
+
+export interface RoomTypeInfo {
+  name: string;
+  defaultLux: number;
+  description?: string;
 }
