@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { calculateCableSection } from "@/lib/cableCalculations";
 import { CableCalculatorForm } from "@/lib/types";
+import { toast } from "@/components/ui/use-toast";
 
 const CableCalculator = () => {
   const [formData, setFormData] = useState<CableCalculatorForm>({
@@ -41,6 +42,20 @@ const CableCalculator = () => {
     }));
   };
 
+  const handleEmailResults = () => {
+    toast({
+      title: "Funcționalitate în dezvoltare",
+      description: "Trimiterea rezultatelor pe email va fi disponibilă în curând.",
+    });
+  };
+
+  const handleContactRequest = () => {
+    toast({
+      title: "Cerere înregistrată",
+      description: "Vă vom contacta în curând pentru un deviz personalizat.",
+    });
+  };
+
   return (
     <div className="max-w-4xl mx-auto tech-panel p-6">
       <div className="mb-6 text-center">
@@ -65,7 +80,7 @@ const CableCalculator = () => {
               onChange={(e) => handleChange("power", e.target.value)}
               placeholder="ex: 2000"
               required
-              className="bg-dark-matter border-electric-blue/30 relative z-20"
+              className="bg-dark-matter border-electric-blue/30"
             />
           </div>
 
@@ -76,10 +91,10 @@ const CableCalculator = () => {
               value={formData.currentType}
               onValueChange={(value) => handleChange("currentType", value)}
             >
-              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30">
                 <SelectValue placeholder="Selectează tipul de curent" />
               </SelectTrigger>
-              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
+              <SelectContent className="bg-dark-matter border-electric-blue/30">
                 <SelectItem value="monofazic">Monofazic</SelectItem>
                 <SelectItem value="trifazic">Trifazic</SelectItem>
               </SelectContent>
@@ -95,7 +110,7 @@ const CableCalculator = () => {
               value={formData.voltage}
               onChange={(e) => handleChange("voltage", e.target.value)}
               placeholder={formData.currentType === "monofazic" ? "230" : "400"}
-              className="bg-dark-matter border-electric-blue/30 relative z-20"
+              className="bg-dark-matter border-electric-blue/30"
             />
           </div>
 
@@ -109,7 +124,7 @@ const CableCalculator = () => {
               onChange={(e) => handleChange("length", e.target.value)}
               placeholder="ex: 25"
               required
-              className="bg-dark-matter border-electric-blue/30 relative z-20"
+              className="bg-dark-matter border-electric-blue/30"
             />
           </div>
 
@@ -120,10 +135,10 @@ const CableCalculator = () => {
               value={formData.material}
               onValueChange={(value) => handleChange("material", value)}
             >
-              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30">
                 <SelectValue placeholder="Selectează materialul" />
               </SelectTrigger>
-              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
+              <SelectContent className="bg-dark-matter border-electric-blue/30">
                 <SelectItem value="cupru">Cupru</SelectItem>
                 <SelectItem value="aluminiu">Aluminiu</SelectItem>
               </SelectContent>
@@ -137,10 +152,10 @@ const CableCalculator = () => {
               value={formData.installationType}
               onValueChange={(value) => handleChange("installationType", value)}
             >
-              <SelectTrigger className="bg-dark-matter border-electric-blue/30 relative z-20">
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30">
                 <SelectValue placeholder="Selectează modul de pozare" />
               </SelectTrigger>
-              <SelectContent className="bg-dark-matter border-electric-blue/30 relative z-30">
+              <SelectContent className="bg-dark-matter border-electric-blue/30">
                 <SelectItem value="aer">În aer</SelectItem>
                 <SelectItem value="ingropat">Îngropat</SelectItem>
                 <SelectItem value="tub">În tub</SelectItem>
@@ -161,7 +176,7 @@ const CableCalculator = () => {
               min="0"
               max="1"
               step="0.1"
-              className="bg-dark-matter border-electric-blue/30 relative z-20"
+              className="bg-dark-matter border-electric-blue/30"
             />
           </div>
 
@@ -177,13 +192,13 @@ const CableCalculator = () => {
               min="0"
               max="10"
               step="0.1"
-              className="bg-dark-matter border-electric-blue/30 relative z-20"
+              className="bg-dark-matter border-electric-blue/30"
             />
           </div>
         </div>
 
         <div className="flex justify-center gap-4">
-          <Button type="submit" className="w-full md:w-auto relative z-20">
+          <Button type="submit" className="w-full md:w-auto">
             Calculează
           </Button>
         </div>
@@ -216,10 +231,10 @@ const CableCalculator = () => {
             </div>
           )}
           <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button variant="outline" className="w-full md:w-auto" onClick={handleEmailResults}>
               Trimite rezultatele pe email
             </Button>
-            <Button variant="outline" className="w-full md:w-auto">
+            <Button variant="outline" className="w-full md:w-auto" onClick={handleContactRequest}>
               Contactează-ne pentru un deviz oficial
             </Button>
           </div>

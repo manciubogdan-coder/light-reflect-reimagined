@@ -74,7 +74,7 @@ const Tools = () => {
                     În curând
                   </Button>
                 ) : (
-                  <Button variant="outline" asChild className="w-full">
+                  <Button variant="outline" asChild className="w-full z-20 relative">
                     <Link to={tool.link}>Accesează</Link>
                   </Button>
                 )}
