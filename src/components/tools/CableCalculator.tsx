@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Calculator } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -39,10 +38,12 @@ const CableCalculator = () => {
   const [result, setResult] = useState<any>(null);
   const [showAdvancedTable, setShowAdvancedTable] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const calculationResult = calculateCableSection(formData);
-    setResult(calculationResult);
+  const handleCurrentTypeChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      currentType: value,
+      voltage: value === "monofazic" ? "230" : "400"
+    }));
   };
 
   const handleChange = (name: string, value: string) => {
@@ -50,6 +51,12 @@ const CableCalculator = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const calculationResult = calculateCableSection(formData);
+    setResult(calculationResult);
   };
 
   const handleEmailResults = () => {
@@ -80,7 +87,6 @@ const CableCalculator = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Power Input */}
           <div className="space-y-2">
             <Label htmlFor="power">Puterea totală (W)</Label>
             <Input
@@ -94,12 +100,11 @@ const CableCalculator = () => {
             />
           </div>
 
-          {/* Current Type */}
           <div className="space-y-2">
             <Label>Tip curent</Label>
             <Select
               value={formData.currentType}
-              onValueChange={(value) => handleChange("currentType", value)}
+              onValueChange={handleCurrentTypeChange}
             >
               <SelectTrigger className="bg-dark-matter border-electric-blue/30">
                 <SelectValue placeholder="Selectează tipul de curent" />
@@ -111,7 +116,6 @@ const CableCalculator = () => {
             </Select>
           </div>
 
-          {/* Voltage */}
           <div className="space-y-2">
             <Label htmlFor="voltage">Tensiune (V)</Label>
             <Input
@@ -124,7 +128,6 @@ const CableCalculator = () => {
             />
           </div>
 
-          {/* Cable Length */}
           <div className="space-y-2">
             <Label htmlFor="length">Lungimea cablului (m)</Label>
             <Input
@@ -138,7 +141,6 @@ const CableCalculator = () => {
             />
           </div>
 
-          {/* Conductor Material */}
           <div className="space-y-2">
             <Label>Material conductor</Label>
             <Select
@@ -155,7 +157,6 @@ const CableCalculator = () => {
             </Select>
           </div>
 
-          {/* Installation Type */}
           <div className="space-y-2">
             <Label>Mod de pozare</Label>
             <Select
@@ -174,7 +175,6 @@ const CableCalculator = () => {
             </Select>
           </div>
 
-          {/* Simultaneity Factor */}
           <div className="space-y-2">
             <Label htmlFor="simultaneityFactor">Coeficient simultaneitate</Label>
             <Input
@@ -190,7 +190,6 @@ const CableCalculator = () => {
             />
           </div>
 
-          {/* Voltage Drop */}
           <div className="space-y-2">
             <Label htmlFor="voltageDrop">Cădere maximă admisibilă de tensiune (%)</Label>
             <Input
@@ -206,7 +205,6 @@ const CableCalculator = () => {
             />
           </div>
 
-          {/* Calculation Type */}
           <div className="space-y-2">
             <Label>Tip calcul</Label>
             <Select
