@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/sonner";
 import { Lightbulb, Info, ArrowRight } from "lucide-react";
 import { calculateLighting, ROOM_TYPES } from "@/lib/lightingCalculations";
 import { LightingCalculationResult, LightingCalculatorForm } from "@/lib/types";
@@ -75,6 +74,8 @@ const LightingCalculator = () => {
   // Funcția pentru calcularea rezultatului
   const onSubmit = (data: FormValues) => {
     try {
+      console.log("Submit button clicked with data:", data);
+      
       // Ensure all required fields are present and cast to LightingCalculatorForm type
       const calculationData: LightingCalculatorForm = {
         roomType: data.roomType,
@@ -85,8 +86,12 @@ const LightingCalculator = () => {
         fixtureType: data.fixtureType,
       };
       
+      console.log("Prepared calculation data:", calculationData);
+      
       // Calcularea rezultatului
       const calculationResult = calculateLighting(calculationData);
+      console.log("Calculation result:", calculationResult);
+      
       setResult(calculationResult);
       setActiveTab("result");
       
