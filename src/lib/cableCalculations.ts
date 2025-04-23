@@ -29,9 +29,10 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     currentDensity = data.installationType === "aer" ? 3 : 2.5;
   }
 
-  // For sensitive equipment, increase current density requirements by 30%
+  // For sensitive equipment, DECREASE current density requirements by 30%
+  // This means we need a LARGER cable section for the same current
   if (data.calculationType === "sensitive") {
-    currentDensity *= 1.3;
+    currentDensity *= 0.7; // Reducing by 30% instead of increasing
   }
 
   let selectedSection = 0;
@@ -85,7 +86,13 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
         selectedSection = section;
         actualVoltageDrop = testVoltageDrop;
         voltageDropPercentage = testVoltageDropPercentage;
-        reasonForSelection = `Secțiunea ${section} mm² este prima secțiune standard care îndeplinește ambele cerințe`;
+        
+        // Add reasoning based on calculation type
+        if (data.calculationType === "sensitive") {
+          reasonForSelection = `Secțiunea ${section} mm² este recomandată pentru echipamente sensibile, oferind o marjă de siguranță suplimentară`;
+        } else {
+          reasonForSelection = `Secțiunea ${section} mm² este prima secțiune standard care îndeplinește cerințele minime`;
+        }
         break; // Exit the loop - we found our section
       }
     }
@@ -136,7 +143,8 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     simultaneityFactor,
     maxVoltageDrop,
     calculationType: data.calculationType,
-    current
+    current,
+    adjustedCurrentDensity: currentDensity
   });
   
   console.log("Rezultat:", {
