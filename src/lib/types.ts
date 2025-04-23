@@ -71,7 +71,7 @@ export interface ApplianceTemplate {
   category: string;
 }
 
-// Noi interfețe pentru calculatorul de iluminat
+// Fixed interface for calculatorul de iluminat
 export interface LightingCalculatorForm {
   roomType: string;
   area: string;
