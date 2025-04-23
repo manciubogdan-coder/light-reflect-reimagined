@@ -8,6 +8,7 @@ export interface CableCalculatorForm {
   installationType: string;
   simultaneityFactor: string;
   voltageDrop: string;
+  calculationType: string;
 }
 
 export interface CalculationResult {
@@ -18,4 +19,10 @@ export interface CalculationResult {
   fuseRating: number;
   reasonForSelection?: string;
   warnings?: string;
+  comparisonTable?: Array<{
+    section: number;
+    currentCapacity: number;
+    voltageDropPercentage: number;
+    meetsRequirements: boolean;
+  }>;
 }

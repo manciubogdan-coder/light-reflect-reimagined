@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Calculator } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -24,10 +23,12 @@ const CableCalculator = () => {
     material: "cupru",
     installationType: "aer",
     simultaneityFactor: "1",
-    voltageDrop: "3"
+    voltageDrop: "3",
+    calculationType: "standard"
   });
 
   const [result, setResult] = useState<any>(null);
+  const [showAdvancedTable, setShowAdvancedTable] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,12 +196,39 @@ const CableCalculator = () => {
               className="bg-dark-matter border-electric-blue/30"
             />
           </div>
+
+          {/* Calculation Type */}
+          <div className="space-y-2">
+            <Label>Tip calcul</Label>
+            <Select
+              value={formData.calculationType}
+              onValueChange={(value) => handleChange("calculationType", value)}
+            >
+              <SelectTrigger className="bg-dark-matter border-electric-blue/30">
+                <SelectValue placeholder="Selectează tipul de calcul" />
+              </SelectTrigger>
+              <SelectContent className="bg-dark-matter border-electric-blue/30">
+                <SelectItem value="standard">Minim conform standard</SelectItem>
+                <SelectItem value="sensitive">Recomandat pentru echipamente sensibile</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-col md:flex-row justify-center gap-4">
           <Button type="submit" className="w-full md:w-auto">
             Calculează
           </Button>
+          {result && (
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setShowAdvancedTable(!showAdvancedTable)}
+              className="w-full md:w-auto"
+            >
+              {showAdvancedTable ? "Ascunde" : "Afișează"} tabel comparativ
+            </Button>
+          )}
         </div>
       </form>
 
@@ -225,6 +253,36 @@ const CableCalculator = () => {
               <p className="text-xl font-tech text-electric-blue">{result.fuseRating} A</p>
             </div>
           </div>
+          
+          {showAdvancedTable && result.comparisonTable && (
+            <div className="mt-6 overflow-x-auto">
+              <h4 className="text-lg font-tech text-hologram-blue mb-3">Tabel comparativ secțiuni</h4>
+              <table className="w-full text-sm">
+                <thead className="border-b border-electric-blue/30">
+                  <tr>
+                    <th className="p-2 text-left text-white/70">Secțiune (mm²)</th>
+                    <th className="p-2 text-left text-white/70">Capacitate curent (A)</th>
+                    <th className="p-2 text-left text-white/70">Cădere tensiune (%)</th>
+                    <th className="p-2 text-left text-white/70">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.comparisonTable.map((row) => (
+                    <tr key={row.section} className="border-b border-electric-blue/20">
+                      <td className="p-2">{row.section}</td>
+                      <td className="p-2">{row.currentCapacity.toFixed(2)}</td>
+                      <td className="p-2">{row.voltageDropPercentage.toFixed(2)}%</td>
+                      <td className="p-2">
+                        <span className={row.meetsRequirements ? "text-green-500" : "text-red-500"}>
+                          {row.meetsRequirements ? "✓ OK" : "✗ Nu îndeplinește"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           
           {result.reasonForSelection && (
             <div className="mt-4 p-4 border border-hologram-blue/50 rounded-md bg-hologram-blue/10">
