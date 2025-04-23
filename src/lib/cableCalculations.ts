@@ -40,40 +40,47 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
   console.log(`Calculating for: ${current.toFixed(2)}A, ${maxVoltageDrop}% max voltage drop`);
   
   // Check each standard section from smallest to largest
-  for (const section of standardSections) {
+  for (let i = 0; i < standardSections.length; i++) {
+    const section = standardSections[i];
+    
     // Check current capacity
-    const sectionCurrentCapacity = section * currentDensity;
-    const currentCapacityMet = current <= sectionCurrentCapacity;
+    const maxCurrentCapacity = section * currentDensity;
+    const currentCapacityMet = current <= maxCurrentCapacity;
     
     // Calculate voltage drop with this section
-    const testVoltageDrop = data.currentType === "monofazic"
-      ? (2 * length * current * resistivity) / section
-      : (Math.sqrt(3) * length * current * resistivity) / section;
+    let testVoltageDrop;
+    if (data.currentType === "monofazic") {
+      testVoltageDrop = (2 * length * current * resistivity) / section;
+    } else {
+      testVoltageDrop = (Math.sqrt(3) * length * current * resistivity) / section;
+    }
     
     const testVoltageDropPercentage = (testVoltageDrop / voltage) * 100;
     const voltageDropMet = testVoltageDropPercentage <= maxVoltageDrop;
     
-    console.log(`Testing section ${section} mm²: Current capacity: ${sectionCurrentCapacity.toFixed(2)}A (${currentCapacityMet ? "OK" : "FAIL"}), Voltage drop = ${testVoltageDropPercentage.toFixed(2)}% (${voltageDropMet ? "OK" : "FAIL"})`);
+    console.log(`Testing section ${section} mm²: Current capacity: ${maxCurrentCapacity.toFixed(2)}A (${currentCapacityMet ? "OK" : "FAIL"}), Voltage drop = ${testVoltageDropPercentage.toFixed(2)}% (${voltageDropMet ? "OK" : "FAIL"})`);
     
-    // If this section meets both requirements, select it and stop looking
+    // If this section meets BOTH requirements
     if (currentCapacityMet && voltageDropMet) {
       selectedSection = section;
       actualVoltageDrop = testVoltageDrop;
       voltageDropPercentage = testVoltageDropPercentage;
       console.log(`Selected section: ${selectedSection} mm² - meets both requirements`);
-      break; // Found the smallest suitable section
+      break; // Found the smallest suitable section, stop here
     }
   }
 
-  // If no section meets both requirements
+  // If no section meets both requirements, use the largest available
   if (selectedSection === 0) {
     console.log("No section meets both requirements, selecting largest available");
     selectedSection = standardSections[standardSections.length - 1];
     
     // Recalculate voltage drop with this section
-    actualVoltageDrop = data.currentType === "monofazic"
-      ? (2 * length * current * resistivity) / selectedSection
-      : (Math.sqrt(3) * length * current * resistivity) / selectedSection;
+    if (data.currentType === "monofazic") {
+      actualVoltageDrop = (2 * length * current * resistivity) / selectedSection;
+    } else {
+      actualVoltageDrop = (Math.sqrt(3) * length * current * resistivity) / selectedSection;
+    }
     
     voltageDropPercentage = (actualVoltageDrop / voltage) * 100;
   }
