@@ -36,14 +36,15 @@ const Tools = () => {
       description: "Determină necesarul de corpuri de iluminat pentru spațiul tău",
       icon: <Lightbulb className="w-12 h-12 text-hologram-blue" />,
       link: "/tools/lighting-calculator",
-      comingSoon: false // Actualizat din true în false pentru a activa tool-ul
+      comingSoon: false
     },
     {
       id: "energy-efficiency",
       title: "Eficiență Energetică",
       description: "Calculează economia și perioada de amortizare pentru soluțiile LED",
       icon: <Settings className="w-12 h-12 text-hologram-blue" />,
-      comingSoon: true
+      link: "/tools/energy-efficiency",
+      comingSoon: false
     }
   ];
 

@@ -71,7 +71,6 @@ export interface ApplianceTemplate {
   category: string;
 }
 
-// Fixed interface for calculatorul de iluminat
 export interface LightingCalculatorForm {
   roomType: string;
   area: string;
@@ -100,4 +99,30 @@ export interface RoomTypeInfo {
   name: string;
   defaultLux: number;
   description?: string;
+}
+
+// Noi interfețe pentru calculatorul de eficiență energetică
+export interface EnergyEfficiencyForm {
+  oldSourceType: string;
+  oldPower: string;
+  bulbCount: string;
+  dailyHours: string;
+  pricePerKwh: string;
+  ledPower: string;
+  ledPrice?: string;
+}
+
+export interface EnergyEfficiencyResult {
+  oldMonthlyConsumption: number;
+  oldAnnualConsumption: number;
+  oldMonthlyCost: number;
+  oldAnnualCost: number;
+  ledMonthlyConsumption: number;
+  ledAnnualConsumption: number;
+  ledMonthlyCost: number;
+  ledAnnualCost: number;
+  annualSavings: number;
+  paybackPeriod: number | null;
+  co2Reduction: number;
+  recommendation: string;
 }
