@@ -215,7 +215,7 @@ const CableCalculator = () => {
               <p className="text-neon-red">{result.warnings}</p>
             </div>
           )}
-          <div className="mt-6 flex flex-col items-center gap-4">
+          <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
             <Button variant="outline" className="w-full md:w-auto">
               Trimite rezultatele pe email
             </Button>

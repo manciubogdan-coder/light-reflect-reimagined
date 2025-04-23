@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +19,7 @@ import Franciza from "./pages/Franciza";
 import Blog from "./pages/Blog";
 import Cariere from "./pages/Cariere";
 import Tools from "./pages/Tools";
+import CableCalculatorTool from "./pages/CableCalculatorTool";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/cariere" element={<Cariere />} />
           <Route path="/tools" element={<Tools />} />
+          <Route path="/tools/cable-calculator" element={<CableCalculatorTool />} />
           <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
           <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
           <Route path="/cookies" element={<Cookies />} />
