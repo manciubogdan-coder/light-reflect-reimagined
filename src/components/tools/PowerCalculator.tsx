@@ -109,13 +109,26 @@ const PowerCalculator = () => {
       name: "Consumator nou",
       quantity: 1,
       power: 100,
+      powerFactor: 0.95, // Adding a default power factor
     });
   };
 
   // Calculate power requirements
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     try {
-      const result = calculatePowerRequirements(data as PowerCalculatorForm);
+      // Make a copy of the form data to avoid modifying the original
+      const calculationData = {
+        ...data,
+        appliances: data.appliances.map(appliance => ({
+          ...appliance,
+          // Only include powerFactor if advanced mode is enabled
+          powerFactor: data.includePowerFactor ? appliance.powerFactor : undefined,
+          // Only include group if advanced mode is enabled
+          group: data.includePowerFactor ? appliance.group : undefined
+        }))
+      };
+      
+      const result = calculatePowerRequirements(calculationData as PowerCalculatorForm);
       setResult(result);
       console.log("Rezultat calcul putere:", result);
     } catch (error) {
@@ -130,7 +143,7 @@ const PowerCalculator = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left column - Form inputs */}
-            <div className="space-y-6 relative z-20">
+            <div className="space-y-6 relative z-10">
               <Card className="bg-dark-matter border-electric-blue/30 tech-border overflow-hidden relative">
                 <CardHeader className="pb-2 relative">
                   <CardTitle className="text-hologram-blue text-xl font-tech flex items-center gap-2">
@@ -145,11 +158,11 @@ const PowerCalculator = () => {
                       control={form.control}
                       name="buildingType"
                       render={({ field }) => (
-                        <FormItem className="relative z-10">
+                        <FormItem className="relative z-20">
                           <FormLabel className="text-white/90">Tip spațiu</FormLabel>
                           <Select onValueChange={(value) => handleBuildingTypeChange(value)} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="bg-dark-matter z-10">
+                              <SelectTrigger className="bg-dark-matter z-30">
                                 <SelectValue placeholder="Selectați tipul spațiului" />
                               </SelectTrigger>
                             </FormControl>
@@ -173,12 +186,12 @@ const PowerCalculator = () => {
                       control={form.control}
                       name="simultaneityFactor"
                       render={({ field }) => (
-                        <FormItem className="relative z-10">
+                        <FormItem className="relative z-20">
                           <FormLabel className="text-white/90 flex items-center gap-2">
                             Factor de simultaneitate
                             <Popover>
                               <PopoverTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0 rounded-full">
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0 rounded-full z-30">
                                   <Info className="h-4 w-4" />
                                   <span className="sr-only">Info</span>
                                 </Button>
@@ -197,7 +210,7 @@ const PowerCalculator = () => {
                             </Popover>
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" step="0.01" min="0.1" max="1" {...field} className="bg-dark-matter z-10" />
+                            <Input type="number" step="0.01" min="0.1" max="1" {...field} className="bg-dark-matter z-30" />
                           </FormControl>
                           <FormDescription className="text-white/60">
                             Valoare între 0.1 și 1.0
@@ -212,7 +225,7 @@ const PowerCalculator = () => {
                     control={form.control}
                     name="includePowerFactor"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between p-3 border border-electric-blue/20 rounded-md bg-dark-matter/50 relative z-10">
+                      <FormItem className="flex flex-row items-center justify-between p-3 border border-electric-blue/20 rounded-md bg-dark-matter/50 relative z-20">
                         <div className="space-y-0.5">
                           <FormLabel className="text-white/90">Mod avansat</FormLabel>
                           <FormDescription className="text-white/60">
@@ -223,7 +236,7 @@ const PowerCalculator = () => {
                           <Switch
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="relative z-20"
+                            className="relative z-30"
                           />
                         </FormControl>
                       </FormItem>
@@ -245,23 +258,23 @@ const PowerCalculator = () => {
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <div className="space-y-4">
-                    <div className="overflow-x-auto pb-2 relative z-10">
+                    <div className="overflow-x-auto pb-2 relative z-20">
                       <ToggleGroup type="single" value={selectedCategory} onValueChange={(value) => value && setSelectedCategory(value)} className="flex flex-nowrap space-x-2">
-                        <ToggleGroupItem value="Toate" className="whitespace-nowrap relative z-20">Toate</ToggleGroupItem>
+                        <ToggleGroupItem value="Toate" className="whitespace-nowrap relative z-30">Toate</ToggleGroupItem>
                         {categories.map((category) => (
-                          <ToggleGroupItem key={category} value={category} className="whitespace-nowrap relative z-20">
+                          <ToggleGroupItem key={category} value={category} className="whitespace-nowrap relative z-30">
                             {category}
                           </ToggleGroupItem>
                         ))}
                       </ToggleGroup>
                     </div>
                     
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 relative z-10">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 relative z-20">
                       {filteredTemplates.map((template) => (
                         <Button
                           key={template.id}
                           variant="outline"
-                          className="h-auto py-2 flex flex-col items-center justify-center text-xs whitespace-normal bg-dark-matter relative z-10"
+                          className="h-auto py-2 flex flex-col items-center justify-center text-xs whitespace-normal bg-dark-matter relative z-30"
                           onClick={() => addPredefinedAppliance(template)}
                         >
                           {template.name}
@@ -287,15 +300,15 @@ const PowerCalculator = () => {
                 <CardContent className="relative z-10">
                   <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
                     {fields.map((field, index) => (
-                      <div key={field.id} className="p-3 border border-electric-blue/20 rounded-md grid grid-cols-12 gap-2 bg-dark-matter/50 relative z-10">
+                      <div key={field.id} className="p-3 border border-electric-blue/20 rounded-md grid grid-cols-12 gap-2 bg-dark-matter/50 relative z-20">
                         <div className="col-span-12 sm:col-span-6 flex items-center">
                           <FormField
                             control={form.control}
                             name={`appliances.${index}.name`}
                             render={({ field }) => (
-                              <FormItem className="w-full relative z-10">
+                              <FormItem className="w-full relative z-30">
                                 <FormControl>
-                                  <Input placeholder="Nume aparat" {...field} className="bg-dark-matter" />
+                                  <Input placeholder="Nume aparat" {...field} className="bg-dark-matter z-30" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -308,14 +321,14 @@ const PowerCalculator = () => {
                             control={form.control}
                             name={`appliances.${index}.quantity`}
                             render={({ field }) => (
-                              <FormItem className="relative z-10">
+                              <FormItem className="relative z-30">
                                 <FormControl>
                                   <Input 
                                     type="number" 
                                     placeholder="Cantitate" 
                                     {...field} 
                                     min={1}
-                                    className="bg-dark-matter"
+                                    className="bg-dark-matter z-30"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -330,7 +343,7 @@ const PowerCalculator = () => {
                               control={form.control}
                               name={`appliances.${index}.power`}
                               render={({ field }) => (
-                                <FormItem className="relative z-10">
+                                <FormItem className="relative z-30">
                                   <FormControl>
                                     <div className="flex items-center">
                                       <Input
@@ -338,7 +351,7 @@ const PowerCalculator = () => {
                                         placeholder="Putere"
                                         {...field}
                                         min={1}
-                                        className="bg-dark-matter"
+                                        className="bg-dark-matter z-30"
                                       />
                                       <span className="text-white/70 ml-2">W</span>
                                     </div>
@@ -353,7 +366,7 @@ const PowerCalculator = () => {
                             variant="ghost" 
                             size="sm" 
                             onClick={() => remove(index)}
-                            className="h-10 w-10 p-0 text-red-500 hover:text-red-300 hover:bg-red-900/20 relative z-10"
+                            className="h-10 w-10 p-0 text-red-500 hover:text-red-300 hover:bg-red-900/20 relative z-30"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -365,7 +378,7 @@ const PowerCalculator = () => {
                               control={form.control}
                               name={`appliances.${index}.powerFactor`}
                               render={({ field }) => (
-                                <FormItem className="relative z-10">
+                                <FormItem className="relative z-30">
                                   <FormLabel className="text-white/90 text-xs">Factor de putere</FormLabel>
                                   <FormControl>
                                     <Input
@@ -375,8 +388,7 @@ const PowerCalculator = () => {
                                       step="0.01"
                                       min="0.1"
                                       max="1"
-                                      defaultValue={0.95}
-                                      className="bg-dark-matter"
+                                      className="bg-dark-matter z-30"
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -392,10 +404,10 @@ const PowerCalculator = () => {
                               control={form.control}
                               name={`appliances.${index}.group`}
                               render={({ field }) => (
-                                <FormItem className="relative z-10">
+                                <FormItem className="relative z-30">
                                   <FormLabel className="text-white/90 text-xs">Grup/Circuit</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Nume circuit (opțional)" {...field} className="bg-dark-matter" />
+                                    <Input placeholder="Nume circuit (opțional)" {...field} className="bg-dark-matter z-30" />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -407,13 +419,13 @@ const PowerCalculator = () => {
                     ))}
                   </div>
 
-                  <div className="flex justify-between mt-4 relative z-10">
+                  <div className="flex justify-between mt-4 relative z-20">
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={addCustomAppliance}
-                      className="flex items-center gap-2 bg-dark-matter"
+                      className="flex items-center gap-2 bg-dark-matter z-30"
                     >
                       <Plus className="w-4 h-4" />
                       Adaugă consumator
@@ -423,7 +435,7 @@ const PowerCalculator = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => form.reset()}
-                      className="flex items-center gap-2 bg-dark-matter"
+                      className="flex items-center gap-2 bg-dark-matter z-30"
                     >
                       <RefreshCw className="w-4 h-4" />
                       Reset
@@ -433,7 +445,7 @@ const PowerCalculator = () => {
                 <CardFooter className="flex justify-center pt-4 relative z-10">
                   <Button 
                     type="submit" 
-                    className="w-full md:w-auto flex items-center gap-2 relative z-10"
+                    className="w-full md:w-auto flex items-center gap-2 relative z-30"
                   >
                     <Calculator className="w-4 h-4" />
                     Calculează necesar de putere
@@ -476,12 +488,12 @@ const PowerCalculator = () => {
                       </div>
                     </div>
 
-                    <Tabs defaultValue="recommendations" className="w-full">
-                      <TabsList className="grid grid-cols-2 mb-4">
-                        <TabsTrigger value="recommendations">Recomandări</TabsTrigger>
-                        <TabsTrigger value="details">Detalii avansate</TabsTrigger>
+                    <Tabs defaultValue="recommendations" className="w-full relative z-40">
+                      <TabsList className="grid grid-cols-2 mb-4 relative z-40">
+                        <TabsTrigger value="recommendations" className="relative z-40">Recomandări</TabsTrigger>
+                        <TabsTrigger value="details" className="relative z-40">Detalii avansate</TabsTrigger>
                       </TabsList>
-                      <TabsContent value="recommendations" className="space-y-4">
+                      <TabsContent value="recommendations" className="space-y-4 relative z-30">
                         <div className="space-y-3">
                           <div className="bg-dark-matter/50 border border-electric-blue/20 p-3 rounded-md">
                             <div className="font-tech text-white/90">Contract putere furnizor</div>
@@ -517,9 +529,9 @@ const PowerCalculator = () => {
                           )}
                         </div>
                       </TabsContent>
-                      <TabsContent value="details">
+                      <TabsContent value="details" className="relative z-30">
                         <div className="space-y-4">
-                          {result.applianceGroups && (
+                          {result.applianceGroups && Object.keys(result.applianceGroups).length > 0 && (
                             <div className="bg-dark-matter/50 border border-electric-blue/20 p-3 rounded-md">
                               <div className="font-tech text-white/90 mb-2">Detaliere pe circuite</div>
                               <div className="space-y-3">
@@ -636,3 +648,4 @@ const PowerCalculator = () => {
 };
 
 export default PowerCalculator;
+
