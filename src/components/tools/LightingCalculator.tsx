@@ -29,7 +29,6 @@ import { Lightbulb, Info, ArrowRight } from "lucide-react";
 import { calculateLighting, ROOM_TYPES } from "@/lib/lightingCalculations";
 import { LightingCalculationResult, LightingCalculatorForm } from "@/lib/types";
 
-// Definirea schemei de validare cu Zod
 const formSchema = z.object({
   roomType: z.string().min(1, "Selectați tipul de încăpere"),
   area: z.string().refine((val) => {
@@ -50,7 +49,6 @@ const LightingCalculator = () => {
   const [result, setResult] = useState<LightingCalculationResult | null>(null);
   const [activeTab, setActiveTab] = useState("input");
 
-  // Inițializarea formularului cu hook-ul useForm
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,7 +61,6 @@ const LightingCalculator = () => {
     },
   });
 
-  // Funcția pentru când se schimbă tipul camerei
   const handleRoomTypeChange = (value: string) => {
     const selectedRoom = ROOM_TYPES[value as keyof typeof ROOM_TYPES];
     if (selectedRoom) {
@@ -71,12 +68,10 @@ const LightingCalculator = () => {
     }
   };
 
-  // Funcția pentru calcularea rezultatului
   const onSubmit = (data: FormValues) => {
     try {
       console.log("Submit button clicked with data:", data);
       
-      // Ensure all required fields are present and cast to LightingCalculatorForm type
       const calculationData: LightingCalculatorForm = {
         roomType: data.roomType,
         area: data.area,
@@ -88,22 +83,21 @@ const LightingCalculator = () => {
       
       console.log("Prepared calculation data:", calculationData);
       
-      // Calcularea rezultatului
       const calculationResult = calculateLighting(calculationData);
       console.log("Calculation result:", calculationResult);
       
       setResult(calculationResult);
       setActiveTab("result");
       
-      // Afișarea unui toast de succes
       toast("Calcul finalizat cu succes!", {
         description: "Rezultatele calculului de iluminat sunt gata.",
+        type: "success"
       });
     } catch (error) {
       console.error("Eroare la calcularea iluminatului:", error);
       toast("Eroare la calculare", {
         description: "A apărut o eroare la procesarea datelor. Verificați valorile introduse.",
-        variant: "destructive",
+        type: "error"
       });
     }
   };
@@ -137,7 +131,6 @@ const LightingCalculator = () => {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Tipul încăperii */}
                     <FormField
                       control={form.control}
                       name="roomType"
@@ -174,7 +167,6 @@ const LightingCalculator = () => {
                       )}
                     />
 
-                    {/* Suprafața */}
                     <FormField
                       control={form.control}
                       name="area"
@@ -204,7 +196,6 @@ const LightingCalculator = () => {
                       )}
                     />
 
-                    {/* Înălțimea încăperii (opțional) */}
                     <FormField
                       control={form.control}
                       name="roomHeight"
@@ -234,7 +225,6 @@ const LightingCalculator = () => {
                       )}
                     />
 
-                    {/* Nivelul de iluminare */}
                     <FormField
                       control={form.control}
                       name="lightingLevel"
@@ -270,7 +260,6 @@ const LightingCalculator = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Tipul de sursă de lumină */}
                     <FormField
                       control={form.control}
                       name="lightSourceType"
@@ -306,7 +295,6 @@ const LightingCalculator = () => {
                       )}
                     />
 
-                    {/* Tipul de corp de iluminat */}
                     <FormField
                       control={form.control}
                       name="fixtureType"
