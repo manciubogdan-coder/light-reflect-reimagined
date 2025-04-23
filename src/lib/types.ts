@@ -1,16 +1,4 @@
 
-export interface CableCalculatorForm {
-  power: string;
-  currentType: string;
-  voltage: string;
-  length: string;
-  material: string;
-  installationType: string;
-  simultaneityFactor: string;
-  voltageDrop: string;
-  calculationType: string;
-}
-
 export interface CalculationResult {
   section: number;
   current: number;
@@ -26,4 +14,5 @@ export interface CalculationResult {
     meetsRequirements: boolean;
     reason: string;
   }>;
+  contextualRecommendation?: string;  // Add new optional field
 }

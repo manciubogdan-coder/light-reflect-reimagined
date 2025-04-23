@@ -1,4 +1,3 @@
-
 import { CableCalculatorForm, CalculationResult } from "./types";
 
 export const calculateCableSection = (data: CableCalculatorForm): CalculationResult => {
@@ -220,6 +219,12 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     reasonForSelection
   });
 
+  // If we have a small current circuit, add contextual recommendation
+  let contextualRecommendation = "";
+  if (current <= 5) {
+    contextualRecommendation = "Pentru circuite de iluminat sau prize ocazionale, 1.5 mm² este suficient. Dacă traseul este expus la vibrații, umiditate sau este posibilă extinderea consumului, recomandăm 2.5 mm² pentru extra siguranță.";
+  }
+
   return {
     section: selectedSection,
     current: parseFloat(current.toFixed(2)),
@@ -228,6 +233,7 @@ export const calculateCableSection = (data: CableCalculatorForm): CalculationRes
     fuseRating,
     reasonForSelection,
     warnings: warnings || undefined,
-    comparisonTable
+    comparisonTable,
+    contextualRecommendation
   };
 };

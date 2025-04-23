@@ -304,6 +304,12 @@ const CableCalculator = () => {
               <p className="text-neon-red">{result.warnings}</p>
             </div>
           )}
+          
+          {result.contextualRecommendation && (
+            <div className="mt-4 p-4 border border-hologram-blue/50 rounded-md bg-hologram-blue/10">
+              <p className="text-hologram-blue font-tech">💡 Notă suplimentară: {result.contextualRecommendation}</p>
+            </div>
+          )}
         </div>
       )}
     </div>
