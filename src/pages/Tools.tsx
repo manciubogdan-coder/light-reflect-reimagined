@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -93,7 +92,7 @@ const Tools: React.FC = () => {
                   <CardDescription className="text-white/90">{tool.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <CyberScanner className="w-full h-32 object-cover mb-4" />
+                  <CyberScanner />
                 </CardContent>
                 <CardFooter className="bg-gray-50">
                   <Link to={tool.link} className="w-full">
