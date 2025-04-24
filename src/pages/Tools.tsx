@@ -1,7 +1,7 @@
 
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Calculator, Cable, Grid2X2, Settings, Lightbulb } from "lucide-react";
+import { Calculator, Cable, Zap, Settings, Lightbulb } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -28,6 +28,14 @@ const Tools = () => {
       description: "Estimează necesarul de putere pentru instalațiile electrice",
       icon: <Calculator className="w-12 h-12 text-hologram-blue" />,
       link: "/tools/power-calculator",
+      comingSoon: false
+    },
+    {
+      id: "short-circuit-calculator",
+      title: "Calculator Curent de Scurtcircuit",
+      description: "Estimează curentul de scurtcircuit la tablou pentru alegerea corectă a siguranțelor",
+      icon: <Zap className="w-12 h-12 text-hologram-blue" />,
+      link: "/tools/short-circuit-calculator",
       comingSoon: false
     },
     {

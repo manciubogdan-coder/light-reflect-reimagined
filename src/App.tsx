@@ -23,6 +23,7 @@ import CableCalculatorTool from "./pages/CableCalculatorTool";
 import PowerCalculatorTool from "./pages/PowerCalculatorTool";
 import LightingCalculatorTool from "./pages/LightingCalculatorTool";
 import EnergyEfficiencyTool from "./pages/EnergyEfficiencyTool";
+import ShortCircuitCalculatorTool from "./pages/ShortCircuitCalculatorTool";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/tools/power-calculator" element={<PowerCalculatorTool />} />
           <Route path="/tools/lighting-calculator" element={<LightingCalculatorTool />} />
           <Route path="/tools/energy-efficiency" element={<EnergyEfficiencyTool />} />
+          <Route path="/tools/short-circuit-calculator" element={<ShortCircuitCalculatorTool />} />
           <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
           <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
           <Route path="/cookies" element={<Cookies />} />

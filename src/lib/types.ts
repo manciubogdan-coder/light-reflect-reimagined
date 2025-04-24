@@ -1,4 +1,3 @@
-
 export interface CableCalculatorForm {
   power: string;
   currentType: string;
@@ -101,7 +100,6 @@ export interface RoomTypeInfo {
   description?: string;
 }
 
-// Noi interfețe pentru calculatorul de eficiență energetică
 export interface EnergyEfficiencyForm {
   oldSourceType: string;
   oldPower: string;
@@ -125,4 +123,23 @@ export interface EnergyEfficiencyResult {
   paybackPeriod: number | null;
   co2Reduction: number;
   recommendation: string;
+}
+
+export interface ShortCircuitCalculatorForm {
+  transformerPower: string;
+  transformerImpedance: string;
+  cableLength: string;
+  cableMaterial: string;
+  cableSection: string;
+  voltageDrop: string;
+}
+
+export interface ShortCircuitResult {
+  shortCircuitCurrent: number;
+  limitingFactor: string;
+  minBreakerRating: number;
+  recommendedBreakerRating: number;
+  recommendedCableSection: number;
+  recommendations: string[];
+  warnings: string[];
 }
