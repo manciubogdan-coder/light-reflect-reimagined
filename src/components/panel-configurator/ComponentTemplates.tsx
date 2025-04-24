@@ -34,11 +34,11 @@ export const ComponentCard: React.FC<ComponentCardProps> = ({ type, label, onDra
 
   return (
     <div
-      className="border rounded-md p-2 cursor-grab transition-colors hover:bg-slate-50 flex items-center gap-2"
+      className="border border-[#253142] rounded-md p-2 cursor-grab transition-colors hover:bg-[#162030] bg-[#0c1320] text-white flex items-center gap-2"
       draggable
       onDragStart={handleDragStart}
     >
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 text-[#00FFFF]">
         {componentIcons[type] || <CirclePlus className="size-4" />}
       </div>
       <span>{label}</span>
@@ -50,7 +50,7 @@ export const ComponentPalette: React.FC<{ onDragStart: (type: ComponentType) => 
   onDragStart 
 }) => {
   return (
-    <div className="p-4 border rounded-lg bg-white">
+    <div className="p-4 border rounded-lg bg-[#0c1320] border-[#253142] text-white">
       <h3 className="font-medium mb-3">Componente disponibile</h3>
       <div className="space-y-2">
         <ComponentCard type="breaker" label="Siguranță automată" onDragStart={onDragStart} />
@@ -80,3 +80,4 @@ export const createNewComponent = (type: ComponentType, position: number = 0): P
     phases: template.phases as any || ['L1'],
   };
 };
+
