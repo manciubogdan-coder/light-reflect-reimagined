@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Rocket } from "lucide-react";
 import ElectricText from "../components/ElectricText";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
@@ -32,20 +32,15 @@ const Contact = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("https://acmknwxnyibvbbltfdxh.functions.supabase.co/send-contact-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Origin": window.location.origin
-        },
-        body: JSON.stringify(formData)
-      });
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.nume,
+          email: formData.email,
+          message: formData.mesaj
+        });
 
-      const data = await res.json();
-      
-      if (!res.ok) {
-        throw new Error(data.error || "Eroare la trimiterea mesajului.");
-      }
+      if (error) throw error;
 
       toast.success("Mesajul tău a fost trimis cu succes!");
       setSent(true);
