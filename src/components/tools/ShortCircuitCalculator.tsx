@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { calculateShortCircuit } from "@/lib/shortCircuitCalculations";
-import { ShortCircuitResult } from "@/lib/types";
+import { ShortCircuitCalculatorForm, ShortCircuitResult } from "@/lib/types";
 
 import {
   Form,
@@ -91,7 +91,16 @@ const ShortCircuitCalculator = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const calculationResult = calculateShortCircuit(values);
+    // Here we ensure all form values are present by explicitly passing them as ShortCircuitCalculatorForm
+    const formData: ShortCircuitCalculatorForm = {
+      transformerPower: values.transformerPower,
+      transformerImpedance: values.transformerImpedance,
+      cableLength: values.cableLength,
+      cableMaterial: values.cableMaterial,
+      cableSection: values.cableSection,
+      voltageDrop: values.voltageDrop,
+    };
+    const calculationResult = calculateShortCircuit(formData);
     setResult(calculationResult);
   }
 
