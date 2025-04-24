@@ -15,7 +15,7 @@ const Contact = () => {
     mesaj: ""
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -23,7 +23,7 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.nume || !formData.email || !formData.mesaj) {
       toast.error("Te rugăm să completezi toate câmpurile!");
@@ -35,19 +35,22 @@ const Contact = () => {
       const res = await fetch("https://acmknwxnyibvbbltfdxh.functions.supabase.co/send-contact-email", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Origin": window.location.origin
         },
         body: JSON.stringify(formData)
       });
 
+      const data = await res.json();
+      
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Eroare la trimiterea mesajului.");
       }
 
       toast.success("Mesajul tău a fost trimis cu succes!");
       setSent(true);
       setLoading(false);
+      
       setTimeout(() => {
         setSent(false);
         setFormData({
@@ -56,9 +59,10 @@ const Contact = () => {
           mesaj: ""
         });
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       toast.error(error.message || "A apărut o eroare. Încearcă din nou!");
+      console.error("Contact form error:", error);
     }
   };
 
