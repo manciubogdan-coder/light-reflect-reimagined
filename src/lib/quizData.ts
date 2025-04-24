@@ -3,7 +3,7 @@ import { QuizQuestion, ProfilesData } from "./quizTypes";
 
 export const quizQuestions: QuizQuestion[] = [
   {
-    question: "Cum reacționezi când clientul cere „să fie ieftin și repede"?",
+    question: "Cum reacționezi când clientul cere \"să fie ieftin și repede\"?",
     answers: [
       {
         text: "Explic în detaliu de ce calitatea nu poate fi compromisă și ofer alternative.",
