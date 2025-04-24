@@ -1,105 +1,101 @@
 
+import React from "react";
+import { Link } from "react-router-dom";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { Calculator, Cable, Zap, Settings, Lightbulb } from "lucide-react";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Calculator, Zap, Lightbulb, Gauge, CircuitBoard, UserCheck } from "lucide-react";
 
-const Tools = () => {
-  const tools = [
-    {
-      id: "cable-calculator",
-      title: "Calculator Secțiune Cablu Electric",
-      description: "Calculează rapid secțiunea optimă pentru cablurile tale electrice",
-      icon: <Cable className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/cable-calculator"
-    },
-    {
-      id: "power-calculator",
-      title: "Calculator Putere Electrică",
-      description: "Estimează necesarul de putere pentru instalațiile electrice",
-      icon: <Calculator className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/power-calculator",
-      comingSoon: false
-    },
-    {
-      id: "short-circuit-calculator",
-      title: "Calculator Curent de Scurtcircuit",
-      description: "Estimează curentul de scurtcircuit la tablou pentru alegerea corectă a siguranțelor",
-      icon: <Zap className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/short-circuit-calculator",
-      comingSoon: false
-    },
-    {
-      id: "lighting-calculator",
-      title: "Calculator Iluminat",
-      description: "Determină necesarul de corpuri de iluminat pentru spațiul tău",
-      icon: <Lightbulb className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/lighting-calculator",
-      comingSoon: false
-    },
-    {
-      id: "energy-efficiency",
-      title: "Eficiență Energetică",
-      description: "Calculează economia și perioada de amortizare pentru soluțiile LED",
-      icon: <Settings className="w-12 h-12 text-hologram-blue" />,
-      link: "/tools/energy-efficiency",
-      comingSoon: false
-    }
-  ];
+const Tools = () => (
+  <div className="min-h-screen bg-dark-matter flex flex-col">
+    <Nav />
+    <main className="flex-1 container mx-auto px-4 py-16">
+      <div className="mb-12 text-center">
+        <h1 className="font-tech text-3xl md:text-4xl lg:text-5xl text-electric-blue mb-4">
+          Instrumente <span className="text-neon-red">Tehnice</span>
+        </h1>
+        <p className="text-white/80 max-w-2xl mx-auto">
+          Calculatoare și instrumente interactive pentru profesioniștii din industria electrică
+          și pentru amatorii care doresc să-și aprofundeze cunoștințele.
+        </p>
+      </div>
 
-  return (
-    <div className="min-h-screen bg-dark-matter flex flex-col">
-      <Nav />
-      <main className="flex-1 container mx-auto px-4 py-16">
-        <div className="mb-12 text-center">
-          <h1 className="font-tech text-3xl md:text-4xl text-hologram-blue mb-4 flex items-center justify-center gap-3">
-            <Calculator className="w-8 h-8" />
-            Light Reflect Tools
-          </h1>
-          <p className="text-white/80 max-w-2xl mx-auto">
-            Suite de instrumente profesionale pentru calcule electrice dezvoltate
-            de experții Light Reflect pentru a vă ajuta în proiectele dumneavoastră.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ToolCard
+          icon={<Calculator className="h-8 w-8 text-electric-blue" />}
+          title="Calculator Dimensionare Cabluri"
+          description="Calculează secțiunea optimă a cablurilor electrice în funcție de curent, lungime și instalare."
+          link="/tools/cable-calculator"
+        />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool) => (
-            <Card key={tool.id} className="bg-dark-matter border-electric-blue/30 hover:border-electric-blue/60 transition-all duration-300 overflow-hidden relative tech-border">
-              <CardHeader className="pb-2">
-                <div className="mb-4 flex justify-center">{tool.icon}</div>
-                <CardTitle className="text-hologram-blue text-xl font-tech text-center">{tool.title}</CardTitle>
-                <CardDescription className="text-white/70 text-center">{tool.description}</CardDescription>
-              </CardHeader>
-              <CardFooter className="pt-4 flex justify-center">
-                {tool.comingSoon ? (
-                  <Button variant="outline" disabled className="w-full">
-                    În curând
-                  </Button>
-                ) : (
-                  <Button variant="outline" asChild className="w-full z-20 relative">
-                    <Link to={tool.link}>Accesează</Link>
-                  </Button>
-                )}
-              </CardFooter>
-              <div className="absolute bottom-0 left-0 w-full h-1 overflow-hidden">
-                <div className="h-full w-full bg-gradient-to-r from-transparent via-hologram-blue to-transparent animate-circuit-flow"></div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
-};
+        <ToolCard
+          icon={<Zap className="h-8 w-8 text-electric-blue" />}
+          title="Calculator Putere Electrică"
+          description="Determină puterea electrică necesară pentru diferite aplicații și instalații."
+          link="/tools/power-calculator"
+        />
+        
+        <ToolCard
+          icon={<Lightbulb className="h-8 w-8 text-electric-blue" />}
+          title="Calculator Iluminat"
+          description="Află numărul și tipul corpurilor de iluminat necesare pentru diverse spații."
+          link="/tools/lighting-calculator"
+        />
+        
+        <ToolCard
+          icon={<Gauge className="h-8 w-8 text-electric-blue" />}
+          title="Calculator Eficiență Energetică"
+          description="Estimează consumul electric și potențialul de economisire pentru diferite echipamente."
+          link="/tools/energy-efficiency"
+        />
+        
+        <ToolCard
+          icon={<CircuitBoard className="h-8 w-8 text-electric-blue" />}
+          title="Calculator Curent de Scurtcircuit"
+          description="Determină curentul de scurtcircuit în instalațiile electrice și protecțiile necesare."
+          link="/tools/short-circuit-calculator"
+        />
+        
+        <ToolCard
+          icon={<UserCheck className="h-8 w-8 text-electric-blue" />}
+          title="Quiz: Ce Tip de Electrician Ești?"
+          description="Descoperă-ți profilul profesional prin acest quiz interactiv cu 10 întrebări."
+          link="/tools/electrician-quiz"
+          highlighted={true}
+        />
+      </div>
+    </main>
+    <Footer />
+  </div>
+);
+
+interface ToolCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  link: string;
+  highlighted?: boolean;
+}
+
+const ToolCard = ({ icon, title, description, link, highlighted = false }: ToolCardProps) => (
+  <Card className={`bg-dark-matter/50 border border-electric-blue/30 hover:border-electric-blue/60 transition-all ${
+    highlighted ? 'ring-2 ring-electric-blue ring-opacity-30' : ''
+  }`}>
+    <CardHeader>
+      <div className="mb-4">{icon}</div>
+      <CardTitle className="font-tech text-white text-xl">{title}</CardTitle>
+      <CardDescription className="text-white/60">{description}</CardDescription>
+    </CardHeader>
+    <CardFooter>
+      <Link
+        to={link}
+        className="group w-full flex items-center justify-between text-electric-blue hover:text-electric-blue/80 transition-colors"
+      >
+        <span>Deschide instrumentul</span>
+        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      </Link>
+    </CardFooter>
+  </Card>
+);
 
 export default Tools;
