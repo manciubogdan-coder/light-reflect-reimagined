@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '@/components/Nav';
@@ -8,6 +9,7 @@ import { ComponentEditor } from '@/components/panel-configurator/ComponentEditor
 import { ValidationPanel } from '@/components/panel-configurator/ValidationPanel';
 import { AnalysisPanel } from '@/components/panel-configurator/AnalysisPanel';
 import { EducationalTips } from '@/components/panel-configurator/EducationalTips';
+import { AISuggestions } from '@/components/panel-configurator/AISuggestions';
 import { 
   ComponentType, 
   PanelComponent, 
@@ -21,13 +23,14 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Send, Zap, Power, CircleAlert } from 'lucide-react';
+import { Download, Send, Zap, Power, CircleAlert, Lightbulb } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { v4 as uuidv4 } from 'uuid';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
+import { useAISuggestions } from '@/hooks/useAISuggestions';
 
 interface ContactFormValues {
   name: string;
@@ -45,6 +48,10 @@ const PanelConfiguratorTool = () => {
   const [configName, setConfigName] = useState<string>("Tablou principal");
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [highlightPosition, setHighlightPosition] = useState<number | null>(null);
+  
+  // Get AI suggestions state to extract the activeHoverSuggestion
+  const { activeHoverSuggestion } = useAISuggestions(components, moduleCount, supplyType);
   
   const form = useForm<ContactFormValues>({
     defaultValues: {
@@ -181,6 +188,17 @@ ${values.details}
       setIsSending(false);
     }
   };
+
+  // Set the highlight position when a suggestion is hovered
+  React.useEffect(() => {
+    if (activeHoverSuggestion) {
+      // Find the suggestion's position from your suggestions state
+      // This is a simplified approach - in real implementation you'd need to get the actual position
+      setHighlightPosition(4); // Example position
+    } else {
+      setHighlightPosition(null);
+    }
+  }, [activeHoverSuggestion]);
 
   return (
     <>
@@ -323,6 +341,13 @@ ${values.details}
                     )}
                   </div>
                 </div>
+
+                <AISuggestions 
+                  components={components}
+                  moduleCount={moduleCount}
+                  supplyType={supplyType}
+                  onAddComponent={handleAddComponent}
+                />
               </div>
             </ResizablePanel>
             
@@ -337,6 +362,7 @@ ${values.details}
                   onComponentRemove={handleRemoveComponent} 
                   onComponentEdit={handleEditComponent}
                   showPhases={supplyType === 'three-phase'}
+                  highlightPosition={highlightPosition}
                 />
                 
                 <div className="mt-4 p-4 bg-[#0c1320] rounded-lg border border-[#253142]">
@@ -389,7 +415,7 @@ ${values.details}
                 
                 <div className="mt-4 p-4 bg-[#0c1320] rounded-lg border border-[#253142]">
                   <div className="flex items-center gap-2 mb-2">
-                    <Zap className="text-[#00FFFF] w-5 h-5" />
+                    <Lightbulb className="text-[#00FFFF] w-5 h-5" />
                     <h4 className="font-medium text-white font-tech">Sfaturi și recomandări</h4>
                   </div>
                   <p className="text-sm text-gray-400">

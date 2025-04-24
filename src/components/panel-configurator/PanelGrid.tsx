@@ -13,6 +13,7 @@ interface PanelGridProps {
   onComponentRemove: (componentId: string) => void; 
   onComponentEdit: (componentId: string) => void;
   showPhases?: boolean;
+  highlightPosition?: number | null;
 }
 
 export const PanelGrid: React.FC<PanelGridProps> = ({ 
@@ -21,7 +22,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   onComponentAdd, 
   onComponentRemove,
   onComponentEdit,
-  showPhases = true
+  showPhases = true,
+  highlightPosition = null
 }) => {
   const [activeDragType, setActiveDragType] = useState<ComponentType | null>(null);
   
@@ -169,15 +171,16 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           const component = moduleToComponent[position];
           const isFirstModule = component ? component.position === position : false;
           const width = component?.width || 1;
+          const isHighlighted = position === highlightPosition;
           
           return (
             <div
               key={`module-${position}`}
               className={`
-                border border-[#253142] rounded relative 
-                ${getComponentColor(component)}
-                ${!component ? 'hover:bg-[#162030]' : ''}
-                transition-colors
+                border rounded relative transition-all duration-300
+                ${component ? `border-[#253142] ${getComponentColor(component)}` : 
+                  isHighlighted ? 'border-[#00FFFF] bg-[#162030] shadow-[0_0_10px_rgba(0,255,255,0.3)]' : 
+                  'border-[#253142] bg-[#0c1320] hover:bg-[#162030]'}
               `}
               style={{
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
@@ -190,8 +193,14 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               
               {!component && (
                 <div className="h-full flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">{position + 1}</span>
+                  <span className={`text-sm ${isHighlighted ? 'text-[#00FFFF]' : 'text-gray-500'}`}>
+                    {position + 1}
+                  </span>
                 </div>
+              )}
+              
+              {isHighlighted && !component && (
+                <div className="absolute inset-0 border border-[#00FFFF]/30 rounded pointer-events-none"></div>
               )}
             </div>
           );
@@ -200,4 +209,3 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
     </div>
   );
 };
-
