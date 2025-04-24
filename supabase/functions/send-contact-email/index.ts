@@ -27,34 +27,29 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Received email request:", { nume, email, mesaj });
 
-    // Send email to company
-    const emailToCompany = await resend.emails.send({
+    // Pentru conturile Resend gratuite, putem trimite doar către adresa proprie de email
+    // Așa că folosim o singură trimitere cu toate informațiile
+    const emailTo = "manciubogdan999@gmail.com"; // Adresa ta de email verificată în Resend
+
+    const emailResponse = await resend.emails.send({
       from: "Light Reflect <onboarding@resend.dev>",
-      to: ["lightreflectelectricalservices@gmail.com"], // Replace with actual company email
+      to: [emailTo],
       reply_to: email,
       subject: `Solicitare parteneriat de la ${nume}`,
       html: `
         <h2>Solicitare nouă de parteneriat</h2>
         <p><strong>Nume:</strong> ${nume}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Mesaj:</strong> ${mesaj}</p>
+        <p><strong>Telefon:</strong> ${mesaj.includes('Telefon:') ? mesaj.split('Telefon:')[1].split('\n')[0].trim() : 'Nu este specificat'}</p>
+        <p><strong>Oraș:</strong> ${mesaj.includes('Oraș:') ? mesaj.split('Oraș:')[1].split('\n')[0].trim() : 'Nu este specificat'}</p>
+        <p><strong>Experiență:</strong> ${mesaj.includes('Experiență:') ? mesaj.split('Experiență:')[1].split('\n')[0].trim() : 'Nu este specificată'}</p>
+        <p><strong>Mesaj:</strong> ${mesaj.includes('Mesaj:') ? mesaj.split('Mesaj:')[1].trim() : mesaj}</p>
+        <hr>
+        <p>Notă: Acest email a fost trimis prin sistemul de solicitări de parteneriat Light Reflect.</p>
       `,
     });
 
-    // Send confirmation email to client
-    const emailToClient = await resend.emails.send({
-      from: "Light Reflect <onboarding@resend.dev>",
-      to: [email],
-      subject: "Mulțumim pentru solicitarea de parteneriat!",
-      html: `
-        <h2>Mulțumim pentru interesul tău, ${nume}!</h2>
-        <p>Am primit solicitarea ta de parteneriat cu Light Reflect.</p>
-        <p>Te vom contacta în curând pentru a discuta despre următorii pași.</p>
-        <p>Cu stimă,<br>Echipa Light Reflect</p>
-      `,
-    });
-
-    console.log("Email sent successfully:", { emailToCompany, emailToClient });
+    console.log("Email sent successfully:", emailResponse);
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

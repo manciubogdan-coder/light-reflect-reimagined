@@ -80,7 +80,7 @@ const Parteneriat = () => {
 
       if (dbError) throw dbError;
 
-      // Now send the email using the edge function - use the correct project URL
+      // Now send the email using the edge function
       const response = await fetch(`https://acmknwxnyibvbbltfdxh.supabase.co/functions/v1/send-contact-email`, {
         method: "POST",
         headers: {
@@ -89,8 +89,7 @@ const Parteneriat = () => {
         body: JSON.stringify({
           nume: data.name,
           email: data.email,
-          mesaj: `Solicitare de parteneriat de la ${data.name} (${data.email})
-Telefon: ${data.phone}
+          mesaj: `Telefon: ${data.phone}
 Oraș: ${data.city}
 Experiență: ${data.experience} ani
 ${data.message ? `\nMesaj: ${data.message}` : ""}
@@ -100,6 +99,7 @@ ${profileType ? `\nProfil electrician: ${profileType}` : ""}`,
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error("Error response from server:", errorData);
         throw new Error(errorData.error || "Eroare la trimiterea emailului");
       }
 
@@ -121,6 +121,7 @@ ${profileType ? `\nProfil electrician: ${profileType}` : ""}`,
       });
       form.reset();
     } catch (error: any) {
+      console.error("Submit error:", error);
       toast.error(`Eroare: ${error.message || "Nu s-a putut trimite solicitarea. Încercați din nou mai târziu."}`);
     } finally {
       setIsSubmitting(false);
