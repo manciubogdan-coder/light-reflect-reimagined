@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calculator, Grid, Settings } from 'lucide-react';
+import { Calculator, Grid, Settings, Cable, Zap, Lightbulb } from 'lucide-react';
 
 const Tools: React.FC = () => {
   const tools = [
@@ -15,15 +15,15 @@ const Tools: React.FC = () => {
       description: 'Estimează necesarul de putere pentru instalațiile electrice',
       link: '/tools/power-calculator',
       icon: Calculator,
-      status: 'În curând'
+      status: 'Disponibil'
     },
     {
       id: 'lighting-calculator',
       title: 'Calculator Iluminat',
       description: 'Determină necesarul de corpuri de iluminat pentru spațiul tău',
       link: '/tools/lighting-calculator',
-      icon: Grid,
-      status: 'În curând'
+      icon: Lightbulb,
+      status: 'Disponibil'
     },
     {
       id: 'panel-configurator',
@@ -31,7 +31,31 @@ const Tools: React.FC = () => {
       description: 'Proiectează și validează tabloul electric',
       link: '/tools/panel-configurator',
       icon: Settings,
-      status: 'În curând'
+      status: 'Disponibil'
+    },
+    {
+      id: 'cable-calculator',
+      title: 'Calculator Secțiune Cablu',
+      description: 'Calculează secțiunea optimă a cablurilor electrice',
+      link: '/tools/cable-calculator',
+      icon: Cable,
+      status: 'Disponibil'
+    },
+    {
+      id: 'short-circuit-calculator',
+      title: 'Calculator Curent Scurtcircuit',
+      description: 'Calculează curentul de scurtcircuit în instalații',
+      link: '/tools/short-circuit-calculator',
+      icon: Zap,
+      status: 'Disponibil'
+    },
+    {
+      id: 'energy-efficiency',
+      title: 'Calculator Eficiență Energetică',
+      description: 'Analizează și optimizează consumul energetic',
+      link: '/tools/energy-efficiency',
+      icon: Grid,
+      status: 'Disponibil'
     }
   ];
 
@@ -56,7 +80,7 @@ const Tools: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {tools.map((tool) => (
               <Link to={tool.link} key={tool.id} className="block">
                 <Card className="bg-[#162030] border-none shadow-lg rounded-lg overflow-hidden transition-all hover:scale-[1.02] hover:shadow-xl">
