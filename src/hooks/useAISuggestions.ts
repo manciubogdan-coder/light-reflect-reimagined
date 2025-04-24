@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { PanelComponent, ComponentType } from '@/lib/electricalPanelTypes';
+import { PanelComponent, ComponentType, RatingType, DiffProtectionType, PhaseType } from '@/lib/electricalPanelTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { analyzePanel } from '@/lib/electricalPanelValidations';
 
@@ -15,10 +15,11 @@ interface AISuggestion {
   severity: SuggestionSeverity;
   educationalTip?: string;
   normative?: string;
-  rating?: string;
-  diffProtection?: string;
-  phases?: string[];
+  rating?: RatingType;
+  diffProtection?: DiffProtectionType;
+  phases?: PhaseType[];
   name?: string;
+  width?: number;
 }
 
 export function useAISuggestions(
@@ -67,8 +68,8 @@ export function useAISuggestions(
             severity: 'high',
             educationalTip: 'Prizele din baie trebuie protejate cu dispozitiv diferențial de 30mA conform normativului HD 60364-7-701.',
             normative: 'HD 60364-7-701',
-            rating: '16',
-            diffProtection: '30mA',
+            rating: '16' as RatingType,
+            diffProtection: '30mA' as DiffProtectionType,
             name: 'RCBO Baie'
           });
         }
@@ -103,8 +104,8 @@ export function useAISuggestions(
             severity: 'medium',
             educationalTip: 'Gruparea circuitelor de iluminat sub un RCD comun de 100mA oferă protecție suplimentară împotriva electrocutării.',
             normative: 'HD 60364-4-41',
-            rating: '40',
-            diffProtection: '100mA',
+            rating: '40' as RatingType,
+            diffProtection: '100mA' as DiffProtectionType,
             name: 'RCD Iluminat'
           });
         }
@@ -141,9 +142,9 @@ export function useAISuggestions(
         };
         
         components.forEach(comp => {
-          if (comp.phases.includes('L1')) phaseLoads.L1++;
-          if (comp.phases.includes('L2')) phaseLoads.L2++;
-          if (comp.phases.includes('L3')) phaseLoads.L3++;
+          if (comp.phases.includes('L1' as PhaseType)) phaseLoads.L1++;
+          if (comp.phases.includes('L2' as PhaseType)) phaseLoads.L2++;
+          if (comp.phases.includes('L3' as PhaseType)) phaseLoads.L3++;
         });
         
         const maxLoad = Math.max(phaseLoads.L1, phaseLoads.L2, phaseLoads.L3);
@@ -151,7 +152,7 @@ export function useAISuggestions(
         
         if (maxLoad > 0 && (maxLoad - minLoad) / maxLoad > 0.3) {
           // Find which phase has the minimum load
-          let targetPhase = 'L1';
+          let targetPhase: PhaseType = 'L1';
           if (phaseLoads.L2 === minLoad) targetPhase = 'L2';
           else if (phaseLoads.L3 === minLoad) targetPhase = 'L3';
           
@@ -258,7 +259,8 @@ export function useAISuggestions(
           severity: 'high',
           rating: analysis.recommendedMainBreaker,
           name: 'Întrerupător General',
-          phases: supplyType === 'three-phase' ? ['L1', 'L2', 'L3', 'N'] : ['L1', 'N']
+          phases: supplyType === 'three-phase' ? ['L1', 'L2', 'L3', 'N'] as PhaseType[] : ['L1', 'N'] as PhaseType[],
+          width: 2
         });
       }
     }
@@ -266,8 +268,17 @@ export function useAISuggestions(
     // Add SPD if there is none
     const hasSPD = components.some(component => component.type === 'spd');
     if (!hasSPD) {
+      // For finding available positions, we need to make sure component suggestions have width property
+      const componentsForPositioning = [...components];
+      standardSuggestions.forEach(suggestion => {
+        if (!suggestion.width) {
+          // Add width based on component type
+          suggestion.width = getComponentWidth(suggestion.componentType);
+        }
+      });
+      
       const availablePosition = findAvailablePosition(
-        [...components, ...standardSuggestions],
+        componentsForPositioning,
         moduleCount,
         3
       );
@@ -281,7 +292,10 @@ export function useAISuggestions(
           position: availablePosition,
           severity: 'medium',
           name: 'SPD Tip 2',
-          phases: supplyType === 'three-phase' ? ['L1', 'L2', 'L3', 'N', 'PE'] : ['L1', 'N', 'PE']
+          phases: supplyType === 'three-phase' ? 
+            ['L1', 'L2', 'L3', 'N', 'PE'] as PhaseType[] : 
+            ['L1', 'N', 'PE'] as PhaseType[],
+          width: 3
         });
       }
     }
@@ -293,8 +307,17 @@ export function useAISuggestions(
     );
     
     if (!hasLightingRCD) {
+      // For finding available positions, we need to make sure component suggestions have width property
+      const componentsForPositioning = [...components];
+      standardSuggestions.forEach(suggestion => {
+        if (!suggestion.width) {
+          // Add width based on component type
+          suggestion.width = getComponentWidth(suggestion.componentType);
+        }
+      });
+      
       const availablePosition = findAvailablePosition(
-        [...components, ...standardSuggestions],
+        componentsForPositioning,
         moduleCount,
         2
       );
@@ -307,10 +330,13 @@ export function useAISuggestions(
           componentType: 'rcd',
           position: availablePosition,
           severity: 'medium',
-          rating: '25',
-          diffProtection: '30mA',
+          rating: '25' as RatingType,
+          diffProtection: '30mA' as DiffProtectionType,
           name: 'RCD Iluminat',
-          phases: supplyType === 'three-phase' ? ['L1', 'L2', 'L3', 'N'] : ['L1', 'N']
+          phases: supplyType === 'three-phase' ? 
+            ['L1', 'L2', 'L3', 'N'] as PhaseType[] : 
+            ['L1', 'N'] as PhaseType[],
+          width: 2
         });
       }
     }
@@ -322,8 +348,17 @@ export function useAISuggestions(
     );
     
     if (!hasBathroomRCBO) {
+      // For finding available positions, we need to make sure component suggestions have width property
+      const componentsForPositioning = [...components];
+      standardSuggestions.forEach(suggestion => {
+        if (!suggestion.width) {
+          // Add width based on component type
+          suggestion.width = getComponentWidth(suggestion.componentType);
+        }
+      });
+      
       const availablePosition = findAvailablePosition(
-        [...components, ...standardSuggestions],
+        componentsForPositioning,
         moduleCount,
         1
       );
@@ -336,10 +371,11 @@ export function useAISuggestions(
           componentType: 'rcbo',
           position: availablePosition,
           severity: 'high',
-          rating: '16',
-          diffProtection: '30mA',
+          rating: '16' as RatingType,
+          diffProtection: '30mA' as DiffProtectionType,
           name: 'RCBO Baie',
-          phases: ['L1', 'N']
+          phases: ['L1', 'N'] as PhaseType[],
+          width: 1
         });
       }
     }
@@ -351,8 +387,17 @@ export function useAISuggestions(
     );
     
     if (kitchenCircuits.length < 2) {
+      // For finding available positions, we need to make sure component suggestions have width property
+      const componentsForPositioning = [...components];
+      standardSuggestions.forEach(suggestion => {
+        if (!suggestion.width) {
+          // Add width based on component type
+          suggestion.width = getComponentWidth(suggestion.componentType);
+        }
+      });
+      
       const availablePosition = findAvailablePosition(
-        [...components, ...standardSuggestions],
+        componentsForPositioning,
         moduleCount,
         1
       );
@@ -365,9 +410,10 @@ export function useAISuggestions(
           componentType: 'breaker',
           position: availablePosition,
           severity: 'medium',
-          rating: '16',
+          rating: '16' as RatingType,
           name: 'Bucătărie',
-          phases: ['L1']
+          phases: ['L1'] as PhaseType[],
+          width: 1
         });
       }
     }
@@ -379,8 +425,17 @@ export function useAISuggestions(
     );
     
     if (lightingCircuits.length < 1) {
+      // For finding available positions, we need to make sure component suggestions have width property
+      const componentsForPositioning = [...components];
+      standardSuggestions.forEach(suggestion => {
+        if (!suggestion.width) {
+          // Add width based on component type
+          suggestion.width = getComponentWidth(suggestion.componentType);
+        }
+      });
+      
       const availablePosition = findAvailablePosition(
-        [...components, ...standardSuggestions],
+        componentsForPositioning,
         moduleCount,
         1
       );
@@ -393,14 +448,28 @@ export function useAISuggestions(
           componentType: 'breaker',
           position: availablePosition,
           severity: 'medium',
-          rating: '10',
+          rating: '10' as RatingType,
           name: 'Iluminat',
-          phases: ['L1']
+          phases: ['L1'] as PhaseType[],
+          width: 1
         });
       }
     }
     
     return standardSuggestions;
+  };
+
+  // Helper function to get component width based on type
+  const getComponentWidth = (componentType: ComponentType): number => {
+    switch (componentType) {
+      case 'breaker': return 1;
+      case 'rcbo': return 1;
+      case 'rcd': return 2;
+      case 'spd': return 3;
+      case 'isolator': return 1;
+      case 'contactor': return 1;
+      default: return 1;
+    }
   };
 
   return {

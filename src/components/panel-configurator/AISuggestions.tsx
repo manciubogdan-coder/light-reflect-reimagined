@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { PanelComponent, ComponentType } from '@/lib/electricalPanelTypes';
+import { PanelComponent, ComponentType, RatingType, DiffProtectionType, PhaseType } from '@/lib/electricalPanelTypes';
 import { createNewComponent } from './ComponentTemplates';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -11,7 +10,6 @@ import {
   CircleX,
   Lightbulb,
   CircleAlert,
-  Circuit,
   Power 
 } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
@@ -48,9 +46,9 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
     // Apply suggestion properties to the new component
     componentToAdd.name = suggestion.name || componentToAdd.name;
     componentToAdd.description = suggestion.description || componentToAdd.description;
-    componentToAdd.rating = suggestion.rating || componentToAdd.rating;
-    componentToAdd.diffProtection = suggestion.diffProtection || componentToAdd.diffProtection;
-    componentToAdd.phases = suggestion.phases || componentToAdd.phases;
+    componentToAdd.rating = suggestion.rating as RatingType || componentToAdd.rating;
+    componentToAdd.diffProtection = suggestion.diffProtection as DiffProtectionType || componentToAdd.diffProtection;
+    componentToAdd.phases = suggestion.phases as PhaseType[] || componentToAdd.phases;
     
     onAddComponent(componentToAdd);
     
@@ -78,9 +76,9 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
       
       componentToAdd.name = suggestion.name || componentToAdd.name;
       componentToAdd.description = suggestion.description || componentToAdd.description;
-      componentToAdd.rating = suggestion.rating || componentToAdd.rating;
-      componentToAdd.diffProtection = suggestion.diffProtection || componentToAdd.diffProtection;
-      componentToAdd.phases = suggestion.phases || componentToAdd.phases;
+      componentToAdd.rating = suggestion.rating as RatingType || componentToAdd.rating;
+      componentToAdd.diffProtection = suggestion.diffProtection as DiffProtectionType || componentToAdd.diffProtection;
+      componentToAdd.phases = suggestion.phases as PhaseType[] || componentToAdd.phases;
       
       onAddComponent(componentToAdd);
     });

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '@/components/Nav';
@@ -50,8 +49,12 @@ const PanelConfiguratorTool = () => {
   const [isSending, setIsSending] = useState(false);
   const [highlightPosition, setHighlightPosition] = useState<number | null>(null);
   
-  // Get AI suggestions state to extract the activeHoverSuggestion
-  const { activeHoverSuggestion } = useAISuggestions(components, moduleCount, supplyType);
+  // Get AI suggestions helper and also get the active suggestions
+  const { 
+    suggestions, 
+    activeHoverSuggestion, 
+    setActiveHoverSuggestion 
+  } = useAISuggestions(components, moduleCount, supplyType);
   
   const form = useForm<ContactFormValues>({
     defaultValues: {
@@ -192,13 +195,15 @@ ${values.details}
   // Set the highlight position when a suggestion is hovered
   React.useEffect(() => {
     if (activeHoverSuggestion) {
-      // Find the suggestion's position from your suggestions state
-      // This is a simplified approach - in real implementation you'd need to get the actual position
-      setHighlightPosition(4); // Example position
+      // Find the suggestion position from the suggestions array
+      const hoveredSuggestion = suggestions.find(s => s.id === activeHoverSuggestion);
+      if (hoveredSuggestion) {
+        setHighlightPosition(hoveredSuggestion.position);
+      }
     } else {
       setHighlightPosition(null);
     }
-  }, [activeHoverSuggestion]);
+  }, [activeHoverSuggestion, suggestions]);
 
   return (
     <>
