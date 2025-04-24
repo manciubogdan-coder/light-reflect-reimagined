@@ -63,6 +63,13 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   
   // Line-to-line voltage (V) - assuming standard three-phase 400V system
   const voltage = 400;
+  const phaseVoltage = voltage / Math.sqrt(3); // Phase to neutral voltage
+  
+  // Calculate transformer nominal current (A)
+  const transformerNominalCurrent = transformerPower / (Math.sqrt(3) * voltage);
+  
+  // Calculate transformer short circuit current without cable (A)
+  const transformerShortCircuitCurrent = transformerNominalCurrent * (100 / parseFloat(data.transformerImpedance));
   
   // Calculate transformer impedance (Ω)
   const transformerZ = (voltage * voltage * transformerImpedance) / transformerPower;
@@ -77,8 +84,23 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   // Total impedance (Ω) - simplified calculation
   const totalZ = Math.sqrt(Math.pow(transformerZ, 2) + Math.pow(cableR, 2) + Math.pow(cableX, 2));
   
-  // Calculate short circuit current (A)
-  const shortCircuitCurrent = voltage / (Math.sqrt(3) * totalZ);
+  // Cable impedance (for user display)
+  const cableZ = Math.sqrt(Math.pow(cableR, 2) + Math.pow(cableX, 2));
+  
+  // Calculate short circuit current at transformer terminals (A)
+  const shortCircuitCurrentTransformer = transformerShortCircuitCurrent;
+  
+  // Calculate short circuit current at end of cable (A)
+  const shortCircuitCurrent = phaseVoltage / cableZ;
+  
+  // Alternative method: Calculate short circuit current (A) with combined impedances
+  const shortCircuitCurrentCombined = voltage / (Math.sqrt(3) * totalZ);
+  
+  // Calculate voltage drop during short circuit (V)
+  const shortCircuitVoltageDrop = shortCircuitCurrent * cableZ;
+  
+  // Calculate voltage drop percentage during short circuit
+  const shortCircuitVoltageDropPercentage = (shortCircuitVoltageDrop / phaseVoltage) * 100;
   
   // Determine limiting factor
   const limitingFactor = transformerZ > cableR ? "transformator" : "cablu";
@@ -87,7 +109,7 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   // The breaker must be able to interrupt the calculated short circuit current
   let minBreakerRating = 0;
   for (const rating of STANDARD_BREAKER_SIZES) {
-    if (rating * 10 >= shortCircuitCurrent) {
+    if (rating * 10 >= shortCircuitCurrentCombined) {
       minBreakerRating = rating;
       break;
     }
@@ -98,20 +120,28 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
     minBreakerRating = STANDARD_BREAKER_SIZES[STANDARD_BREAKER_SIZES.length - 1];
   }
   
-  // Calculate recommended breaker rating based on short circuit current
-  // Recommended rating should be at least 25% greater than minimum for safety margin
+  // Calculate recommended breaker rating
+  // We'll use a more practical approach based on real-world requirements
   let recommendedBreakerRating = 0;
-  const safetyMarginCurrent = shortCircuitCurrent * 1.25;
+  
+  // For currents below 6000A, a standard MCCB with 6kA breaking capacity is typically sufficient
+  // For higher currents, more specialized equipment may be needed
   
   for (const rating of STANDARD_BREAKER_SIZES) {
-    if (rating * 10 >= safetyMarginCurrent) {
+    if (rating >= transformerNominalCurrent * 1.25 && rating <= 630) { // Typical safety margin
       recommendedBreakerRating = rating;
       break;
     }
   }
   
   if (recommendedBreakerRating === 0) {
-    recommendedBreakerRating = STANDARD_BREAKER_SIZES[STANDARD_BREAKER_SIZES.length - 1];
+    // Fall back to a standard value if our logic didn't find a suitable rating
+    recommendedBreakerRating = 400; // A common default for medium-sized installations
+    
+    // For very large transformers/short circuits
+    if (transformerNominalCurrent > 400) {
+      recommendedBreakerRating = 630;
+    }
   }
   
   // Calculate recommended cable section based on short circuit current and voltage drop
@@ -120,7 +150,7 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   // Increase section if needed for voltage drop
   const currentCapacity = CURRENT_CAPACITY[cableMaterial as keyof typeof CURRENT_CAPACITY];
   for (const section of STANDARD_SECTIONS) {
-    if (section >= cableSection && currentCapacity[section as keyof typeof currentCapacity] >= minBreakerRating) {
+    if (section >= cableSection && currentCapacity[section as keyof typeof currentCapacity] >= transformerNominalCurrent) {
       recommendedCableSection = section;
       break;
     }
@@ -130,9 +160,12 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   const recommendations: string[] = [];
   const warnings: string[] = [];
   
-  if (shortCircuitCurrent > 10000) {
+  if (shortCircuitCurrentCombined > 10000) {
     recommendations.push("Curentul de scurtcircuit depășește 10kA. Recomandăm întrerupătoare cu capacitate mare de rupere.");
   }
+  
+  // More specific recommendations based on the calculations
+  recommendations.push(`Folosiți întrerupător MCCB de ${recommendedBreakerRating}A cu Icu ≥ ${Math.ceil(shortCircuitCurrentCombined / 1000) + 2}kA pentru protecție completă la scurtcircuit.`);
   
   if (limitingFactor === "transformator") {
     recommendations.push("Impedanța transformatorului este factorul limitativ principal. Verificați parametrii transformatorului.");
@@ -140,27 +173,29 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
     recommendations.push("Rezistența cablului este factorul limitativ principal. Considerați secțiuni mai mari pentru a reduce căderea de tensiune.");
   }
   
-  if (minBreakerRating < 32) {
-    recommendations.push("Curentul de scurtcircuit calculat permite utilizarea întrerupătoarelor standard de joasă tensiune.");
-  } else {
-    recommendations.push("Utilizați întreruptoare cu capacitate de rupere ridicată (MCB sau MCCB) pentru acest nivel de curent.");
-  }
-  
   if (recommendedCableSection > cableSection) {
     recommendations.push(`Recomandăm creșterea secțiunii cablului la ${recommendedCableSection}mm² pentru menținerea căderilor de tensiune în limite acceptabile.`);
   }
   
-  if (shortCircuitCurrent < 1000) {
+  if (shortCircuitCurrentCombined < 1000) {
     warnings.push("Curentul de scurtcircuit calculat este neobișnuit de mic. Verificați parametrii de intrare.");
   }
   
-  if (shortCircuitCurrent > 50000) {
+  if (shortCircuitCurrentCombined > 50000) {
     warnings.push("Curentul de scurtcircuit este foarte mare. Verificați corectitudinea parametrilor și asigurați-vă că echipamentele de protecție sunt dimensionate corespunzător.");
   }
   
   return {
-    shortCircuitCurrent: parseFloat(shortCircuitCurrent.toFixed(2)),
+    shortCircuitCurrent: parseFloat(shortCircuitCurrentCombined.toFixed(2)),
+    transformerNominalCurrent: parseFloat(transformerNominalCurrent.toFixed(2)),
+    transformerShortCircuitCurrent: parseFloat(transformerShortCircuitCurrent.toFixed(2)),
+    cableShortCircuitCurrent: parseFloat(shortCircuitCurrent.toFixed(2)),
+    voltageDropShortCircuit: parseFloat(shortCircuitVoltageDrop.toFixed(2)),
+    voltageDropPercentageShortCircuit: parseFloat(shortCircuitVoltageDropPercentage.toFixed(2)),
     limitingFactor,
+    transformerImpedance: parseFloat((transformerZ).toFixed(4)),
+    cableImpedance: parseFloat((cableZ).toFixed(4)),
+    totalImpedance: parseFloat(totalZ.toFixed(4)),
     minBreakerRating,
     recommendedBreakerRating,
     recommendedCableSection,

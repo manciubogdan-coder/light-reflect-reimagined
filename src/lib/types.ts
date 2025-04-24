@@ -1,4 +1,3 @@
-
 export interface CableCalculatorForm {
   power: string;
   currentType: string;
@@ -27,6 +26,33 @@ export interface CalculationResult {
     reason: string;
   }>;
   contextualRecommendation?: string;
+}
+
+export interface ShortCircuitCalculatorForm {
+  transformerPower: string;
+  transformerImpedance: string;
+  cableLength: string;
+  cableMaterial: string;
+  cableSection: string;
+  voltageDrop: string;
+}
+
+export interface ShortCircuitResult {
+  shortCircuitCurrent: number;
+  transformerNominalCurrent: number;
+  transformerShortCircuitCurrent: number;
+  cableShortCircuitCurrent: number;
+  voltageDropShortCircuit: number;
+  voltageDropPercentageShortCircuit: number;
+  limitingFactor: string;
+  transformerImpedance: number;
+  cableImpedance: number;
+  totalImpedance: number;
+  minBreakerRating: number;
+  recommendedBreakerRating: number;
+  recommendedCableSection: number;
+  recommendations: string[];
+  warnings: string[];
 }
 
 export interface PowerCalculatorForm {
@@ -124,23 +150,4 @@ export interface EnergyEfficiencyResult {
   paybackPeriod: number | null;
   co2Reduction: number;
   recommendation: string;
-}
-
-export interface ShortCircuitCalculatorForm {
-  transformerPower: string;
-  transformerImpedance: string;
-  cableLength: string;
-  cableMaterial: string;
-  cableSection: string;
-  voltageDrop: string;
-}
-
-export interface ShortCircuitResult {
-  shortCircuitCurrent: number;
-  limitingFactor: string;
-  minBreakerRating: number;
-  recommendedBreakerRating: number;
-  recommendedCableSection: number;
-  recommendations: string[];
-  warnings: string[];
 }

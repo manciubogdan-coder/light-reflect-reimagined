@@ -38,6 +38,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AlertCircle, CheckCircle2, Zap } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const formSchema = z.object({
   transformerPower: z
@@ -285,7 +286,7 @@ const ShortCircuitCalculator = () => {
 
       <div>
         {result ? (
-          <Card className="bg-dark-matter/50 border-electric-blue/30">
+          <Card className="bg-dark-matter/50 border-electric-blue/30 overflow-auto max-h-[90vh]">
             <CardHeader>
               <CardTitle className="text-hologram-blue text-xl">
                 Rezultate Calcul Scurtcircuit
@@ -296,15 +297,39 @@ const ShortCircuitCalculator = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
+                <Alert className="bg-dark-matter/80 border border-electric-blue/30">
+                  <AlertTitle className="text-xl font-tech text-hologram-blue">Rezultat detaliat</AlertTitle>
+                  <AlertDescription className="text-white/80">
+                    Aceste calcule sunt estimative pentru curent de scurtcircuit RMS pe fază la capătul cablului.
+                    Valorile reale pot varia în funcție de mai mulți factori.
+                  </AlertDescription>
+                </Alert>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
+                    <h3 className="text-lg font-tech text-hologram-blue">Curent nominal transformator</h3>
+                    <p className="text-2xl font-bold text-electric-blue">
+                      {result.transformerNominalCurrent.toLocaleString()} A
+                    </p>
+                  </div>
+                  
+                  <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
+                    <h3 className="text-lg font-tech text-hologram-blue">Curent scurtcircuit la transformator</h3>
+                    <p className="text-2xl font-bold text-electric-blue">
+                      {result.transformerShortCircuitCurrent.toLocaleString()} A
+                    </p>
+                  </div>
+                </div>
+
                 <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
                   <h3 className="text-xl font-tech text-hologram-blue mb-2 flex items-center">
                     <Zap className="w-5 h-5 mr-2" />
-                    Curent de Scurtcircuit Estimat
+                    Curent de Scurtcircuit Total (cu cablu)
                   </h3>
                   <p className="text-3xl font-bold text-electric-blue">
                     {result.shortCircuitCurrent.toLocaleString()} A
                   </p>
-                  <p className="text-sm text-white/70 mt-1">
+                  <p className="text-sm text-white/70 mt-2">
                     Factor limitativ principal: {result.limitingFactor === "transformator" 
                       ? "Impedanța transformatorului" 
                       : "Rezistența cablului"}
@@ -320,6 +345,9 @@ const ShortCircuitCalculator = () => {
                     <p className="text-sm text-white/70">
                       Minim: {result.minBreakerRating} A
                     </p>
+                    <p className="text-sm text-white/70 mt-1">
+                      Capacitate de rupere necesară: ≥ {Math.ceil(result.shortCircuitCurrent/1000) + 2}kA
+                    </p>
                   </div>
                   
                   <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
@@ -327,6 +355,28 @@ const ShortCircuitCalculator = () => {
                     <p className="text-2xl font-bold text-electric-blue">
                       {result.recommendedCableSection} mm²
                     </p>
+                  </div>
+                </div>
+
+                <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
+                  <h3 className="text-lg font-tech text-hologram-blue mb-2">Descompunere Impedanțe</h3>
+                  <div className="grid grid-cols-2 gap-2 text-white/80">
+                    <div className="flex justify-between">
+                      <span>Z transformator:</span>
+                      <span className="text-electric-blue">{result.transformerImpedance} Ω</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Z cablu:</span>
+                      <span className="text-electric-blue">{result.cableImpedance} Ω</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Z total:</span>
+                      <span className="text-electric-blue">{result.totalImpedance} Ω</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cădere de tensiune:</span>
+                      <span className="text-electric-blue">{result.voltageDropPercentageShortCircuit.toFixed(2)}%</span>
+                    </div>
                   </div>
                 </div>
 
@@ -364,6 +414,35 @@ const ShortCircuitCalculator = () => {
                       </AccordionContent>
                     </AccordionItem>
                   )}
+                  
+                  <AccordionItem value="formula" className="border-electric-blue/30">
+                    <AccordionTrigger className="text-hologram-blue hover:text-hologram-blue/80">
+                      Formula Utilizată
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="text-white/80 space-y-2">
+                        <p>Formula generală pentru calculul curentului de scurtcircuit:</p>
+                        <div className="bg-dark-matter p-3 rounded border border-electric-blue/20 font-mono text-center">
+                          Ik = U·1000 / (√3·(Ztrafo + Zcablu))
+                        </div>
+                        <p className="mt-2">Unde:</p>
+                        <ul className="space-y-1 list-disc pl-5">
+                          <li>Ik = Curent de scurtcircuit (A)</li>
+                          <li>U = Tensiune linie-linie (V)</li>
+                          <li>Ztrafo = Impedanța transformatorului (Ω)</li>
+                          <li>Zcablu = Impedanța cablului (Ω)</li>
+                        </ul>
+                        <p className="mt-2">Curentul nominal al transformatorului:</p>
+                        <div className="bg-dark-matter p-3 rounded border border-electric-blue/20 font-mono text-center">
+                          Inom = S·1000 / (√3·U)
+                        </div>
+                        <p className="mt-2">Curentul de scurtcircuit la bornele transformatorului:</p>
+                        <div className="bg-dark-matter p-3 rounded border border-electric-blue/20 font-mono text-center">
+                          Ik1 = Inom·100 / Z%
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 </Accordion>
               </div>
             </CardContent>
