@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -81,8 +80,8 @@ const Parteneriat = () => {
 
       if (dbError) throw dbError;
 
-      // Now send the email using the edge function
-      const response = await fetch(`${window.location.origin}/api/send-contact-email`, {
+      // Now send the email using the edge function - use the correct project URL
+      const response = await fetch(`https://acmknwxnyibvbbltfdxh.supabase.co/functions/v1/send-contact-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
