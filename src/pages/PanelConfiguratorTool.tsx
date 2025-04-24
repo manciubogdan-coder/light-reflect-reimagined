@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '@/components/Nav';
@@ -56,10 +55,8 @@ const PanelConfiguratorTool = () => {
     }
   });
 
-  // Compute validation results
   const validationResults = validatePanel(components);
   
-  // Compute panel analysis
   const analysis = analyzePanel(components, supplyType);
   
   const handleAddComponent = (component: PanelComponent) => {
@@ -116,7 +113,6 @@ const PanelConfiguratorTool = () => {
     try {
       setIsSending(true);
       
-      // Generate a configuration summary
       const config: PanelConfiguration = {
         id: uuidv4(),
         name: configName,
@@ -125,7 +121,6 @@ const PanelConfiguratorTool = () => {
         supplyType
       };
       
-      // Save the panel configuration to the database
       const { error: dbError } = await supabase
         .from('panel_configurations')
         .insert({
@@ -140,7 +135,6 @@ const PanelConfiguratorTool = () => {
         
       if (dbError) throw new Error(dbError.message);
       
-      // Send email with the request
       const response = await fetch(
         `https://acmknwxnyibvbbltfdxh.supabase.co/functions/v1/send-contact-email`, 
         {

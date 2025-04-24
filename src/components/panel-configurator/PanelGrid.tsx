@@ -72,16 +72,16 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   };
   
   const getComponentColor = (component: PanelComponent | undefined) => {
-    if (!component) return 'bg-white';
+    if (!component) return 'bg-[#0c1320]';
     
     switch(component.type) {
-      case 'breaker': return 'bg-blue-100';
-      case 'rcd': return 'bg-green-100';
-      case 'rcbo': return 'bg-emerald-100';
-      case 'spd': return 'bg-yellow-100';
-      case 'isolator': return 'bg-gray-100';
-      case 'contactor': return 'bg-purple-100';
-      default: return 'bg-white';
+      case 'breaker': return 'bg-blue-950/40 border-blue-900/40 text-blue-300';
+      case 'rcd': return 'bg-green-950/40 border-green-900/40 text-green-300';
+      case 'rcbo': return 'bg-emerald-950/40 border-emerald-900/40 text-emerald-300';
+      case 'spd': return 'bg-yellow-950/40 border-yellow-900/40 text-yellow-300';
+      case 'isolator': return 'bg-gray-950/40 border-gray-900/40 text-gray-300';
+      case 'contactor': return 'bg-purple-950/40 border-purple-900/40 text-purple-300';
+      default: return 'bg-[#0c1320]';
     }
   };
 
@@ -95,9 +95,9 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
     
     return (
       <div className="grid grid-cols-3 gap-1 mb-2">
-        <div className="text-center text-xs font-semibold bg-red-100 rounded p-1">L1</div>
-        <div className="text-center text-xs font-semibold bg-yellow-100 rounded p-1">L2</div>
-        <div className="text-center text-xs font-semibold bg-blue-100 rounded p-1">L3</div>
+        <div className="text-center text-xs font-semibold bg-red-900/30 text-red-300 rounded p-1">L1</div>
+        <div className="text-center text-xs font-semibold bg-yellow-900/30 text-yellow-300 rounded p-1">L2</div>
+        <div className="text-center text-xs font-semibold bg-blue-900/30 text-blue-300 rounded p-1">L3</div>
       </div>
     );
   };
@@ -112,13 +112,13 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           <div className="flex gap-1">
             <button 
               onClick={() => onComponentEdit(component.id)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-400 hover:text-white"
             >
               <Settings className="h-3 w-3" />
             </button>
             <button 
               onClick={() => onComponentRemove(component.id)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-400 hover:text-white"
             >
               <X className="h-3 w-3" />
             </button>
@@ -127,13 +127,13 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
         
         <div className="mt-auto">
           {component.description && (
-            <span className="text-xs text-gray-600 truncate block">{component.description}</span>
+            <span className="text-xs text-gray-400 truncate block">{component.description}</span>
           )}
           {component.diffProtection && component.diffProtection !== 'none' && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="inline-block bg-green-200 text-xs rounded px-1">
+                  <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
                     <Info className="inline h-2 w-2" /> {component.diffProtection}
                   </span>
                 </TooltipTrigger>
@@ -147,7 +147,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
         
         {component.width > 1 && (
           <div className="absolute -bottom-3 left-0 w-full flex justify-center">
-            <span className="text-xs text-gray-500">{component.width} module</span>
+            <span className="text-xs text-gray-400">{component.width} module</span>
           </div>
         )}
       </div>
@@ -155,11 +155,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   };
   
   return (
-    <div className="border rounded-lg p-4 bg-white">
+    <div className="border border-[#253142] rounded-lg p-4 bg-[#0F1724]">
       {renderPhaseLabels()}
       
       <div 
-        className="grid grid-cols-12 gap-1 bg-gray-100 p-2 rounded-lg relative"
+        className="grid grid-cols-12 gap-1 bg-[#0c1320] p-2 rounded-lg relative"
         style={{
           minHeight: '16rem',
           gridTemplateRows: 'repeat(auto-fill, 48px)'  
@@ -174,9 +174,9 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
             <div
               key={`module-${position}`}
               className={`
-                border rounded relative 
+                border border-[#253142] rounded relative 
                 ${getComponentColor(component)}
-                ${!component ? 'hover:bg-gray-200' : ''}
+                ${!component ? 'hover:bg-[#162030]' : ''}
                 transition-colors
               `}
               style={{
@@ -190,7 +190,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               
               {!component && (
                 <div className="h-full flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">{position + 1}</span>
+                  <span className="text-gray-500 text-sm">{position + 1}</span>
                 </div>
               )}
             </div>
@@ -200,3 +200,4 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
     </div>
   );
 };
+
