@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calculator, Grid, Settings, Cable, Zap, Lightbulb } from 'lucide-react';
+import { Calculator, Grid, Settings, Cable, Zap, Lightbulb, UserCheck } from 'lucide-react';
 
 const Tools: React.FC = () => {
   const tools = [
@@ -55,6 +56,14 @@ const Tools: React.FC = () => {
       link: '/tools/energy-efficiency',
       icon: Grid,
       status: 'Optimizează Energie'
+    },
+    {
+      id: 'electrician-quiz',
+      title: 'Quiz: Ce Tip de Electrician Ești?',
+      description: 'Descoperă stilul tău profesional prin acest test interactiv',
+      link: '/tools/electrician-quiz',
+      icon: UserCheck,
+      status: 'Începe Quiz-ul'
     }
   ];
 
@@ -68,7 +77,7 @@ const Tools: React.FC = () => {
       <div className="bg-[#0F1724] min-h-screen">
         <Nav />
         
-        <div className="container mx-auto py-12 px-4">
+        <div className="container mx-auto py-24 px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white mb-4">
               <span className="text-[#00FFFF]">LIGHT</span>
