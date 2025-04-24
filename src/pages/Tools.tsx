@@ -1,105 +1,81 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import CyberScanner from '@/components/CyberScanner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calculator, Grid, Settings } from 'lucide-react';
 
 const Tools: React.FC = () => {
   const tools = [
     {
-      id: 'cable-calculator',
-      title: 'Calculator Cabluri',
-      description: 'Calculează secțiunea optimă a cablurilor pentru instalațiile electrice în funcție de putere, curent, lungime și tip.',
-      link: '/tools/cable-calculator',
-      color: 'bg-blue-500'
-    },
-    {
       id: 'power-calculator',
-      title: 'Calculator Putere',
-      description: 'Estimează necesarul de putere electrică pentru locuința sau business-ul tău în funcție de consumatori.',
+      title: 'Calculator Putere Electrică',
+      description: 'Estimează necesarul de putere pentru instalațiile electrice',
       link: '/tools/power-calculator',
-      color: 'bg-green-500'
+      icon: Calculator,
+      status: 'În curând'
     },
     {
       id: 'lighting-calculator',
       title: 'Calculator Iluminat',
-      description: 'Calculează numărul de corpuri de iluminat necesare pentru orice încăpere conform standardelor de iluminare.',
+      description: 'Determină necesarul de corpuri de iluminat pentru spațiul tău',
       link: '/tools/lighting-calculator',
-      color: 'bg-amber-500'
-    },
-    {
-      id: 'energy-efficiency',
-      title: 'Calculator Eficiență Energetică',
-      description: 'Compară soluțiile de iluminat și calculează economiile realizate prin trecerea la tehnologii eficiente.',
-      link: '/tools/energy-efficiency',
-      color: 'bg-emerald-500'
-    },
-    {
-      id: 'short-circuit-calculator',
-      title: 'Calculator Curent Scurtcircuit',
-      description: 'Estimează curentul de scurtcircuit în instalații și dimensionarea corectă a protecțiilor.',
-      link: '/tools/short-circuit-calculator',
-      color: 'bg-red-500'
-    },
-    {
-      id: 'electrician-quiz',
-      title: 'Test tip electrician',
-      description: 'Descoperă ce tip de electrician ți se potrivește în funcție de personalitate și preferințe.',
-      link: '/tools/electrician-quiz',
-      color: 'bg-purple-500'
+      icon: Grid,
+      status: 'În curând'
     },
     {
       id: 'panel-configurator',
-      title: 'Configurator Tablouri',
-      description: 'Creează și validează configurația tabloului electric prin drag & drop în conformitate cu normele în vigoare.',
+      title: 'Configurator Tablou Electric',
+      description: 'Proiectează și validează tabloul electric',
       link: '/tools/panel-configurator',
-      color: 'bg-indigo-500',
-      new: true
+      icon: Settings,
+      status: 'În curând'
     }
   ];
 
   return (
     <>
       <Helmet>
-        <title>Instrumente pentru electro-proiectare | Light Reflect</title>
-        <meta name="description" content="Instrumente și calculatoare online gratuite pentru profesioniști și pasionați din domeniul electric: calculatoare pentru cabluri, iluminat, putere și multe altele." />
+        <title>Instrumente | Light Reflect</title>
+        <meta name="description" content="Instrumente pentru proiectare electrică" />
       </Helmet>
 
-      <div>
+      <div className="bg-[#0F1724] min-h-screen">
         <Nav />
         
-        <div className="container mx-auto py-12">
-          <div className="space-y-4 mb-12">
-            <h1 className="text-4xl font-bold text-center">Instrumente pentru electro-proiectare</h1>
-            <p className="text-xl text-center text-gray-600 max-w-3xl mx-auto">
-              Colecție de calculatoare și instrumente online gratuite pentru profesioniști și pasionați din domeniul electric.
+        <div className="container mx-auto py-12 px-4">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-white mb-4">
+              <span className="text-[#00FFFF]">LIGHT</span>
+              <span className="text-white">REFLECT</span>
+            </h1>
+            <p className="text-gray-400 max-w-xl mx-auto">
+              Instrumente profesionale pentru instalații electrice
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
             {tools.map((tool) => (
-              <Card key={tool.id} className="overflow-hidden border-b-4" style={{ borderBottomColor: tool.color }}>
-                <CardHeader className={`${tool.color} text-white`}>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>{tool.title}</CardTitle>
-                    {tool.new && (
-                      <span className="bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full">NOU</span>
-                    )}
-                  </div>
-                  <CardDescription className="text-white/90">{tool.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <CyberScanner />
-                </CardContent>
-                <CardFooter className="bg-gray-50">
-                  <Link to={tool.link} className="w-full">
-                    <Button className="w-full">Deschide instrumentul</Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+              <Link to={tool.link} key={tool.id} className="block">
+                <Card className="bg-[#162030] border-none shadow-lg rounded-lg overflow-hidden transition-all hover:scale-[1.02] hover:shadow-xl">
+                  <CardHeader className="p-6 pb-0 bg-transparent">
+                    <div className="flex items-center space-x-4">
+                      <tool.icon className="w-8 h-8 text-[#00FFFF]" />
+                      <CardTitle className="text-white text-xl">{tool.title}</CardTitle>
+                    </div>
+                    <CardDescription className="text-gray-400 mt-2">
+                      {tool.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-0">
+                    <div className="bg-[#0C1320] rounded-lg p-3 mt-4 text-center">
+                      <span className="text-[#00FFFF] font-medium">{tool.status}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
