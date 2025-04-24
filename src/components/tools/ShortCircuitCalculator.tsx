@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -92,7 +91,6 @@ const ShortCircuitCalculator = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Here we ensure all form values are present by explicitly passing them as ShortCircuitCalculatorForm
     const formData: ShortCircuitCalculatorForm = {
       transformerPower: values.transformerPower,
       transformerImpedance: values.transformerImpedance,
@@ -250,7 +248,7 @@ const ShortCircuitCalculator = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-white">
-                          Cădere de tensiune maximă (%)
+                          Căderea de tensiune maximă (%)
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -285,7 +283,7 @@ const ShortCircuitCalculator = () => {
       </div>
 
       <div>
-        {result ? (
+        {result && (
           <Card className="bg-dark-matter/50 border-electric-blue/30 overflow-auto max-h-[90vh]">
             <CardHeader>
               <CardTitle className="text-hologram-blue text-xl">
@@ -380,6 +378,24 @@ const ShortCircuitCalculator = () => {
                   </div>
                 </div>
 
+                <div className="bg-dark-matter/80 p-4 rounded-md border border-electric-blue/30">
+                  <h3 className="text-xl font-tech text-hologram-blue mb-2">Căderi de Tensiune</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-white/80">
+                      <span>La funcționare nominală:</span>
+                      <span className="text-electric-blue font-bold">
+                        {result.voltageDropNominal.toFixed(1)}V ({result.voltageDropPercentageNominal.toFixed(1)}%)
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-white/80">
+                      <span>La scurtcircuit:</span>
+                      <span className="text-electric-blue font-bold">
+                        {result.voltageDropShortCircuit.toFixed(1)}V ({result.voltageDropPercentageShortCircuit.toFixed(1)}%)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="recommendations" className="border-electric-blue/30">
                     <AccordionTrigger className="text-hologram-blue hover:text-hologram-blue/80">
@@ -452,21 +468,6 @@ const ShortCircuitCalculator = () => {
                 pentru implementarea în instalațiile reale.
               </p>
             </CardFooter>
-          </Card>
-        ) : (
-          <Card className="bg-dark-matter/50 border-electric-blue/30 h-full flex flex-col justify-center items-center py-12">
-            <CardContent className="text-center">
-              <div className="mb-4">
-                <Zap className="w-16 h-16 mx-auto text-hologram-blue opacity-50" />
-              </div>
-              <CardTitle className="text-hologram-blue text-xl mb-2">
-                Calculul Curentului de Scurtcircuit
-              </CardTitle>
-              <CardDescription className="max-w-md mx-auto">
-                Completează formularul pentru a afla curentul de scurtcircuit estimat
-                și recomandările pentru alegerea corectă a siguranțelor și cablurilor.
-              </CardDescription>
-            </CardContent>
           </Card>
         )}
       </div>

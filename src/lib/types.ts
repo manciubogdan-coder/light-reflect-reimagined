@@ -44,6 +44,8 @@ export interface ShortCircuitResult {
   cableShortCircuitCurrent: number;
   voltageDropShortCircuit: number;
   voltageDropPercentageShortCircuit: number;
+  voltageDropNominal: number;
+  voltageDropPercentageNominal: number;
   limitingFactor: string;
   transformerImpedance: number;
   cableImpedance: number;

@@ -1,4 +1,3 @@
-
 import { ShortCircuitCalculatorForm, ShortCircuitResult } from "./types";
 
 // Material resistivity (Ω·mm²/m)
@@ -105,7 +104,22 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
   // Determine limiting factor
   const limitingFactor = transformerZ > cableR ? "transformator" : "cablu";
   
-  // Determine minimum breaker rating based on short circuit current
+  // Determine nominal voltage drops (at normal operation)
+  const nominalVoltageDrop = (transformerNominalCurrent * cableR);
+  const nominalVoltageDropPercentage = (nominalVoltageDrop / phaseVoltage) * 100;
+  
+  // Additional recommendations based on voltage drop
+  if (nominalVoltageDropPercentage > parseFloat(data.voltageDrop)) {
+    warnings.push(`ATENȚIE: Pe traseul de ${cableLength}m cu ${cableSection} mm² ${data.cableMaterial}, 
+    pierzi ~${nominalVoltageDrop.toFixed(1)}V (${nominalVoltageDropPercentage.toFixed(1)}%) → 
+    peste limita de ${data.voltageDrop}%.`);
+    
+    // Add recommendation for voltage drop mitigation
+    recommendations.push(`Pentru reducerea căderii de tensiune sub ${data.voltageDrop}%, 
+    considerați mărirea secțiunii cablului sau reducerea lungimii traseului.`);
+  }
+  
+  // Calculate minimum breaker rating based on short circuit current
   // The breaker must be able to interrupt the calculated short circuit current
   let minBreakerRating = 0;
   for (const rating of STANDARD_BREAKER_SIZES) {
@@ -192,6 +206,8 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
     cableShortCircuitCurrent: parseFloat(shortCircuitCurrent.toFixed(2)),
     voltageDropShortCircuit: parseFloat(shortCircuitVoltageDrop.toFixed(2)),
     voltageDropPercentageShortCircuit: parseFloat(shortCircuitVoltageDropPercentage.toFixed(2)),
+    voltageDropNominal: parseFloat(nominalVoltageDrop.toFixed(2)),
+    voltageDropPercentageNominal: parseFloat(nominalVoltageDropPercentage.toFixed(2)),
     limitingFactor,
     transformerImpedance: parseFloat((transformerZ).toFixed(4)),
     cableImpedance: parseFloat((cableZ).toFixed(4)),
