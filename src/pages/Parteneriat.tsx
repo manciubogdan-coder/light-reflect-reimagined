@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -50,6 +51,7 @@ type FormValues = z.infer<typeof formSchema>;
 const Parteneriat = () => {
   const location = useLocation();
   const { fromQuiz, profileType } = location.state || { fromQuiz: false, profileType: null };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,12 +66,66 @@ const Parteneriat = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  const sendEmail = async (data: FormValues) => {
+    try {
+      // First, save to database
+      const { error: dbError } = await supabase.from("partnership_requests").insert({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        city: data.city,
+        experience: data.experience,
+        message: data.message || "",
+        profile_type: profileType || null,
+      });
+
+      if (dbError) throw dbError;
+
+      // Now send the email using the edge function
+      const response = await fetch(`${window.location.origin}/api/send-contact-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nume: data.name,
+          email: data.email,
+          mesaj: `Solicitare de parteneriat de la ${data.name} (${data.email})
+Telefon: ${data.phone}
+Oraș: ${data.city}
+Experiență: ${data.experience} ani
+${data.message ? `\nMesaj: ${data.message}` : ""}
+${profileType ? `\nProfil electrician: ${profileType}` : ""}`,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Eroare la trimiterea emailului");
+      }
+
+      return await response.json();
+    } catch (error: any) {
+      console.error("Eroare la trimiterea solicitării:", error);
+      throw error;
+    }
+  };
+
+  const onSubmit = async (data: FormValues) => {
     console.log("Form submitted:", data);
-    toast.success("Solicitarea a fost trimisă cu succes! Te vom contacta în curând.", {
-      duration: 5000,
-    });
-    form.reset();
+    setIsSubmitting(true);
+    
+    try {
+      await sendEmail(data);
+      toast.success("Solicitarea a fost trimisă cu succes! Te vom contacta în curând.", {
+        duration: 5000,
+      });
+      form.reset();
+    } catch (error: any) {
+      toast.error(`Eroare: ${error.message || "Nu s-a putut trimite solicitarea. Încercați din nou mai târziu."}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -247,8 +303,9 @@ const Parteneriat = () => {
                     )}
                   />
 
-                  <Button type="submit" className="w-full">
-                    <Send className="mr-2 h-4 w-4" /> Trimite solicitarea
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Send className="mr-2 h-4 w-4" /> 
+                    {isSubmitting ? "Se trimite..." : "Trimite solicitarea"}
                   </Button>
                 </form>
               </Form>

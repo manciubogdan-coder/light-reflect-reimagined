@@ -31,9 +31,11 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
   };
   
   const shareResult = (platform: string) => {
-    const baseUrl = window.location.href.split('?')[0];
-    const shareUrl = `${baseUrl}?profile=${profile}`;
-    const shareText = encodeURIComponent(profileData.shareText);
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}/tools/electrician-quiz?profile=${profile}`;
+    
+    // Customized share text with call to action
+    const shareText = encodeURIComponent(`Am făcut testul și sunt ${profileData.title}! Află și tu ce tip de electrician ești pe Light Reflect Electrical. ${profileData.shareText}`);
     
     let shareLink = '';
     
