@@ -1,3 +1,4 @@
+
 import { ShortCircuitCalculatorForm, ShortCircuitResult } from "./types";
 
 // Material resistivity (Ω·mm²/m)
@@ -52,6 +53,10 @@ const CURRENT_CAPACITY = {
 };
 
 export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCircuitResult => {
+  // Generate recommendations and warnings arrays at the start of the function
+  const recommendations: string[] = [];
+  const warnings: string[] = [];
+  
   // Parse input data
   const transformerPower = parseFloat(data.transformerPower) * 1000; // Convert from kVA to VA
   const transformerImpedance = parseFloat(data.transformerImpedance) / 100; // Convert from % to decimal
@@ -169,10 +174,6 @@ export const calculateShortCircuit = (data: ShortCircuitCalculatorForm): ShortCi
       break;
     }
   }
-  
-  // Generate recommendations
-  const recommendations: string[] = [];
-  const warnings: string[] = [];
   
   if (shortCircuitCurrentCombined > 10000) {
     recommendations.push("Curentul de scurtcircuit depășește 10kA. Recomandăm întrerupătoare cu capacitate mare de rupere.");
