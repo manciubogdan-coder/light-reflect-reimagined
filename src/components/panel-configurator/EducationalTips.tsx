@@ -51,9 +51,9 @@ export const EducationalTips: React.FC<EducationalTipsProps> = ({ components }) 
       <CardContent>
         <div className="space-y-3">
           {relevantTips.map(tip => (
-            <div key={tip.id} className="bg-blue-50 p-3 rounded-md">
-              <h4 className="font-medium text-sm">{tip.title}</h4>
-              <p className="text-sm mt-1">{tip.content}</p>
+            <div key={tip.id} className="bg-[#162030] border border-[#253142] p-3 rounded-md">
+              <h4 className="font-medium text-sm text-white">{tip.title}</h4>
+              <p className="text-sm mt-1 text-gray-300">{tip.content}</p>
             </div>
           ))}
         </div>
