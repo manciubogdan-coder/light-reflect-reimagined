@@ -81,7 +81,7 @@ const Tools: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {tools.map((tool) => (
-              <Card key={tool.id} className="overflow-hidden border-b-4 transition-all hover:shadow-lg" style={{ borderBottomColor: tool.color.replace('bg-', 'rgb(var(--') }}>
+              <Card key={tool.id} className="overflow-hidden border-b-4" style={{ borderBottomColor: tool.color }}>
                 <CardHeader className={`${tool.color} text-white`}>
                   <div className="flex justify-between items-center">
                     <CardTitle>{tool.title}</CardTitle>
