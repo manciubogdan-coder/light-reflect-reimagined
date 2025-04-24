@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -15,7 +14,7 @@ const Tools: React.FC = () => {
       description: 'Estimează necesarul de putere pentru instalațiile electrice',
       link: '/tools/power-calculator',
       icon: Calculator,
-      status: 'Disponibil'
+      status: 'Accesează Calculator'
     },
     {
       id: 'lighting-calculator',
@@ -23,7 +22,7 @@ const Tools: React.FC = () => {
       description: 'Determină necesarul de corpuri de iluminat pentru spațiul tău',
       link: '/tools/lighting-calculator',
       icon: Lightbulb,
-      status: 'Disponibil'
+      status: 'Calculează Iluminat'
     },
     {
       id: 'panel-configurator',
@@ -31,7 +30,7 @@ const Tools: React.FC = () => {
       description: 'Proiectează și validează tabloul electric',
       link: '/tools/panel-configurator',
       icon: Settings,
-      status: 'Disponibil'
+      status: 'Configurează Tablou'
     },
     {
       id: 'cable-calculator',
@@ -39,7 +38,7 @@ const Tools: React.FC = () => {
       description: 'Calculează secțiunea optimă a cablurilor electrice',
       link: '/tools/cable-calculator',
       icon: Cable,
-      status: 'Disponibil'
+      status: 'Calculează Cablu'
     },
     {
       id: 'short-circuit-calculator',
@@ -47,7 +46,7 @@ const Tools: React.FC = () => {
       description: 'Calculează curentul de scurtcircuit în instalații',
       link: '/tools/short-circuit-calculator',
       icon: Zap,
-      status: 'Disponibil'
+      status: 'Analizează Scurtcircuit'
     },
     {
       id: 'energy-efficiency',
@@ -55,7 +54,7 @@ const Tools: React.FC = () => {
       description: 'Analizează și optimizează consumul energetic',
       link: '/tools/energy-efficiency',
       icon: Grid,
-      status: 'Disponibil'
+      status: 'Optimizează Energie'
     }
   ];
 
