@@ -193,7 +193,8 @@ export function useAISuggestions(
           severity: 'high',
           educationalTip: 'Un întrerupător general permite deconectarea rapidă a întregului tablou în situații de urgență.',
           normative: 'HD 60364-4-46',
-          rating: analysis.recommendedMainBreaker,
+          // Fix: Cast the string to RatingType
+          rating: analysis.recommendedMainBreaker as RatingType,
           name: 'Întrerupător General'
         });
       }
@@ -257,7 +258,8 @@ export function useAISuggestions(
           componentType: 'isolator',
           position: 0,
           severity: 'high',
-          rating: analysis.recommendedMainBreaker,
+          // Fix: Cast the string to RatingType
+          rating: analysis.recommendedMainBreaker as RatingType,
           name: 'Întrerupător General',
           phases: supplyType === 'three-phase' ? ['L1', 'L2', 'L3', 'N'] as PhaseType[] : ['L1', 'N'] as PhaseType[],
           width: 2
@@ -268,17 +270,23 @@ export function useAISuggestions(
     // Add SPD if there is none
     const hasSPD = components.some(component => component.type === 'spd');
     if (!hasSPD) {
-      // For finding available positions, we need to make sure component suggestions have width property
-      const componentsForPositioning = [...components];
-      standardSuggestions.forEach(suggestion => {
-        if (!suggestion.width) {
-          // Add width based on component type
-          suggestion.width = getComponentWidth(suggestion.componentType);
-        }
-      });
+      // For finding available positions, need to add width property
+      const componentsForPositioning: PanelComponent[] = [...components];
+      // Create temporary components from suggestions for positioning
+      const tempComponents: PanelComponent[] = standardSuggestions.map(suggestion => ({
+        id: suggestion.id,
+        type: suggestion.componentType,
+        name: suggestion.name || '',
+        description: suggestion.description,
+        position: suggestion.position,
+        width: suggestion.width || getComponentWidth(suggestion.componentType),
+        rating: suggestion.rating || '16' as RatingType,
+        diffProtection: suggestion.diffProtection,
+        phases: suggestion.phases || ['L1'] as PhaseType[]
+      }));
       
       const availablePosition = findAvailablePosition(
-        componentsForPositioning,
+        [...componentsForPositioning, ...tempComponents],
         moduleCount,
         3
       );
@@ -307,17 +315,23 @@ export function useAISuggestions(
     );
     
     if (!hasLightingRCD) {
-      // For finding available positions, we need to make sure component suggestions have width property
-      const componentsForPositioning = [...components];
-      standardSuggestions.forEach(suggestion => {
-        if (!suggestion.width) {
-          // Add width based on component type
-          suggestion.width = getComponentWidth(suggestion.componentType);
-        }
-      });
+      // For finding available positions, need to add width property
+      const componentsForPositioning: PanelComponent[] = [...components];
+      // Create temporary components from suggestions for positioning
+      const tempComponents: PanelComponent[] = standardSuggestions.map(suggestion => ({
+        id: suggestion.id,
+        type: suggestion.componentType,
+        name: suggestion.name || '',
+        description: suggestion.description,
+        position: suggestion.position,
+        width: suggestion.width || getComponentWidth(suggestion.componentType),
+        rating: suggestion.rating || '16' as RatingType,
+        diffProtection: suggestion.diffProtection,
+        phases: suggestion.phases || ['L1'] as PhaseType[]
+      }));
       
       const availablePosition = findAvailablePosition(
-        componentsForPositioning,
+        [...componentsForPositioning, ...tempComponents],
         moduleCount,
         2
       );
@@ -348,17 +362,23 @@ export function useAISuggestions(
     );
     
     if (!hasBathroomRCBO) {
-      // For finding available positions, we need to make sure component suggestions have width property
-      const componentsForPositioning = [...components];
-      standardSuggestions.forEach(suggestion => {
-        if (!suggestion.width) {
-          // Add width based on component type
-          suggestion.width = getComponentWidth(suggestion.componentType);
-        }
-      });
+      // For finding available positions, need to add width property
+      const componentsForPositioning: PanelComponent[] = [...components];
+      // Create temporary components from suggestions for positioning
+      const tempComponents: PanelComponent[] = standardSuggestions.map(suggestion => ({
+        id: suggestion.id,
+        type: suggestion.componentType,
+        name: suggestion.name || '',
+        description: suggestion.description,
+        position: suggestion.position,
+        width: suggestion.width || getComponentWidth(suggestion.componentType),
+        rating: suggestion.rating || '16' as RatingType,
+        diffProtection: suggestion.diffProtection,
+        phases: suggestion.phases || ['L1'] as PhaseType[]
+      }));
       
       const availablePosition = findAvailablePosition(
-        componentsForPositioning,
+        [...componentsForPositioning, ...tempComponents],
         moduleCount,
         1
       );
@@ -387,17 +407,23 @@ export function useAISuggestions(
     );
     
     if (kitchenCircuits.length < 2) {
-      // For finding available positions, we need to make sure component suggestions have width property
-      const componentsForPositioning = [...components];
-      standardSuggestions.forEach(suggestion => {
-        if (!suggestion.width) {
-          // Add width based on component type
-          suggestion.width = getComponentWidth(suggestion.componentType);
-        }
-      });
+      // For finding available positions, need to add width property
+      const componentsForPositioning: PanelComponent[] = [...components];
+      // Create temporary components from suggestions for positioning
+      const tempComponents: PanelComponent[] = standardSuggestions.map(suggestion => ({
+        id: suggestion.id,
+        type: suggestion.componentType,
+        name: suggestion.name || '',
+        description: suggestion.description,
+        position: suggestion.position,
+        width: suggestion.width || getComponentWidth(suggestion.componentType),
+        rating: suggestion.rating || '16' as RatingType,
+        diffProtection: suggestion.diffProtection,
+        phases: suggestion.phases || ['L1'] as PhaseType[]
+      }));
       
       const availablePosition = findAvailablePosition(
-        componentsForPositioning,
+        [...componentsForPositioning, ...tempComponents],
         moduleCount,
         1
       );
@@ -425,17 +451,23 @@ export function useAISuggestions(
     );
     
     if (lightingCircuits.length < 1) {
-      // For finding available positions, we need to make sure component suggestions have width property
-      const componentsForPositioning = [...components];
-      standardSuggestions.forEach(suggestion => {
-        if (!suggestion.width) {
-          // Add width based on component type
-          suggestion.width = getComponentWidth(suggestion.componentType);
-        }
-      });
+      // For finding available positions, need to add width property
+      const componentsForPositioning: PanelComponent[] = [...components];
+      // Create temporary components from suggestions for positioning
+      const tempComponents: PanelComponent[] = standardSuggestions.map(suggestion => ({
+        id: suggestion.id,
+        type: suggestion.componentType,
+        name: suggestion.name || '',
+        description: suggestion.description,
+        position: suggestion.position,
+        width: suggestion.width || getComponentWidth(suggestion.componentType),
+        rating: suggestion.rating || '16' as RatingType,
+        diffProtection: suggestion.diffProtection,
+        phases: suggestion.phases || ['L1'] as PhaseType[]
+      }));
       
       const availablePosition = findAvailablePosition(
-        componentsForPositioning,
+        [...componentsForPositioning, ...tempComponents],
         moduleCount,
         1
       );
