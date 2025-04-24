@@ -338,6 +338,42 @@ export type Database = {
           },
         ]
       }
+      partnership_requests: {
+        Row: {
+          city: string
+          created_at: string
+          email: string
+          experience: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          profile_type: string | null
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          email: string
+          experience: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          profile_type?: string | null
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          email?: string
+          experience?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          profile_type?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number

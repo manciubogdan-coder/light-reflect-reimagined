@@ -9,7 +9,50 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(
+// Extend the Database type to include the partnership_requests table
+type ExtendedDatabase = Database & {
+  public: {
+    Tables: {
+      partnership_requests: {
+        Row: {
+          id: string;
+          created_at: string;
+          name: string;
+          email: string;
+          phone: string;
+          city: string;
+          experience: string;
+          message: string | null;
+          profile_type: string | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          name: string;
+          email: string;
+          phone: string;
+          city: string;
+          experience: string;
+          message?: string | null;
+          profile_type?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          name?: string;
+          email?: string;
+          phone?: string;
+          city?: string;
+          experience?: string;
+          message?: string | null;
+          profile_type?: string | null;
+        };
+      } & Database["public"]["Tables"]
+    } & Database["public"]["Views"]
+  }
+};
+
+export const supabase = createClient<ExtendedDatabase>(
   SUPABASE_URL, 
   SUPABASE_PUBLISHABLE_KEY,
   {
