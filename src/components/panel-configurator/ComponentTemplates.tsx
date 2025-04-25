@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ComponentType, PanelComponent, COMPONENT_TEMPLATES } from '@/lib/electricalPanelTypes';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +9,7 @@ import {
   Power,
   CirclePlus,
   CircleX,
-  Fuse,
+  Plug,
   SeparatorHorizontal
 } from 'lucide-react';
 
@@ -27,7 +28,7 @@ const componentIcons: Record<ComponentType, React.ReactNode> = {
   spd: <CircleX className="size-4" />,
   isolator: <CirclePlus className="size-4" />,
   contactor: <CirclePlus className="size-4" />,
-  fuse: <Fuse className="size-4" />,
+  fuse: <Plug className="size-4" />,
   separator: <SeparatorHorizontal className="size-4" />
 };
 

@@ -1,3 +1,4 @@
+
 export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor' | 'fuse' | 'separator';
 export type CurveType = 'B' | 'C' | 'D';
 export type PhaseType = 'L1' | 'L2' | 'L3' | 'N' | 'PE';
@@ -92,11 +93,13 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     phases: ['L1'],
   },
   fuse: {
+    type: 'fuse',
     width: 3,
     rating: '63',
     phases: ['L1', 'L2', 'L3']
   },
   separator: {
+    type: 'separator',
     width: 3,
     rating: '63',
     phases: ['L1', 'L2', 'L3']
