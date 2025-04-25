@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -92,42 +93,67 @@ const Tools: React.FC = () => {
             {tools.map((tool) => (
               <div 
                 key={tool.id} 
-                className={`block ${tool.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={tool.disabled ? 'block opacity-50 cursor-not-allowed' : 'block'}
               >
-                <Card 
-                  className={`
-                    bg-[#162030] 
-                    border-none 
-                    shadow-lg 
-                    rounded-lg 
-                    overflow-hidden 
-                    transition-all 
-                    ${!tool.disabled ? 'hover:scale-[1.02] hover:shadow-xl' : ''}
-                  `}
-                >
-                  <CardHeader className="p-6 pb-0 bg-transparent">
-                    <div className="flex items-center space-x-4">
-                      <tool.icon className="w-8 h-8 text-[#00FFFF]" />
-                      <CardTitle className="text-white text-xl">{tool.title}</CardTitle>
-                    </div>
-                    <CardDescription className="text-gray-400 mt-2">
-                      {tool.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0">
-                    <div 
-                      className={`
-                        ${tool.disabled 
-                          ? 'bg-gray-800 text-gray-500' 
-                          : 'bg-[#0C1320] text-[#00FFFF]'
-                        } 
-                        rounded-lg p-3 mt-4 text-center
-                      `}
+                {!tool.disabled ? (
+                  <Link to={tool.link}>
+                    <Card 
+                      className="
+                        bg-[#162030] 
+                        border-none 
+                        shadow-lg 
+                        rounded-lg 
+                        overflow-hidden 
+                        transition-all 
+                        hover:scale-[1.02] hover:shadow-xl
+                      "
                     >
-                      <span className="font-medium">{tool.status}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <CardHeader className="p-6 pb-0 bg-transparent">
+                        <div className="flex items-center space-x-4">
+                          <tool.icon className="w-8 h-8 text-[#00FFFF]" />
+                          <CardTitle className="text-white text-xl">{tool.title}</CardTitle>
+                        </div>
+                        <CardDescription className="text-gray-400 mt-2">
+                          {tool.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-6 pt-0">
+                        <div 
+                          className="bg-[#0C1320] text-[#00FFFF] rounded-lg p-3 mt-4 text-center"
+                        >
+                          <span className="font-medium">{tool.status}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ) : (
+                  <Card 
+                    className="
+                      bg-[#162030] 
+                      border-none 
+                      shadow-lg 
+                      rounded-lg 
+                      overflow-hidden
+                    "
+                  >
+                    <CardHeader className="p-6 pb-0 bg-transparent">
+                      <div className="flex items-center space-x-4">
+                        <tool.icon className="w-8 h-8 text-[#00FFFF]" />
+                        <CardTitle className="text-white text-xl">{tool.title}</CardTitle>
+                      </div>
+                      <CardDescription className="text-gray-400 mt-2">
+                        {tool.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-6 pt-0">
+                      <div 
+                        className="bg-gray-800 text-gray-500 rounded-lg p-3 mt-4 text-center"
+                      >
+                        <span className="font-medium">{tool.status}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             ))}
           </div>
