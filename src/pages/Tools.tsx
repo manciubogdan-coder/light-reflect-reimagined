@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -31,7 +30,8 @@ const Tools: React.FC = () => {
       description: 'Proiectează și validează tabloul electric',
       link: '/tools/panel-configurator',
       icon: Settings,
-      status: 'Configurează Tablou'
+      status: 'În curând',
+      disabled: true
     },
     {
       id: 'cable-calculator',
@@ -90,8 +90,21 @@ const Tools: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {tools.map((tool) => (
-              <Link to={tool.link} key={tool.id} className="block">
-                <Card className="bg-[#162030] border-none shadow-lg rounded-lg overflow-hidden transition-all hover:scale-[1.02] hover:shadow-xl">
+              <div 
+                key={tool.id} 
+                className={`block ${tool.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                <Card 
+                  className={`
+                    bg-[#162030] 
+                    border-none 
+                    shadow-lg 
+                    rounded-lg 
+                    overflow-hidden 
+                    transition-all 
+                    ${!tool.disabled ? 'hover:scale-[1.02] hover:shadow-xl' : ''}
+                  `}
+                >
                   <CardHeader className="p-6 pb-0 bg-transparent">
                     <div className="flex items-center space-x-4">
                       <tool.icon className="w-8 h-8 text-[#00FFFF]" />
@@ -102,12 +115,20 @@ const Tools: React.FC = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0">
-                    <div className="bg-[#0C1320] rounded-lg p-3 mt-4 text-center">
-                      <span className="text-[#00FFFF] font-medium">{tool.status}</span>
+                    <div 
+                      className={`
+                        ${tool.disabled 
+                          ? 'bg-gray-800 text-gray-500' 
+                          : 'bg-[#0C1320] text-[#00FFFF]'
+                        } 
+                        rounded-lg p-3 mt-4 text-center
+                      `}
+                    >
+                      <span className="font-medium">{tool.status}</span>
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
