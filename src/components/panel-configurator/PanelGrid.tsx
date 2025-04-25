@@ -110,6 +110,9 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       case 'contactor': return 'bg-purple-950/40 border-purple-900/40 text-purple-300';
       case 'fuse': return 'bg-orange-950/40 border-orange-900/40 text-orange-300';
       case 'terminal': return 'bg-cyan-950/40 border-cyan-900/40 text-cyan-300';
+      case 'timeRelay': return 'bg-rose-950/40 border-rose-900/40 text-rose-300';
+      case 'phaseRelay': return 'bg-amber-950/40 border-amber-900/40 text-amber-300';
+      case 'separator': return 'bg-stone-950/40 border-stone-900/40 text-stone-300';
       default: return 'bg-[#0c1320]';
     }
   };
@@ -307,11 +310,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       
       <div 
         ref={gridRef}
-        className="grid border-[#253142] grid-cols-12 gap-6 bg-[#0c1320] p-8 rounded-lg relative"
+        className="grid border-[#253142] grid-cols-12 gap-8 bg-[#0c1320] p-8 rounded-lg relative"
         style={{
-          gridTemplateRows: `repeat(${rows}, 120px)`,
-          height: `${rows * 120 + (rows - 1) * 24 + 64}px`,
-          rowGap: "2rem"
+          gridTemplateRows: `repeat(${rows}, 160px)`, // Increased row height
+          height: `${rows * 160 + (rows - 1) * 32 + 64}px`, // Adjusted spacing
+          rowGap: "2rem" // Increased gap between rows
         }}
         onMouseMove={handleGridMouseMove}
       >
@@ -339,7 +342,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
                 gridRow: `${row + 1} / span 1`,
                 display: !isFirstModule && component ? 'none' : 'block',
-                minHeight: '120px',
+                minHeight: '160px', // Increased component height
                 position: 'relative'
               }}
               draggable={isFirstModule && !!component}
@@ -357,11 +360,21 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 <div className="absolute inset-0 flex flex-col justify-between p-4">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex flex-col flex-grow">
-                      <span className="font-medium text-base truncate max-w-[160px]">
-                        {component.name || `${component.rating}A`}
-                      </span>
+                      <input
+                        type="text"
+                        value={component.name || ''}
+                        onChange={(e) => {
+                          const updatedComponents = components.map(c =>
+                            c.id === component.id ? { ...c, name: e.target.value } : c
+                          );
+                          setComponents(updatedComponents);
+                        }}
+                        placeholder="Denumire circuit..."
+                        className="bg-transparent border-b border-[#253142] text-white text-base px-1 py-0.5 
+                                 focus:border-[#00FFFF] outline-none transition-colors w-full"
+                      />
                       {component.description && (
-                        <span className="text-sm text-gray-400 truncate max-w-[160px]">
+                        <span className="text-sm text-gray-400 mt-1 truncate max-w-[160px]">
                           {component.description}
                         </span>
                       )}
@@ -382,7 +395,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                     </div>
                   </div>
                   
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center scale-125">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center scale-150">
                     <ComponentVisualization type={component.type} />
                   </div>
                   

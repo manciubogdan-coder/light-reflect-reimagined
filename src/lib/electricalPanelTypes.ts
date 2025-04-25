@@ -1,9 +1,15 @@
-
-export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor' | 'fuse' | 'separator' | 'terminal';
-export type CurveType = 'B' | 'C' | 'D';
-export type PhaseType = 'L1' | 'L2' | 'L3' | 'N' | 'PE';
-export type RatingType = '6' | '10' | '16' | '20' | '25' | '32' | '40' | '50' | '63';
-export type DiffProtectionType = 'none' | '10mA' | '30mA' | '100mA' | '300mA';
+export type ComponentType = 
+  | 'breaker' 
+  | 'rcd' 
+  | 'rcbo' 
+  | 'spd' 
+  | 'isolator' 
+  | 'contactor'
+  | 'fuse'
+  | 'terminal'
+  | 'timeRelay'
+  | 'phaseRelay'
+  | 'separator';
 
 export interface PanelComponent {
   id: string;
@@ -74,7 +80,9 @@ export const COMPONENT_HEAT_FACTORS: Record<ComponentType, number> = {
   contactor: 1.0,
   fuse: 0.7,
   separator: 0.1,
-  terminal: 0.05
+  terminal: 0.05,
+  timeRelay: 2,
+  phaseRelay: 2
 };
 
 // Base ambient temperature
@@ -131,6 +139,20 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     width: 2,
     rating: '63',
     phases: ['L1', 'L2', 'L3', 'N', 'PE']
+  },
+  timeRelay: {
+    width: 2,
+    rating: '16',
+    phases: ['L1'],
+    heat: 2,
+    description: 'Releu de timp'
+  },
+  phaseRelay: {
+    width: 2,
+    rating: '16',
+    phases: ['L1', 'L2', 'L3'],
+    heat: 2,
+    description: 'Releu de fază'
   }
 };
 

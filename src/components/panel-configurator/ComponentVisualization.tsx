@@ -133,6 +133,36 @@ export const ComponentVisualization: React.FC<ComponentVisualizationProps> = ({ 
             <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
           </div>
         )}
+        {type === 'timeRelay' && (
+          <div className="w-16 h-16 flex flex-col border-2 border-[#00FFFF]/20 rounded-sm 
+                       bg-[#0F1724]/70 relative overflow-hidden">
+            <div className="h-1/2 border-b border-[#00FFFF]/30 flex items-center justify-center">
+              <div className="text-[#00FFFF]/90 text-xs">TIME</div>
+            </div>
+            <div className="h-1/2 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full border-2 border-[#00FFFF]/40 flex items-center justify-center">
+                <div className="w-1 h-4 bg-[#00FFFF]/60 rotate-45"></div>
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
+          </div>
+        )}
+        {type === 'phaseRelay' && (
+          <div className="w-16 h-16 flex flex-col border-2 border-[#00FFFF]/20 rounded-sm 
+                       bg-[#0F1724]/70 relative overflow-hidden">
+            <div className="h-1/2 border-b border-[#00FFFF]/30 flex items-center justify-center">
+              <div className="text-[#00FFFF]/90 text-xs">PHASE</div>
+            </div>
+            <div className="h-1/2 flex items-center justify-center">
+              <div className="flex gap-1">
+                <div className="w-2 h-6 bg-[#00FFFF]/40"></div>
+                <div className="w-2 h-6 bg-[#00FFFF]/40"></div>
+                <div className="w-2 h-6 bg-[#00FFFF]/40"></div>
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
+          </div>
+        )}
       </div>
       
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-70 pointer-events-none">
