@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -53,7 +52,6 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-                // Light Reflect brand colors
                 'electric-blue': '#0077FF',
                 'electric-blue-dark': '#0055CC',
                 'electric-blue-light': '#33AAFF',
@@ -143,17 +141,13 @@ export default {
                     '0%': { transform: 'rotate(0deg)' },
                     '100%': { transform: 'rotate(360deg)' }
                 },
-                'scanHorizontal': {
-                    '0%': { top: '-10px' },
-                    '50%': { top: '100%' },
-                    '50.1%': { top: '100%' },
-                    '100%': { top: '-10px' }
-                },
                 'scanVertical': {
-                    '0%': { left: '-10px' },
-                    '50%': { left: '100%' },
-                    '50.1%': { left: '100%' },
-                    '100%': { left: '-10px' }
+                    '0%': { transform: 'translateY(-100%)' },
+                    '100%': { transform: 'translateY(200%)' }
+                },
+                'scanHorizontal': {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(200%)' }
                 }
 			},
 			animation: {
@@ -168,8 +162,8 @@ export default {
                 'holographic-shine': 'holographic-shine 10s linear infinite',
                 'glitch': 'glitch 0.5s infinite',
                 'spin-slow': 'spin-slow 15s linear infinite',
-                'scanHorizontal': 'scanHorizontal 8s linear infinite',
-                'scanVertical': 'scanVertical 12s linear infinite'
+                'scanVertical': 'scanVertical 2s linear infinite',
+                'scanHorizontal': 'scanHorizontal 2s linear infinite'
 			},
             backgroundImage: {
                 'circuit-pattern': "url('/src/assets/circuit-background.png')",

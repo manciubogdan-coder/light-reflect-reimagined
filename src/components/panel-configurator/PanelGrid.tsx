@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { PanelComponent, ComponentType } from '@/lib/electricalPanelTypes';
 import { createNewComponent } from './ComponentTemplates';
 import { Button } from '@/components/ui/button';
 import { X, Settings, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { motion } from 'framer-motion';
 
 interface PanelGridProps {
   moduleCount: number;
@@ -12,6 +12,7 @@ interface PanelGridProps {
   onComponentAdd: (component: PanelComponent) => void;
   onComponentRemove: (componentId: string) => void; 
   onComponentEdit: (componentId: string) => void;
+  onComponentMove?: (componentId: string, newPosition: number) => void;
   showPhases?: boolean;
   highlightPosition?: number | null;
 }
@@ -22,10 +23,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   onComponentAdd, 
   onComponentRemove,
   onComponentEdit,
+  onComponentMove,
   showPhases = true,
   highlightPosition = null
 }) => {
-  const [activeDragType, setActiveDragType] = useState<ComponentType | null>(null);
+  const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
   
   // Create an array representing all modules in the panel
   const modules = Array.from({ length: moduleCount }, (_, i) => i);
@@ -42,35 +44,50 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, position: number) => {
     e.preventDefault();
     
-    // Check if the position is already occupied
-    if (moduleToComponent[position]) return;
-    
-    try {
-      const componentTypeData = e.dataTransfer.getData('application/reactflow');
-      const { type } = JSON.parse(componentTypeData);
-      
-      // Create a new component of the dragged type
-      const newComponent = createNewComponent(type as ComponentType, position);
-      
-      // Check if there's enough space for the component
-      const componentWidth = newComponent.width;
-      let hasSpace = true;
-      
-      for (let i = 0; i < componentWidth; i++) {
-        if (position + i >= moduleCount || moduleToComponent[position + i]) {
-          hasSpace = false;
-          break;
+    // Handle component repositioning
+    if (draggedComponent) {
+      const component = components.find(c => c.id === draggedComponent);
+      if (component && onComponentMove) {
+        // Check if there's enough space at the new position
+        const hasSpace = checkSpaceAvailability(position, component.width);
+        if (hasSpace) {
+          onComponentMove(draggedComponent, position);
         }
       }
+      setDraggedComponent(null);
+      return;
+    }
+    
+    // Handle new component drop
+    try {
+      const componentTypeData = e.dataTransfer.getData('application/reactflow');
+      const { type, rating, curve } = JSON.parse(componentTypeData);
       
+      const newComponent = createNewComponent(type as ComponentType, position);
+      newComponent.rating = rating || newComponent.rating;
+      if (curve) newComponent.curve = curve;
+      
+      const hasSpace = checkSpaceAvailability(position, newComponent.width);
       if (hasSpace) {
         onComponentAdd(newComponent);
       }
     } catch (error) {
       console.error("Error handling drop:", error);
     }
-    
-    setActiveDragType(null);
+  };
+
+  const checkSpaceAvailability = (position: number, width: number) => {
+    for (let i = 0; i < width; i++) {
+      if (position + i >= moduleCount || moduleToComponent[position + i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+  
+  const handleComponentDragStart = (e: React.DragEvent<HTMLDivElement>, componentId: string) => {
+    setDraggedComponent(componentId);
+    e.dataTransfer.effectAllowed = 'move';
   };
   
   const getComponentColor = (component: PanelComponent | undefined) => {
@@ -108,7 +125,12 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
     if (!isFirstModule) return null;
     
     return (
-      <div className="absolute inset-0 flex flex-col justify-between p-1">
+      <motion.div 
+        className="absolute inset-0 flex flex-col justify-between p-1"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
         <div className="flex justify-between items-center">
           <span className="font-bold text-xs">{component.name || `${component.rating}A`}</span>
           <div className="flex gap-1">
@@ -152,7 +174,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
             <span className="text-xs text-gray-400">{component.width} module</span>
           </div>
         )}
-      </div>
+      </motion.div>
     );
   };
   
@@ -186,6 +208,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
                 display: !isFirstModule && component ? 'none' : 'block',
               }}
+              draggable={isFirstModule && !!component}
+              onDragStart={isFirstModule && component ? (e) => handleComponentDragStart(e, component.id) : undefined}
               onDragOver={!component ? handleDragOver : undefined}
               onDrop={!component ? (e) => handleDrop(e, position) : undefined}
             >

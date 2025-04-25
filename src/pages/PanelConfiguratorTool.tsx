@@ -49,7 +49,6 @@ const PanelConfiguratorTool = () => {
   const [isSending, setIsSending] = useState(false);
   const [highlightPosition, setHighlightPosition] = useState<number | null>(null);
   
-  // Get AI suggestions helper and also get the active suggestions
   const { 
     suggestions, 
     activeHoverSuggestion, 
@@ -192,10 +191,20 @@ ${values.details}
     }
   };
 
-  // Set the highlight position when a suggestion is hovered
+  const handleMoveComponent = (componentId: string, newPosition: number) => {
+    setComponents(components.map(component => 
+      component.id === componentId 
+        ? { ...component, position: newPosition }
+        : component
+    ));
+    toast({
+      title: "Componentă repoziționată",
+      variant: "default"
+    });
+  };
+
   React.useEffect(() => {
     if (activeHoverSuggestion) {
-      // Find the suggestion position from the suggestions array
       const hoveredSuggestion = suggestions.find(s => s.id === activeHoverSuggestion);
       if (hoveredSuggestion) {
         setHighlightPosition(hoveredSuggestion.position);
@@ -366,6 +375,7 @@ ${values.details}
                   onComponentAdd={handleAddComponent}
                   onComponentRemove={handleRemoveComponent} 
                   onComponentEdit={handleEditComponent}
+                  onComponentMove={handleMoveComponent}
                   showPhases={supplyType === 'three-phase'}
                   highlightPosition={highlightPosition}
                 />

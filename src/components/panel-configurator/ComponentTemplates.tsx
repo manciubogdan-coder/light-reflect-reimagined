@@ -1,18 +1,19 @@
-
 import React from 'react';
 import { ComponentType, PanelComponent, COMPONENT_TEMPLATES } from '@/lib/electricalPanelTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@/components/ui/button';
 import { 
-  CirclePlus, 
   Zap,
   Power,
+  CirclePlus,
   CircleX
 } from 'lucide-react';
 
 interface ComponentCardProps {
   type: ComponentType;
   label: string;
+  rating?: string;
+  curve?: 'B' | 'C' | 'D';
   onDragStart: (type: ComponentType) => void;
 }
 
@@ -25,23 +26,109 @@ const componentIcons: Record<ComponentType, React.ReactNode> = {
   contactor: <CirclePlus className="size-4" />
 };
 
-export const ComponentCard: React.FC<ComponentCardProps> = ({ type, label, onDragStart }) => {
+export const ComponentCard: React.FC<ComponentCardProps> = ({ 
+  type, 
+  label, 
+  rating = '16',
+  curve = 'C',
+  onDragStart 
+}) => {
   const handleDragStart = (e: React.DragEvent) => {
-    e.dataTransfer.setData('application/reactflow', JSON.stringify({ type }));
+    e.dataTransfer.setData('application/reactflow', JSON.stringify({ 
+      type,
+      rating,
+      curve 
+    }));
     e.dataTransfer.effectAllowed = 'move';
     onDragStart(type);
   };
 
   return (
     <div
-      className="border border-[#253142] rounded-md p-2 cursor-grab transition-colors hover:bg-[#162030] bg-[#0c1320] text-white flex items-center gap-2"
+      className="relative group"
       draggable
       onDragStart={handleDragStart}
     >
-      <div className="flex-shrink-0 text-[#00FFFF]">
-        {componentIcons[type] || <CirclePlus className="size-4" />}
+      <div className="border border-[#00FFFF]/30 rounded-lg p-4 cursor-grab 
+                    transition-all duration-300 bg-gradient-to-r from-[#0c1320]/90 
+                    to-[#162030]/90 backdrop-blur overflow-hidden
+                    hover:border-[#00FFFF]/50 hover:shadow-[0_0_15px_rgba(0,255,255,0.2)]">
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Holographic scanner effect */}
+          <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-[#00FFFF]/30 to-transparent 
+                        animate-scanVertical"></div>
+          <div className="absolute w-1 h-full bg-gradient-to-b from-transparent via-[#00FFFF]/30 to-transparent 
+                        animate-scanHorizontal"></div>
+        </div>
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-8 rounded-full bg-[#00FFFF]/10 flex items-center justify-center
+                          border border-[#00FFFF]/30">
+              <div className="text-[#00FFFF]">
+                {componentIcons[type]}
+              </div>
+            </div>
+            <div>
+              <div className="text-sm font-medium text-white">{label}</div>
+              {rating && <div className="text-xs text-[#00FFFF]/70">{rating}A - Curba {curve}</div>}
+            </div>
+          </div>
+          
+          {/* Component visualization */}
+          <div className="relative w-full h-24 bg-[#0c1320] rounded-md border border-[#253142] 
+                        overflow-hidden group-hover:border-[#00FFFF]/30 transition-colors">
+            <ComponentVisualization type={type} />
+          </div>
+        </div>
       </div>
-      <span>{label}</span>
+    </div>
+  );
+};
+
+const ComponentVisualization: React.FC<{ type: ComponentType }> = ({ type }) => {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center">
+      {/* Holographic effect container */}
+      <div className="relative">
+        {type === 'breaker' && (
+          <div className="w-16 h-24 flex flex-col border-2 border-[#00FFFF]/20 rounded-sm 
+                       bg-[#0F1724]/70 relative overflow-hidden">
+            <div className="h-1/2 border-b border-[#00FFFF]/30 flex items-center justify-center">
+              <div className="w-4 h-4 rounded-full bg-[#00FFFF]/20 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-[#00FFFF]/60"></div>
+              </div>
+            </div>
+            <div className="h-1/2 flex items-center justify-center">
+              <div className="w-4 h-8 bg-[#00FFFF]/20 rounded-sm"></div>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
+            <div className="absolute inset-0 animate-pulse opacity-30 
+                         bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
+          </div>
+        )}
+        {type === 'rcd' && (
+          <div className="w-24 h-24 flex flex-col border-2 border-[#00FFFF]/20 rounded-sm 
+                       bg-[#0F1724]/70 relative overflow-hidden">
+            <div className="h-1/2 border-b border-[#00FFFF]/30 flex items-center justify-center">
+              <div className="w-16 h-6 rounded-sm bg-[#00FFFF]/20 flex items-center justify-center">
+                <div className="text-[#00FFFF]/90 text-xs">TEST</div>
+              </div>
+            </div>
+            <div className="h-1/2 flex items-center justify-center">
+              <Power className="w-10 h-10 text-[#00FFFF]/40" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
+          </div>
+        )}
+        {/* Add similar visualizations for other component types */}
+      </div>
+      
+      {/* Holographic scan effect */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-70 pointer-events-none">
+        <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#00FFFF]/60 to-transparent 
+                     absolute animate-scanHorizontal"></div>
+      </div>
     </div>
   );
 };
@@ -49,16 +136,75 @@ export const ComponentCard: React.FC<ComponentCardProps> = ({ type, label, onDra
 export const ComponentPalette: React.FC<{ onDragStart: (type: ComponentType) => void }> = ({ 
   onDragStart 
 }) => {
+  const breakerVariants = [
+    { rating: '10', curve: 'B' },
+    { rating: '16', curve: 'B' },
+    { rating: '16', curve: 'C' },
+    { rating: '20', curve: 'C' },
+    { rating: '25', curve: 'C' },
+    { rating: '32', curve: 'D' },
+  ];
+
   return (
-    <div className="p-4 border rounded-lg bg-[#0c1320] border-[#253142] text-white">
-      <h3 className="font-medium mb-3">Componente disponibile</h3>
-      <div className="space-y-2">
-        <ComponentCard type="breaker" label="Siguranță automată" onDragStart={onDragStart} />
-        <ComponentCard type="rcd" label="Protecție diferențială (RCD)" onDragStart={onDragStart} />
-        <ComponentCard type="rcbo" label="Siguranță diferențială (RCBO)" onDragStart={onDragStart} />
-        <ComponentCard type="spd" label="Protecție la supratensiune (SPD)" onDragStart={onDragStart} />
-        <ComponentCard type="isolator" label="Întrerupător general" onDragStart={onDragStart} />
-        <ComponentCard type="contactor" label="Contactor" onDragStart={onDragStart} />
+    <div className="space-y-4">
+      {/* Circuit Breakers */}
+      <div>
+        <h4 className="text-sm font-medium text-gray-400 mb-2">Siguranțe automate</h4>
+        <div className="grid grid-cols-1 gap-3">
+          {breakerVariants.map((variant, index) => (
+            <ComponentCard 
+              key={index}
+              type="breaker"
+              label={`Siguranță ${variant.rating}A`}
+              rating={variant.rating}
+              curve={variant.curve as 'B' | 'C' | 'D'}
+              onDragStart={onDragStart}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* RCDs */}
+      <div>
+        <h4 className="text-sm font-medium text-gray-400 mb-2">Protecție diferențială</h4>
+        <div className="grid grid-cols-1 gap-3">
+          <ComponentCard 
+            type="rcd"
+            label="RCD 2P 25A/30mA"
+            rating="25"
+            onDragStart={onDragStart}
+          />
+          <ComponentCard 
+            type="rcd"
+            label="RCD 4P 40A/300mA"
+            rating="40"
+            onDragStart={onDragStart}
+          />
+        </div>
+      </div>
+
+      {/* Other components */}
+      <div>
+        <h4 className="text-sm font-medium text-gray-400 mb-2">Alte componente</h4>
+        <div className="grid grid-cols-1 gap-3">
+          <ComponentCard 
+            type="rcbo"
+            label="RCBO 16A/30mA"
+            rating="16"
+            onDragStart={onDragStart}
+          />
+          <ComponentCard 
+            type="spd"
+            label="Descărcător SPD Tip 2"
+            onDragStart={onDragStart}
+          />
+          <ComponentCard 
+            type="isolator"
+            label="Întrerupător general"
+            rating="63"
+            onDragStart={onDragStart}
+          />
+        </div>
       </div>
     </div>
   );
@@ -80,4 +226,3 @@ export const createNewComponent = (type: ComponentType, position: number = 0): P
     phases: template.phases as any || ['L1'],
   };
 };
-
