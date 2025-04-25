@@ -1,5 +1,4 @@
-
-export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor';
+export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor' | 'fuse' | 'separator';
 export type CurveType = 'B' | 'C' | 'D';
 export type PhaseType = 'L1' | 'L2' | 'L3' | 'N' | 'PE';
 export type RatingType = '6' | '10' | '16' | '20' | '25' | '32' | '40' | '50' | '63';
@@ -91,6 +90,16 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     type: 'contactor',
     width: 1,
     phases: ['L1'],
+  },
+  fuse: {
+    width: 3,
+    rating: '63',
+    phases: ['L1', 'L2', 'L3']
+  },
+  separator: {
+    width: 3,
+    rating: '63',
+    phases: ['L1', 'L2', 'L3']
   }
 };
 
