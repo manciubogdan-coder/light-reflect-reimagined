@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ComponentType } from '@/lib/electricalPanelTypes';
 import { 
@@ -17,8 +16,8 @@ interface ComponentVisualizationProps {
 
 export const ComponentVisualization: React.FC<ComponentVisualizationProps> = ({ type }) => {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <div className="relative">
+    <div className="relative w-full h-full flex items-center justify-center p-1">
+      <div className="relative scale-110">
         {type === 'breaker' && (
           <div className="w-12 h-16 flex flex-col border-2 border-[#00FFFF]/20 rounded-sm 
                        bg-[#0F1724]/70 relative overflow-hidden">

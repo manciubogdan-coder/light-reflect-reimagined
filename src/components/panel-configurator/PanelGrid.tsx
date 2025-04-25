@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { PanelComponent, ComponentType } from '@/lib/electricalPanelTypes';
 import { createNewComponent } from './ComponentTemplates';
@@ -184,31 +183,46 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   };
 
   const renderConnectionLines = () => {
-    // Render connections between components
     return components.map(component => {
       if (!component.connections?.length) return null;
       
       return component.connections.map(targetId => {
-        const sourceCenter = getComponentCenter(component.id);
-        const targetCenter = getComponentCenter(targetId);
+        const source = document.getElementById(`component-${component.id}`);
+        const target = document.getElementById(`component-${targetId}`);
         
-        if (!sourceCenter || !targetCenter) return null;
+        if (!source || !target) return null;
+        
+        const sourceRect = source.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        
+        const startX = sourceRect.left + sourceRect.width / 2;
+        const startY = sourceRect.top + sourceRect.height / 2;
+        const endX = targetRect.left + targetRect.width / 2;
+        const endY = targetRect.top + targetRect.height / 2;
         
         return (
           <svg
             key={`${component.id}-${targetId}`}
-            className="absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+            className="absolute top-0 left-0 w-full h-full pointer-events-none z-20"
           >
             <line
-              x1={sourceCenter.x}
-              y1={sourceCenter.y}
-              x2={targetCenter.x}
-              y2={targetCenter.y}
+              x1={startX}
+              y1={startY}
+              x2={endX}
+              y2={endY}
               stroke="#00FFFF"
-              strokeWidth="1"
-              strokeDasharray="3,2"
-              strokeOpacity="0.7"
-            />
+              strokeWidth="2"
+              strokeDasharray="4 2"
+              strokeOpacity="0.8"
+            >
+              <animate 
+                attributeName="stroke-dashoffset"
+                from="6"
+                to="0"
+                dur="0.5s"
+                repeatCount="indefinite"
+              />
+            </line>
           </svg>
         );
       });
@@ -236,67 +250,6 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           strokeOpacity="0.7"
         />
       </svg>
-    );
-  };
-
-  const renderComponentContent = (component: PanelComponent, isFirstModule: boolean) => {
-    if (!isFirstModule) return null;
-    
-    return (
-      <motion.div 
-        className="absolute inset-0 flex flex-col justify-between p-1"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.2 }}
-      >
-        <div className="flex justify-between items-center">
-          <span className="font-bold text-xs">{component.name || `${component.rating}A`}</span>
-          <div className="flex gap-1">
-            <button 
-              onClick={() => onComponentEdit(component.id)}
-              className="text-gray-400 hover:text-white"
-            >
-              <Settings className="h-3 w-3" />
-            </button>
-            <button 
-              onClick={() => onComponentRemove(component.id)}
-              className="text-gray-400 hover:text-white"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-        
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
-          <ComponentVisualization type={component.type} />
-        </div>
-        
-        <div className="mt-auto z-10">
-          {component.description && (
-            <span className="text-xs text-gray-400 truncate block">{component.description}</span>
-          )}
-          {component.diffProtection && component.diffProtection !== 'none' && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
-                    <Info className="inline h-2 w-2" /> {component.diffProtection}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs">Protecție diferențială: {component.diffProtection}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </div>
-        
-        {component.width > 1 && (
-          <div className="absolute -bottom-3 left-0 w-full flex justify-center">
-            <span className="text-xs text-gray-400">{component.width} module</span>
-          </div>
-        )}
-      </motion.div>
     );
   };
 
@@ -361,10 +314,10 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       
       <div 
         ref={gridRef}
-        className="grid border-[#253142] grid-cols-12 gap-1 bg-[#0c1320] p-2 rounded-lg relative"
+        className="grid border-[#253142] grid-cols-12 gap-2 bg-[#0c1320] p-4 rounded-lg relative"
         style={{
-          gridTemplateRows: `repeat(${rows}, 48px)`,
-          height: `${rows * 48 + (rows - 1) * 4 + 16}px` // height of modules + gaps + padding
+          gridTemplateRows: `repeat(${rows}, 60px)`, // Increased from 48px to 60px
+          height: `${rows * 60 + (rows - 1) * 8 + 32}px` // Adjusted for new height and gap
         }}
         onMouseMove={handleGridMouseMove}
       >
@@ -383,15 +336,17 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               key={`module-${position}`}
               id={component && isFirstModule ? `component-${component.id}` : `module-${position}`}
               className={`
-                border rounded relative transition-all duration-300
+                border rounded-md relative transition-all duration-300
                 ${component ? `border-[#253142] ${getComponentColor(component)}` : 
                   isHighlighted ? 'border-[#00FFFF] bg-[#162030] shadow-[0_0_10px_rgba(0,255,255,0.3)]' : 
                   'border-[#253142] bg-[#0c1320] hover:bg-[#162030]'}
+                ${connectionMode && component ? 'cursor-pointer hover:border-[#00FFFF] hover:shadow-[0_0_10px_rgba(0,255,255,0.2)]' : ''}
               `}
               style={{
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
                 gridRow: `${row + 1} / span 1`,
                 display: !isFirstModule && component ? 'none' : 'block',
+                minHeight: '60px' // Added minimum height
               }}
               draggable={isFirstModule && !!component}
               onDragStart={isFirstModule && component ? (e) => handleComponentDragStart(e, component.id) : undefined}
@@ -404,26 +359,64 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 : undefined}
               onMouseLeave={() => connectionMode && wireStart && setTempWireEnd(null)}
             >
-              {component && isFirstModule && renderComponentContent(component, isFirstModule)}
-              
-              {!component && (
+              {component && isFirstModule ? (
+                <div className="absolute inset-0 flex flex-col justify-between p-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-sm truncate max-w-[70%]">
+                      {component.name || `${component.rating}A`}
+                    </span>
+                    <div className="flex gap-1">
+                      <button 
+                        onClick={() => onComponentEdit(component.id)}
+                        className="text-gray-400 hover:text-white p-1 rounded hover:bg-[#253142]"
+                      >
+                        <Settings className="h-3 w-3" />
+                      </button>
+                      <button 
+                        onClick={() => onComponentRemove(component.id)}
+                        className="text-gray-400 hover:text-white p-1 rounded hover:bg-[#253142]"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center scale-90">
+                    <ComponentVisualization type={component.type} />
+                  </div>
+                  
+                  <div className="mt-auto z-10 flex flex-col gap-1">
+                    {component.description && (
+                      <span className="text-xs text-gray-400 truncate">{component.description}</span>
+                    )}
+                    <div className="flex gap-1 flex-wrap">
+                      {component.diffProtection && component.diffProtection !== 'none' && (
+                        <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
+                          {component.diffProtection}
+                        </span>
+                      )}
+                      {component.curve && (
+                        <span className="inline-block bg-blue-900/30 text-blue-300 text-xs rounded px-1">
+                          Curba {component.curve}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
                 <div className="h-full flex items-center justify-center">
                   <span className={`text-sm ${isHighlighted ? 'text-[#00FFFF]' : 'text-gray-500'}`}>
                     {position + 1}
                   </span>
                 </div>
               )}
-              
-              {isHighlighted && !component && (
-                <div className="absolute inset-0 border border-[#00FFFF]/30 rounded pointer-events-none"></div>
-              )}
             </div>
           );
         })}
 
-        {/* Render connection lines */}
-        {renderConnectionLines()}
-        {renderTempConnectionLine()}
+        {/* Connection lines with better visibility */}
+        {connectionMode && renderConnectionLines()}
+        {connectionMode && renderTempConnectionLine()}
       </div>
     </div>
   );
