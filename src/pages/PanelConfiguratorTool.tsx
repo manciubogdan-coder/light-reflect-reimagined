@@ -17,7 +17,8 @@ import {
   BASE_AMBIENT_TEMP,
   COMPONENT_HEAT_FACTORS
 } from '@/lib/electricalPanelTypes';
-import { validatePanel, analyzePanel } from '@/lib/electricalPanelValidations';
+import { validatePanel } from '@/lib/electricalPanelValidations';
+import { analyzePanel } from '@/lib/panelAnalysisUtils';
 import { downloadPanelPDF } from '@/lib/pdfGenerator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,29 +74,16 @@ const PanelConfiguratorTool = () => {
 
   const validationResults = validatePanel(components);
   
-  const analysis = analyzePanel(components, supplyType);
+  const analysis = analyzePanel(components, supplyType, moduleCount);
   
   useEffect(() => {
-    // Calculate total heat generation in the panel
-    let totalHeat = 0;
-    components.forEach(component => {
-      const current = parseFloat(component.rating);
-      const heatFactor = COMPONENT_HEAT_FACTORS[component.type] || 0.5;
-      totalHeat += current * heatFactor;
-    });
-    
-    // Calculate temperature based on heat generation (simplified model)
-    const calculatedTemperature = BASE_AMBIENT_TEMP + (totalHeat * 0.15);
-    setTemperature(calculatedTemperature);
-    
-    // Calculate used space percentage
-    const totalModulesUsed = components.reduce((acc, comp) => acc + comp.width, 0);
-    const calculatedUsedSpace = (totalModulesUsed / moduleCount) * 100;
-    setUsedSpacePercentage(calculatedUsedSpace);
+    // Update temperature and used space from analysis
+    setTemperature(analysis.temperature);
+    setUsedSpacePercentage(analysis.usedSpace);
     
     // Show ventilation alert if needed
-    setShowVentilationAlert(calculatedUsedSpace > 70);
-  }, [components, moduleCount]);
+    setShowVentilationAlert(!analysis.hasSufficientVentilation);
+  }, [components, moduleCount, analysis]);
 
   const handleAddComponent = (component: PanelComponent) => {
     setComponents([...components, component]);
@@ -152,10 +140,12 @@ const PanelConfiguratorTool = () => {
       supplyType
     };
     
-    downloadPanelPDF(config, analysis.phaseLoads.reduce((acc, curr) => {
+    const phaseCurrents = analysis.phaseLoads.reduce((acc, curr) => {
       acc[curr.phase] = curr.current;
       return acc;
-    }, {} as Record<string, number>), analysis.recommendations);
+    }, {} as Record<string, number>);
+    
+    downloadPanelPDF(config, phaseCurrents, analysis.recommendations);
     
     toast({
       title: "PDF generat cu succes",
@@ -412,20 +402,19 @@ ${values.details}
                     </div>
                     
                     <h5 className="text-sm font-medium text-gray-300 mb-2">Distribuție pe faze</h5>
-                    {Object.entries(analysis.phaseLoads.reduce((acc, curr) => {
-                      acc[curr.phase] = curr.current;
-                      return acc;
-                    }, {} as Record<string, number>)).map(([phase, current]) => (
-                      <div key={phase} className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-gray-400">{phase}</span>
-                        <span className="text-xs text-gray-300">{current.toFixed(1)}A</span>
+                    {analysis.phaseLoads.map((phaseLoad) => (
+                      <div key={phaseLoad.phase} className="flex items-center justify-between mb-1">
+                        <span className="text-xs text-gray-400">{phaseLoad.phase}</span>
+                        <span className="text-xs text-gray-300">{phaseLoad.current.toFixed(1)}A</span>
                         <div className="w-2/3 bg-[#162030] h-1.5 rounded-full ml-2">
                           <div 
                             className={`h-1.5 rounded-full ${
-                              phase === 'L1' ? 'bg-red-500' : 
-                              phase === 'L2' ? 'bg-yellow-500' : 'bg-blue-500'
+                              phaseLoad.phase === 'L1' ? 'bg-red-500' : 
+                              phaseLoad.phase === 'L2' ? 'bg-yellow-500' : 
+                              phaseLoad.phase === 'L3' ? 'bg-blue-500' : 
+                              'bg-gray-500'
                             }`}
-                            style={{ width: `${Math.min(100, (current / 63) * 100)}%` }}
+                            style={{ width: `${Math.min(100, (phaseLoad.current / 63) * 100)}%` }}
                           ></div>
                         </div>
                       </div>

@@ -61,6 +61,7 @@ export interface PanelAnalysis {
   temperature: number; // Estimated panel temperature in Celsius
   usedSpace: number; // Percentage of used space
   hasSufficientVentilation: boolean; // Whether panel has at least 30% free space
+  recommendations: string[]; // General recommendations
 }
 
 // Heat generation per amp for different component types (in watts)
