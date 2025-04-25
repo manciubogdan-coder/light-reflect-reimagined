@@ -43,7 +43,6 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
       suggestion.position
     );
     
-    // Apply suggestion properties to the new component
     componentToAdd.name = suggestion.name || componentToAdd.name;
     componentToAdd.description = suggestion.description || componentToAdd.description;
     componentToAdd.rating = suggestion.rating as RatingType || componentToAdd.rating;
@@ -60,7 +59,6 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
   };
 
   const handleRejectSuggestion = (suggestionId: string) => {
-    // In a full implementation, this would remove the suggestion or mark it as ignored
     toast({
       title: "Sugestie ignorată",
       variant: "default"
@@ -146,9 +144,8 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
                   activeHoverSuggestion === suggestion.id ? "border-[#00FFFF]/50" : ""
                 )}>
                   <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row gap-3 p-4">
-                      {/* Left side - 3D holographic component */}
-                      <div className="relative min-w-[100px] h-[100px] md:min-w-[140px] md:h-[140px] bg-[#0c1320] rounded-md flex items-center justify-center border border-[#253142]">
+                    <div className="flex flex-col md:flex-row gap-4 p-6 items-stretch">
+                      <div className="relative w-full md:w-[200px] h-[160px] bg-[#0c1320] rounded-md flex items-center justify-center border border-[#253142]">
                         <div className={cn(
                           "absolute inset-0 rounded-md overflow-hidden",
                           activeHoverSuggestion === suggestion.id ? "shadow-[0_0_15px_rgba(0,255,255,0.3)]" : ""
@@ -164,72 +161,55 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
                           </div>
                         </div>
                         
-                        {/* Position badge */}
                         <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#162030] border border-[#253142] px-2 py-1 rounded-full text-xs text-[#00FFFF]">
                           Poziție: {suggestion.position + 1}
                         </div>
                       </div>
 
-                      {/* Right side - Suggestion details */}
-                      <div className="flex-1 py-2">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h4 className="text-white font-medium">{suggestion.title}</h4>
-                            <p className="text-sm text-gray-300">{suggestion.description}</p>
-                          </div>
-                          <Badge 
-                            className={cn(
-                              "px-2 py-1 text-xs",
-                              suggestion.severity === 'high' ? "bg-red-900/50 text-red-400 border-red-900/50" : 
-                              suggestion.severity === 'medium' ? "bg-amber-900/50 text-amber-400 border-amber-900/50" : 
-                              "bg-blue-900/50 text-blue-400 border-blue-900/50"
-                            )}
-                          >
-                            {suggestion.severity === 'high' ? 'Obligatoriu' : 
-                             suggestion.severity === 'medium' ? 'Recomandat' : 'Opțional'}
-                          </Badge>
+                      <div className="flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                          <h4 className="text-white font-medium text-lg">{suggestion.title}</h4>
+                          <p className="text-sm text-gray-300 mt-1">{suggestion.description}</p>
                         </div>
 
-                        {/* Educational tip */}
-                        {suggestion.educationalTip && (
-                          <div className="bg-[#0c1320] border border-[#253142] p-3 rounded-md mb-3 relative">
-                            <div className="absolute -top-2 -left-2 bg-[#00FFFF] text-[#0F1724] rounded-full p-1">
-                              <Lightbulb className="w-3 h-3" />
+                        <div className="space-y-3">
+                          {suggestion.educationalTip && (
+                            <div className="bg-[#0c1320] border border-[#253142] p-3 rounded-md relative">
+                              <div className="absolute -top-2 -left-2 bg-[#00FFFF] text-[#0F1724] rounded-full p-1">
+                                <Lightbulb className="w-3 h-3" />
+                              </div>
+                              <p className="text-xs text-gray-300 ml-2">{suggestion.educationalTip}</p>
                             </div>
-                            <p className="text-xs text-gray-300 ml-2">{suggestion.educationalTip}</p>
-                          </div>
-                        )}
+                          )}
 
-                        {/* Normative reference */}
-                        {suggestion.normative && (
-                          <div className="mb-3 text-xs text-gray-400">
-                            Conform normativului: {suggestion.normative}
-                          </div>
-                        )}
+                          {suggestion.normative && (
+                            <div className="mb-3 text-xs text-gray-400">
+                              Conform normativului: {suggestion.normative}
+                            </div>
+                          )}
 
-                        {/* Action buttons */}
-                        <div className="flex gap-2 mt-2">
-                          <Button 
-                            onClick={() => handleAcceptSuggestion(suggestion)}
-                            size="sm"
-                            className="bg-[#162030] border border-[#00FFFF]/50 text-[#00FFFF] hover:bg-[#00FFFF]/20"
-                          >
-                            <CircleCheck className="w-4 h-4 mr-1" /> Adaugă
-                          </Button>
-                          <Button 
-                            onClick={() => handleRejectSuggestion(suggestion.id)}
-                            variant="ghost" 
-                            size="sm"
-                            className="text-gray-400 hover:bg-white/5"
-                          >
-                            <CircleX className="w-4 h-4 mr-1" /> Refuză
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              onClick={() => handleAcceptSuggestion(suggestion)}
+                              size="default"
+                              className="bg-[#162030] border border-[#00FFFF]/50 text-[#00FFFF] hover:bg-[#00FFFF]/20 flex-1"
+                            >
+                              <CircleCheck className="w-5 h-5 mr-2" /> Adaugă
+                            </Button>
+                            <Button 
+                              onClick={() => handleRejectSuggestion(suggestion.id)}
+                              variant="ghost" 
+                              size="default"
+                              className="text-gray-400 hover:bg-white/5 flex-1"
+                            >
+                              <CircleX className="w-5 h-5 mr-2" /> Refuză
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </CardContent>
                   
-                  {/* Highlight effect when hovering */}
                   {activeHoverSuggestion === suggestion.id && (
                     <>
                       <div className="absolute inset-0 border border-[#00FFFF]/30 rounded-lg pointer-events-none"></div>
@@ -256,7 +236,6 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({
   );
 };
 
-// Holographic 3D-like component
 const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
   const getComponentIcon = () => {
     switch(type) {
@@ -272,7 +251,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
               <div className="h-1/2 flex items-center justify-center">
                 <div className="w-4 h-8 bg-[#00FFFF]/20 rounded-sm"></div>
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -291,7 +269,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
               <div className="h-1/2 flex items-center justify-center">
                 <Power className="w-10 h-10 text-[#00FFFF]/40" />
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -314,7 +291,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
               <div className="h-1/3 flex items-center justify-center">
                 <div className="w-4 h-6 bg-[#00FFFF]/20 rounded-sm"></div>
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -337,7 +313,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
                 <div className="mb-1 text-[#00FFFF]/80 text-[8px]">L3</div>
                 <div className="w-4 h-8 bg-[#00FFFF]/20 rounded-sm"></div>
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -358,7 +333,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
                   <div className="text-red-500/80 text-[8px]">OFF</div>
                 </div>
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -379,7 +353,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
               <div className="h-1/4 flex items-center justify-center">
                 <div className="w-6 h-3 bg-[#00FFFF]/20 rounded-sm"></div>
               </div>
-              {/* Holographic effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
               <div className="absolute inset-0 animate-pulse opacity-30 bg-gradient-to-r from-transparent via-[#00FFFF]/20 to-transparent"></div>
             </div>
@@ -394,7 +367,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
             <div className="text-[#00FFFF] text-opacity-70">
               <CircleAlert className="w-8 h-8" />
             </div>
-            {/* Holographic effect */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#00FFFF]/10 to-transparent opacity-50"></div>
           </div>
         );
@@ -404,7 +376,6 @@ const HolographicComponent: React.FC<{ type: ComponentType }> = ({ type }) => {
   return (
     <div className="relative">
       {getComponentIcon()}
-      {/* Scanning line effect */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-70 pointer-events-none">
         <div className="w-full h-1 bg-gradient-to-r from-transparent via-[#00FFFF]/60 to-transparent absolute animate-scanHorizontal"></div>
       </div>
