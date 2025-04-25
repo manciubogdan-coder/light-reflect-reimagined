@@ -40,11 +40,9 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   const gridRef = useRef<HTMLDivElement>(null);
   const [connectionMode, setConnectionMode] = useState<boolean>(false);
   
-  // Create an array representing all modules in the panel
   const rows = Math.ceil(moduleCount / 12);
   const modules = Array.from({ length: rows * 12 }, (_, i) => i);
   
-  // Find which component (if any) occupies each module position
   const moduleToComponent = modules.map(modulePosition => {
     return components.find(component => {
       const componentStart = component.position;
@@ -56,11 +54,9 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, position: number) => {
     e.preventDefault();
     
-    // Handle component repositioning
     if (draggedComponent) {
       const component = components.find(c => c.id === draggedComponent);
       if (component && onComponentMove) {
-        // Check if there's enough space at the new position
         const hasSpace = checkSpaceAvailability(position, component.width);
         if (hasSpace) {
           onComponentMove(draggedComponent, position);
@@ -70,7 +66,6 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       return;
     }
     
-    // Handle new component drop
     try {
       const componentTypeData = e.dataTransfer.getData('application/reactflow');
       const { type, rating, curve } = JSON.parse(componentTypeData);
@@ -136,7 +131,6 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       return;
     }
     
-    // Add connection between components
     if (onComponentConnect) {
       onComponentConnect(wireStart, componentId);
     }
@@ -253,9 +247,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
     );
   };
 
-  // Calculate grid rows and columns
-  const cols = 12; // Always 12 columns per row in electrical panels
-  
+  const cols = 12;
+
   return (
     <div className="border border-[#253142] rounded-lg p-4 bg-[#0F1724]">
       <div className="flex items-center justify-between mb-3">
@@ -314,10 +307,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       
       <div 
         ref={gridRef}
-        className="grid border-[#253142] grid-cols-12 gap-2 bg-[#0c1320] p-4 rounded-lg relative"
+        className="grid border-[#253142] grid-cols-12 gap-4 bg-[#0c1320] p-6 rounded-lg relative"
         style={{
-          gridTemplateRows: `repeat(${rows}, 60px)`, // Increased from 48px to 60px
-          height: `${rows * 60 + (rows - 1) * 8 + 32}px` // Adjusted for new height and gap
+          gridTemplateRows: `repeat(${rows}, 80px)`,
+          height: `${rows * 80 + (rows - 1) * 16 + 48}px`,
+          rowGap: "1.5rem"
         }}
         onMouseMove={handleGridMouseMove}
       >
@@ -327,7 +321,6 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           const width = component?.width || 1;
           const isHighlighted = position === highlightPosition;
           
-          // Calculate row and column
           const row = Math.floor(position / cols);
           const col = position % cols;
           
@@ -346,7 +339,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
                 gridRow: `${row + 1} / span 1`,
                 display: !isFirstModule && component ? 'none' : 'block',
-                minHeight: '60px' // Added minimum height
+                minHeight: '80px',
+                position: 'relative'
               }}
               draggable={isFirstModule && !!component}
               onDragStart={isFirstModule && component ? (e) => handleComponentDragStart(e, component.id) : undefined}
@@ -360,11 +354,18 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               onMouseLeave={() => connectionMode && wireStart && setTempWireEnd(null)}
             >
               {component && isFirstModule ? (
-                <div className="absolute inset-0 flex flex-col justify-between p-2">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-sm truncate max-w-[70%]">
-                      {component.name || `${component.rating}A`}
-                    </span>
+                <div className="absolute inset-0 flex flex-col justify-between p-3">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-sm truncate max-w-[120px]">
+                        {component.name || `${component.rating}A`}
+                      </span>
+                      {component.description && (
+                        <span className="text-xs text-gray-400 truncate max-w-[120px]">
+                          {component.description}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-1">
                       <button 
                         onClick={() => onComponentEdit(component.id)}
@@ -381,26 +382,26 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                     </div>
                   </div>
                   
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center scale-90">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
                     <ComponentVisualization type={component.type} />
                   </div>
                   
-                  <div className="mt-auto z-10 flex flex-col gap-1">
-                    {component.description && (
-                      <span className="text-xs text-gray-400 truncate">{component.description}</span>
+                  <div className="mt-auto z-10 flex flex-wrap gap-1">
+                    {component.diffProtection && component.diffProtection !== 'none' && (
+                      <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
+                        {component.diffProtection}
+                      </span>
                     )}
-                    <div className="flex gap-1 flex-wrap">
-                      {component.diffProtection && component.diffProtection !== 'none' && (
-                        <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
-                          {component.diffProtection}
-                        </span>
-                      )}
-                      {component.curve && (
-                        <span className="inline-block bg-blue-900/30 text-blue-300 text-xs rounded px-1">
-                          Curba {component.curve}
-                        </span>
-                      )}
-                    </div>
+                    {component.curve && (
+                      <span className="inline-block bg-blue-900/30 text-blue-300 text-xs rounded px-1">
+                        Curba {component.curve}
+                      </span>
+                    )}
+                    {component.rating && (
+                      <span className="inline-block bg-purple-900/30 text-purple-300 text-xs rounded px-1">
+                        {component.rating}A
+                      </span>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -414,9 +415,76 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           );
         })}
 
-        {/* Connection lines with better visibility */}
-        {connectionMode && renderConnectionLines()}
-        {connectionMode && renderTempConnectionLine()}
+        {connectionMode && (
+          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-20">
+            {components.map(component => 
+              component.connections?.map(targetId => {
+                const sourceEl = document.getElementById(`component-${component.id}`);
+                const targetEl = document.getElementById(`component-${targetId}`);
+                
+                if (!sourceEl || !targetEl) return null;
+                
+                const sourceRect = sourceEl.getBoundingClientRect();
+                const targetRect = targetEl.getBoundingClientRect();
+                const gridRect = gridRef.current?.getBoundingClientRect();
+                
+                if (!gridRect) return null;
+                
+                const startX = sourceRect.left - gridRect.left + sourceRect.width / 2;
+                const startY = sourceRect.top - gridRect.top + sourceRect.height / 2;
+                const endX = targetRect.left - gridRect.left + targetRect.width / 2;
+                const endY = targetRect.top - gridRect.top + targetRect.height / 2;
+                
+                const midY = (startY + endY) / 2;
+                const cp1x = startX;
+                const cp1y = midY;
+                const cp2x = endX;
+                const cp2y = midY;
+                
+                return (
+                  <g key={`${component.id}-${targetId}`}>
+                    <path
+                      d={`M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`}
+                      fill="none"
+                      stroke="#00FFFF"
+                      strokeWidth="2"
+                      strokeDasharray="4 2"
+                      strokeOpacity="0.8"
+                      className="animate-dash"
+                    />
+                    <circle
+                      cx={startX}
+                      cy={startY}
+                      r="3"
+                      fill="#00FFFF"
+                      opacity="0.8"
+                    />
+                    <circle
+                      cx={endX}
+                      cy={endY}
+                      r="3"
+                      fill="#00FFFF"
+                      opacity="0.8"
+                    />
+                  </g>
+                );
+              })
+            )}
+          </svg>
+        )}
+
+        {connectionMode && wireStart && tempWireEnd && (
+          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
+            <path
+              d={`M ${getComponentCenter(wireStart)?.x || 0} ${getComponentCenter(wireStart)?.y || 0} 
+                 L ${tempWireEnd.x} ${tempWireEnd.y}`}
+              stroke="#00FFFF"
+              strokeWidth="1"
+              strokeDasharray="3,2"
+              strokeOpacity="0.7"
+            />
+          </svg>
+        )}
       </div>
     </div>
   );
