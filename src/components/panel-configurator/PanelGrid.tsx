@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef, useEffect } from 'react';
 import { PanelComponent, ComponentType } from '@/lib/electricalPanelTypes';
 import { createNewComponent } from './ComponentTemplates';
 import { Button } from '@/components/ui/button';
-import { X, Settings, Info } from 'lucide-react';
+import { X, Settings, Info, Thermometer } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { motion } from 'framer-motion';
+import { ComponentVisualization } from './ComponentVisualization';
 
 interface PanelGridProps {
   moduleCount: number;
@@ -13,8 +15,11 @@ interface PanelGridProps {
   onComponentRemove: (componentId: string) => void; 
   onComponentEdit: (componentId: string) => void;
   onComponentMove?: (componentId: string, newPosition: number) => void;
+  onComponentConnect?: (sourceId: string, targetId: string) => void;
   showPhases?: boolean;
   highlightPosition?: number | null;
+  temperature?: number;
+  usedSpacePercentage?: number;
 }
 
 export const PanelGrid: React.FC<PanelGridProps> = ({ 
@@ -24,13 +29,21 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   onComponentRemove,
   onComponentEdit,
   onComponentMove,
+  onComponentConnect,
   showPhases = true,
-  highlightPosition = null
+  highlightPosition = null,
+  temperature = 25,
+  usedSpacePercentage = 0
 }) => {
   const [draggedComponent, setDraggedComponent] = useState<string | null>(null);
+  const [wireStart, setWireStart] = useState<string | null>(null);
+  const [tempWireEnd, setTempWireEnd] = useState<{x: number, y: number} | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [connectionMode, setConnectionMode] = useState<boolean>(false);
   
   // Create an array representing all modules in the panel
-  const modules = Array.from({ length: moduleCount }, (_, i) => i);
+  const rows = Math.ceil(moduleCount / 12);
+  const modules = Array.from({ length: rows * 12 }, (_, i) => i);
   
   // Find which component (if any) occupies each module position
   const moduleToComponent = modules.map(modulePosition => {
@@ -78,7 +91,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
 
   const checkSpaceAvailability = (position: number, width: number) => {
     for (let i = 0; i < width; i++) {
-      if (position + i >= moduleCount || moduleToComponent[position + i]) {
+      const pos = position + i;
+      if (pos >= moduleCount || moduleToComponent[pos]) {
         return false;
       }
     }
@@ -100,6 +114,8 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       case 'spd': return 'bg-yellow-950/40 border-yellow-900/40 text-yellow-300';
       case 'isolator': return 'bg-gray-950/40 border-gray-900/40 text-gray-300';
       case 'contactor': return 'bg-purple-950/40 border-purple-900/40 text-purple-300';
+      case 'fuse': return 'bg-orange-950/40 border-orange-900/40 text-orange-300';
+      case 'terminal': return 'bg-cyan-950/40 border-cyan-900/40 text-cyan-300';
       default: return 'bg-[#0c1320]';
     }
   };
@@ -107,6 +123,52 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleWireStart = (componentId: string) => {
+    if (!connectionMode) return;
+    setWireStart(componentId);
+  };
+
+  const handleWireEnd = (componentId: string) => {
+    if (!connectionMode || !wireStart || wireStart === componentId) {
+      setWireStart(null);
+      setTempWireEnd(null);
+      return;
+    }
+    
+    // Add connection between components
+    if (onComponentConnect) {
+      onComponentConnect(wireStart, componentId);
+    }
+    
+    setWireStart(null);
+    setTempWireEnd(null);
+  };
+
+  const handleGridMouseMove = (e: React.MouseEvent) => {
+    if (!connectionMode || !wireStart || !gridRef.current) return;
+    
+    const rect = gridRef.current.getBoundingClientRect();
+    setTempWireEnd({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const getComponentCenter = (componentId: string): {x: number, y: number} | null => {
+    if (!gridRef.current) return null;
+    
+    const componentElement = document.getElementById(`component-${componentId}`);
+    if (!componentElement) return null;
+    
+    const gridRect = gridRef.current.getBoundingClientRect();
+    const componentRect = componentElement.getBoundingClientRect();
+    
+    return {
+      x: (componentRect.left + componentRect.width / 2) - gridRect.left,
+      y: (componentRect.top + componentRect.height / 2) - gridRect.top
+    };
   };
   
   const renderPhaseLabels = () => {
@@ -118,6 +180,62 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
         <div className="text-center text-xs font-semibold bg-yellow-900/30 text-yellow-300 rounded p-1">L2</div>
         <div className="text-center text-xs font-semibold bg-blue-900/30 text-blue-300 rounded p-1">L3</div>
       </div>
+    );
+  };
+
+  const renderConnectionLines = () => {
+    // Render connections between components
+    return components.map(component => {
+      if (!component.connections?.length) return null;
+      
+      return component.connections.map(targetId => {
+        const sourceCenter = getComponentCenter(component.id);
+        const targetCenter = getComponentCenter(targetId);
+        
+        if (!sourceCenter || !targetCenter) return null;
+        
+        return (
+          <svg
+            key={`${component.id}-${targetId}`}
+            className="absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+          >
+            <line
+              x1={sourceCenter.x}
+              y1={sourceCenter.y}
+              x2={targetCenter.x}
+              y2={targetCenter.y}
+              stroke="#00FFFF"
+              strokeWidth="1"
+              strokeDasharray="3,2"
+              strokeOpacity="0.7"
+            />
+          </svg>
+        );
+      });
+    });
+  };
+
+  const renderTempConnectionLine = () => {
+    if (!wireStart || !tempWireEnd) return null;
+    
+    const sourceCenter = getComponentCenter(wireStart);
+    if (!sourceCenter) return null;
+    
+    return (
+      <svg
+        className="absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+      >
+        <line
+          x1={sourceCenter.x}
+          y1={sourceCenter.y}
+          x2={tempWireEnd.x}
+          y2={tempWireEnd.y}
+          stroke="#00FFFF"
+          strokeWidth="1"
+          strokeDasharray="3,2"
+          strokeOpacity="0.7"
+        />
+      </svg>
     );
   };
 
@@ -149,7 +267,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           </div>
         </div>
         
-        <div className="mt-auto">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+          <ComponentVisualization type={component.type} />
+        </div>
+        
+        <div className="mt-auto z-10">
           {component.description && (
             <span className="text-xs text-gray-400 truncate block">{component.description}</span>
           )}
@@ -177,17 +299,74 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       </motion.div>
     );
   };
+
+  // Calculate grid rows and columns
+  const cols = 12; // Always 12 columns per row in electrical panels
   
   return (
     <div className="border border-[#253142] rounded-lg p-4 bg-[#0F1724]">
-      {renderPhaseLabels()}
+      <div className="flex items-center justify-between mb-3">
+        {renderPhaseLabels()}
+        <div className="flex gap-2 items-center">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 bg-[#0F1724] p-2 rounded-md border border-[#253142]">
+                  <Thermometer className="h-4 w-4 text-[#00FFFF]" />
+                  <span className="text-sm font-medium text-white">
+                    {temperature.toFixed(1)}°C
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Temperatura estimată în interiorul tabloului</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className={`flex items-center gap-1 p-2 rounded-md border
+                              ${usedSpacePercentage > 70 
+                                ? 'bg-red-950/30 border-red-900/50 text-red-300'
+                                : 'bg-[#0F1724] border-[#253142] text-white'}`}>
+                  <span className="text-sm font-medium">
+                    {usedSpacePercentage.toFixed(0)}% ocupat
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">
+                  {usedSpacePercentage > 70 
+                    ? 'Avertisment: Spațiu insuficient pentru ventilație (minim 30% trebuie să fie liber)'
+                    : 'Spațiu disponibil suficient pentru ventilație adecvată'}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <Button
+            variant={connectionMode ? "secondary" : "outline"}
+            size="sm"
+            onClick={() => setConnectionMode(!connectionMode)}
+            className={connectionMode 
+              ? "bg-[#00FFFF]/20 border-[#00FFFF]/50 text-[#00FFFF]" 
+              : "border-[#253142] text-gray-400"}
+          >
+            {connectionMode ? "Mod cablare activ" : "Activează cablare"}
+          </Button>
+        </div>
+      </div>
       
       <div 
-        className="grid grid-cols-12 gap-1 bg-[#0c1320] p-2 rounded-lg relative"
+        ref={gridRef}
+        className="grid border-[#253142] grid-cols-12 gap-1 bg-[#0c1320] p-2 rounded-lg relative"
         style={{
-          minHeight: '16rem',
-          gridTemplateRows: 'repeat(auto-fill, 48px)'  
+          gridTemplateRows: `repeat(${rows}, 48px)`,
+          height: `${rows * 48 + (rows - 1) * 4 + 16}px` // height of modules + gaps + padding
         }}
+        onMouseMove={handleGridMouseMove}
       >
         {modules.map(position => {
           const component = moduleToComponent[position];
@@ -195,9 +374,14 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
           const width = component?.width || 1;
           const isHighlighted = position === highlightPosition;
           
+          // Calculate row and column
+          const row = Math.floor(position / cols);
+          const col = position % cols;
+          
           return (
             <div
               key={`module-${position}`}
+              id={component && isFirstModule ? `component-${component.id}` : `module-${position}`}
               className={`
                 border rounded relative transition-all duration-300
                 ${component ? `border-[#253142] ${getComponentColor(component)}` : 
@@ -206,14 +390,21 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               `}
               style={{
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
+                gridRow: `${row + 1} / span 1`,
                 display: !isFirstModule && component ? 'none' : 'block',
               }}
               draggable={isFirstModule && !!component}
               onDragStart={isFirstModule && component ? (e) => handleComponentDragStart(e, component.id) : undefined}
               onDragOver={!component ? handleDragOver : undefined}
               onDrop={!component ? (e) => handleDrop(e, position) : undefined}
+              onClick={component && isFirstModule && connectionMode 
+                ? wireStart 
+                  ? () => handleWireEnd(component.id) 
+                  : () => handleWireStart(component.id) 
+                : undefined}
+              onMouseLeave={() => connectionMode && wireStart && setTempWireEnd(null)}
             >
-              {component && renderComponentContent(component, isFirstModule)}
+              {component && isFirstModule && renderComponentContent(component, isFirstModule)}
               
               {!component && (
                 <div className="h-full flex items-center justify-center">
@@ -229,6 +420,10 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
             </div>
           );
         })}
+
+        {/* Render connection lines */}
+        {renderConnectionLines()}
+        {renderTempConnectionLine()}
       </div>
     </div>
   );

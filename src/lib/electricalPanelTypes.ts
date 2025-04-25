@@ -1,5 +1,5 @@
 
-export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor' | 'fuse' | 'separator';
+export type ComponentType = 'breaker' | 'rcd' | 'rcbo' | 'spd' | 'isolator' | 'contactor' | 'fuse' | 'separator' | 'terminal';
 export type CurveType = 'B' | 'C' | 'D';
 export type PhaseType = 'L1' | 'L2' | 'L3' | 'N' | 'PE';
 export type RatingType = '6' | '10' | '16' | '20' | '25' | '32' | '40' | '50' | '63';
@@ -16,6 +16,8 @@ export interface PanelComponent {
   rating: RatingType;
   diffProtection?: DiffProtectionType;
   phases: PhaseType[];
+  connections?: string[]; // IDs of connected components
+  heat?: number; // Heat generation in watts
 }
 
 export interface ValidationRule {
@@ -56,7 +58,26 @@ export interface PanelAnalysis {
     maxImbalance: number;
     recommendations: string[];
   };
+  temperature: number; // Estimated panel temperature in Celsius
+  usedSpace: number; // Percentage of used space
+  hasSufficientVentilation: boolean; // Whether panel has at least 30% free space
 }
+
+// Heat generation per amp for different component types (in watts)
+export const COMPONENT_HEAT_FACTORS: Record<ComponentType, number> = {
+  breaker: 0.8,
+  rcd: 1.2,
+  rcbo: 1.4,
+  spd: 0.5,
+  isolator: 0.3,
+  contactor: 1.0,
+  fuse: 0.7,
+  separator: 0.1,
+  terminal: 0.05
+};
+
+// Base ambient temperature
+export const BASE_AMBIENT_TEMP = 20;
 
 export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>> = {
   breaker: {
@@ -103,6 +124,12 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     width: 3,
     rating: '63',
     phases: ['L1', 'L2', 'L3']
+  },
+  terminal: {
+    type: 'terminal',
+    width: 2,
+    rating: '63',
+    phases: ['L1', 'L2', 'L3', 'N', 'PE']
   }
 };
 
@@ -136,5 +163,17 @@ export const EDUCATION_TIPS = [
     title: "Protecție la supratensiune",
     content: "Utilizarea unui dispozitiv SPD (Surge Protection Device) protejează echipamentele sensibile împotriva supratensiunilor.",
     trigger: ["surge", "spd", "supratensiune"]
+  },
+  {
+    id: "ventilation",
+    title: "Ventilare tablou",
+    content: "Tabloul electric trebuie să aibă minim 30% spațiu liber pentru ventilație adecvată conform normativelor.",
+    trigger: ["ventilation", "ventilare", "spatiu", "aerisire"]
+  },
+  {
+    id: "terminal-blocks",
+    title: "Cleme de distribuție",
+    content: "Utilizarea clemelor de distribuție asigură o conexiune sigură și organizată a circuitelor în tablou.",
+    trigger: ["terminal", "cleme", "distributie"]
   }
 ];

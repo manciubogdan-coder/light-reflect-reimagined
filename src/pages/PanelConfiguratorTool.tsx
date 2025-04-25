@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -12,7 +13,9 @@ import { AISuggestions } from '@/components/panel-configurator/AISuggestions';
 import { 
   ComponentType, 
   PanelComponent, 
-  PanelConfiguration
+  PanelConfiguration,
+  BASE_AMBIENT_TEMP,
+  COMPONENT_HEAT_FACTORS
 } from '@/lib/electricalPanelTypes';
 import { validatePanel, analyzePanel } from '@/lib/electricalPanelValidations';
 import { downloadPanelPDF } from '@/lib/pdfGenerator';
@@ -22,7 +25,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Send, Zap, Power, CircleAlert, Lightbulb } from 'lucide-react';
+import { Download, Send, Zap, Power, CircleAlert, Lightbulb, Thermometer } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { v4 as uuidv4 } from 'uuid';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -30,6 +33,7 @@ import { useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useAISuggestions } from '@/hooks/useAISuggestions';
+import { Separator } from '@/components/ui/separator';
 
 interface ContactFormValues {
   name: string;
@@ -40,7 +44,7 @@ interface ContactFormValues {
 
 const PanelConfiguratorTool = () => {
   const [components, setComponents] = useState<PanelComponent[]>([]);
-  const [moduleCount, setModuleCount] = useState<number>(12);
+  const [moduleCount, setModuleCount] = useState<number>(36);
   const [supplyType, setSupplyType] = useState<'single-phase' | 'three-phase'>('single-phase');
   const [draggingComponentType, setDraggingComponentType] = useState<ComponentType | null>(null);
   const [editingComponent, setEditingComponent] = useState<PanelComponent | null>(null);
@@ -48,6 +52,9 @@ const PanelConfiguratorTool = () => {
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [highlightPosition, setHighlightPosition] = useState<number | null>(null);
+  const [temperature, setTemperature] = useState<number>(BASE_AMBIENT_TEMP);
+  const [usedSpacePercentage, setUsedSpacePercentage] = useState<number>(0);
+  const [showVentilationAlert, setShowVentilationAlert] = useState<boolean>(false);
   
   const { 
     suggestions, 
@@ -68,6 +75,28 @@ const PanelConfiguratorTool = () => {
   
   const analysis = analyzePanel(components, supplyType);
   
+  useEffect(() => {
+    // Calculate total heat generation in the panel
+    let totalHeat = 0;
+    components.forEach(component => {
+      const current = parseFloat(component.rating);
+      const heatFactor = COMPONENT_HEAT_FACTORS[component.type] || 0.5;
+      totalHeat += current * heatFactor;
+    });
+    
+    // Calculate temperature based on heat generation (simplified model)
+    const calculatedTemperature = BASE_AMBIENT_TEMP + (totalHeat * 0.15);
+    setTemperature(calculatedTemperature);
+    
+    // Calculate used space percentage
+    const totalModulesUsed = components.reduce((acc, comp) => acc + comp.width, 0);
+    const calculatedUsedSpace = (totalModulesUsed / moduleCount) * 100;
+    setUsedSpacePercentage(calculatedUsedSpace);
+    
+    // Show ventilation alert if needed
+    setShowVentilationAlert(calculatedUsedSpace > 70);
+  }, [components, moduleCount]);
+
   const handleAddComponent = (component: PanelComponent) => {
     setComponents([...components, component]);
     toast({
@@ -77,7 +106,19 @@ const PanelConfiguratorTool = () => {
   };
   
   const handleRemoveComponent = (componentId: string) => {
-    setComponents(components.filter(c => c.id !== componentId));
+    // Remove connections to this component
+    const updatedComponents = components.map(c => {
+      if (c.connections?.includes(componentId)) {
+        return {
+          ...c,
+          connections: c.connections.filter(id => id !== componentId)
+        };
+      }
+      return c;
+    });
+    
+    // Remove the component itself
+    setComponents(updatedComponents.filter(c => c.id !== componentId));
     toast({
       title: "Componentă eliminată",
       variant: "default"
@@ -111,7 +152,11 @@ const PanelConfiguratorTool = () => {
       supplyType
     };
     
-    downloadPanelPDF(config, analysis.phaseCurrents, analysis.recommendations);
+    downloadPanelPDF(config, analysis.phaseLoads.reduce((acc, curr) => {
+      acc[curr.phase] = curr.current;
+      return acc;
+    }, {} as Record<string, number>), analysis.recommendations);
+    
     toast({
       title: "PDF generat cu succes",
       variant: "default"
@@ -162,6 +207,7 @@ Module: ${moduleCount}
 Componente: ${components.length}
 Curent total: ${analysis.totalCurrent.toFixed(1)}A
 Siguranță principală recomandată: ${analysis.recommendedMainBreaker}A
+Temperatura estimată: ${temperature.toFixed(1)}°C
 
 Detalii suplimentare: 
 ${values.details}
@@ -203,6 +249,24 @@ ${values.details}
     });
   };
 
+  const handleConnectComponents = (sourceId: string, targetId: string) => {
+    setComponents(components.map(component => 
+      component.id === sourceId
+        ? { 
+            ...component, 
+            connections: [...(component.connections || []), targetId].filter(
+              // Remove duplicates
+              (id, index, self) => self.indexOf(id) === index
+            )
+          }
+        : component
+    ));
+    toast({
+      title: "Componente conectate",
+      variant: "default"
+    });
+  };
+
   React.useEffect(() => {
     if (activeHoverSuggestion) {
       const hoveredSuggestion = suggestions.find(s => s.id === activeHoverSuggestion);
@@ -213,6 +277,16 @@ ${values.details}
       setHighlightPosition(null);
     }
   }, [activeHoverSuggestion, suggestions]);
+  
+  useEffect(() => {
+    if (showVentilationAlert) {
+      toast({
+        title: "Atenție: Spațiu insuficient pentru ventilație",
+        description: "Tabloul electric trebuie să aibă minim 30% spațiu liber conform normativelor.",
+        variant: "destructive"
+      });
+    }
+  }, [showVentilationAlert]);
 
   return (
     <>
@@ -276,6 +350,14 @@ ${values.details}
                     <SelectItem value="18">18 module</SelectItem>
                     <SelectItem value="24">24 module</SelectItem>
                     <SelectItem value="36">36 module</SelectItem>
+                    <SelectItem value="48">48 module</SelectItem>
+                    <SelectItem value="72">72 module</SelectItem>
+                    <SelectItem value="96">96 module</SelectItem>
+                    <SelectItem value="120">120 module</SelectItem>
+                    <SelectItem value="144">144 module</SelectItem>
+                    <SelectItem value="192">192 module</SelectItem>
+                    <SelectItem value="240">240 module</SelectItem>
+                    <SelectItem value="288">288 module</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -310,7 +392,10 @@ ${values.details}
                 
                 <div className="mt-6">
                   <div className="bg-[#0c1320] rounded-lg p-4 border border-[#253142]">
-                    <h4 className="font-medium text-white mb-3 font-tech">Analiză tablou</h4>
+                    <h4 className="font-medium text-white mb-3 font-tech flex items-center gap-2">
+                      <Thermometer className="h-4 w-4 text-[#00FFFF]" />
+                      Analiză tablou
+                    </h4>
                     <p className="text-sm text-gray-400 mb-2">
                       Sumar tensiuni și recomandări pentru dimensionare
                     </p>
@@ -327,7 +412,10 @@ ${values.details}
                     </div>
                     
                     <h5 className="text-sm font-medium text-gray-300 mb-2">Distribuție pe faze</h5>
-                    {Object.entries(analysis.phaseCurrents).map(([phase, current]) => (
+                    {Object.entries(analysis.phaseLoads.reduce((acc, curr) => {
+                      acc[curr.phase] = curr.current;
+                      return acc;
+                    }, {} as Record<string, number>)).map(([phase, current]) => (
                       <div key={phase} className="flex items-center justify-between mb-1">
                         <span className="text-xs text-gray-400">{phase}</span>
                         <span className="text-xs text-gray-300">{current.toFixed(1)}A</span>
@@ -342,6 +430,47 @@ ${values.details}
                         </div>
                       </div>
                     ))}
+                    
+                    <Separator className="my-3 bg-[#253142]" />
+                    
+                    <div className="space-y-2 mt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-400">Temperatură internă</span>
+                        <span className={`text-xs ${temperature > 45 ? 'text-red-400' : 'text-gray-300'}`}>
+                          {temperature.toFixed(1)}°C
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#162030] h-1.5 rounded-full">
+                        <div 
+                          className={`h-1.5 rounded-full ${
+                            temperature > 60 ? 'bg-red-500' : 
+                            temperature > 45 ? 'bg-orange-500' : 
+                            temperature > 35 ? 'bg-yellow-500' : 'bg-green-500'
+                          }`}
+                          style={{ width: `${Math.min(100, (temperature / 80) * 100)}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-xs text-gray-400">Spațiu utilizat</span>
+                        <span className={`text-xs ${usedSpacePercentage > 70 ? 'text-red-400' : 'text-gray-300'}`}>
+                          {usedSpacePercentage.toFixed(0)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-[#162030] h-1.5 rounded-full">
+                        <div 
+                          className={`h-1.5 rounded-full ${
+                            usedSpacePercentage > 70 ? 'bg-red-500' : 'bg-green-500'
+                          }`}
+                          style={{ width: `${Math.min(100, usedSpacePercentage)}%` }}
+                        ></div>
+                      </div>
+                      {usedSpacePercentage > 70 && (
+                        <p className="text-red-400 text-xs mt-1">
+                          ⚠️ Nu este respectată cerința de minim 30% spațiu liber pentru ventilație
+                        </p>
+                      )}
+                    </div>
                     
                     {analysis.recommendations.length > 0 && (
                       <div className="mt-4">
@@ -368,7 +497,7 @@ ${values.details}
             <ResizableHandle className="bg-[#253142] w-1" />
             
             <ResizablePanel defaultSize={75}>
-              <div className="p-4 h-full bg-[#0F1724]">
+              <div className="p-4 h-full bg-[#0F1724] overflow-y-auto">
                 <PanelGrid 
                   moduleCount={moduleCount} 
                   components={components} 
@@ -376,8 +505,11 @@ ${values.details}
                   onComponentRemove={handleRemoveComponent} 
                   onComponentEdit={handleEditComponent}
                   onComponentMove={handleMoveComponent}
+                  onComponentConnect={handleConnectComponents}
                   showPhases={supplyType === 'three-phase'}
                   highlightPosition={highlightPosition}
+                  temperature={temperature}
+                  usedSpacePercentage={usedSpacePercentage}
                 />
                 
                 <div className="mt-4 p-4 bg-[#0c1320] rounded-lg border border-[#253142]">
