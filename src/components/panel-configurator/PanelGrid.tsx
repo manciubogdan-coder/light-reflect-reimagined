@@ -307,11 +307,11 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
       
       <div 
         ref={gridRef}
-        className="grid border-[#253142] grid-cols-12 gap-4 bg-[#0c1320] p-6 rounded-lg relative"
+        className="grid border-[#253142] grid-cols-12 gap-6 bg-[#0c1320] p-8 rounded-lg relative"
         style={{
-          gridTemplateRows: `repeat(${rows}, 80px)`,
-          height: `${rows * 80 + (rows - 1) * 16 + 48}px`,
-          rowGap: "1.5rem"
+          gridTemplateRows: `repeat(${rows}, 120px)`,
+          height: `${rows * 120 + (rows - 1) * 24 + 64}px`,
+          rowGap: "2rem"
         }}
         onMouseMove={handleGridMouseMove}
       >
@@ -339,7 +339,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 gridColumn: isFirstModule ? `span ${width}` : undefined,
                 gridRow: `${row + 1} / span 1`,
                 display: !isFirstModule && component ? 'none' : 'block',
-                minHeight: '80px',
+                minHeight: '120px',
                 position: 'relative'
               }}
               draggable={isFirstModule && !!component}
@@ -354,51 +354,51 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
               onMouseLeave={() => connectionMode && wireStart && setTempWireEnd(null)}
             >
               {component && isFirstModule ? (
-                <div className="absolute inset-0 flex flex-col justify-between p-3">
+                <div className="absolute inset-0 flex flex-col justify-between p-4">
                   <div className="flex justify-between items-start gap-2">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-sm truncate max-w-[120px]">
+                    <div className="flex flex-col flex-grow">
+                      <span className="font-medium text-base truncate max-w-[160px]">
                         {component.name || `${component.rating}A`}
                       </span>
                       {component.description && (
-                        <span className="text-xs text-gray-400 truncate max-w-[120px]">
+                        <span className="text-sm text-gray-400 truncate max-w-[160px]">
                           {component.description}
                         </span>
                       )}
                     </div>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1.5">
                       <button 
                         onClick={() => onComponentEdit(component.id)}
-                        className="text-gray-400 hover:text-white p-1 rounded hover:bg-[#253142]"
+                        className="text-gray-400 hover:text-white p-1.5 rounded hover:bg-[#253142]"
                       >
-                        <Settings className="h-3 w-3" />
+                        <Settings className="h-4 w-4" />
                       </button>
                       <button 
                         onClick={() => onComponentRemove(component.id)}
-                        className="text-gray-400 hover:text-white p-1 rounded hover:bg-[#253142]"
+                        className="text-gray-400 hover:text-white p-1.5 rounded hover:bg-[#253142]"
                       >
-                        <X className="h-3 w-3" />
+                        <X className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
                   
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center scale-125">
                     <ComponentVisualization type={component.type} />
                   </div>
                   
-                  <div className="mt-auto z-10 flex flex-wrap gap-1">
+                  <div className="mt-auto z-10 flex flex-wrap gap-1.5">
                     {component.diffProtection && component.diffProtection !== 'none' && (
-                      <span className="inline-block bg-green-900/30 text-green-300 text-xs rounded px-1">
+                      <span className="inline-block bg-green-900/30 text-green-300 text-sm rounded px-2 py-0.5">
                         {component.diffProtection}
                       </span>
                     )}
                     {component.curve && (
-                      <span className="inline-block bg-blue-900/30 text-blue-300 text-xs rounded px-1">
+                      <span className="inline-block bg-blue-900/30 text-blue-300 text-sm rounded px-2 py-0.5">
                         Curba {component.curve}
                       </span>
                     )}
                     {component.rating && (
-                      <span className="inline-block bg-purple-900/30 text-purple-300 text-xs rounded px-1">
+                      <span className="inline-block bg-purple-900/30 text-purple-300 text-sm rounded px-2 py-0.5">
                         {component.rating}A
                       </span>
                     )}
@@ -431,20 +431,18 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                 if (!gridRect) return null;
                 
                 const startX = sourceRect.left - gridRect.left + sourceRect.width / 2;
-                const startY = sourceRect.top - gridRect.top + sourceRect.height / 2;
+                const startY = sourceRect.top - gridRect.top;
                 const endX = targetRect.left - gridRect.left + targetRect.width / 2;
-                const endY = targetRect.top - gridRect.top + targetRect.height / 2;
+                const endY = targetRect.top - gridRect.top;
                 
-                const midY = (startY + endY) / 2;
-                const cp1x = startX;
-                const cp1y = midY;
-                const cp2x = endX;
-                const cp2y = midY;
+                const heightOffset = 40;
+                const cp1y = Math.min(startY, endY) - heightOffset;
+                const cp2y = cp1y;
                 
                 return (
                   <g key={`${component.id}-${targetId}`}>
                     <path
-                      d={`M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`}
+                      d={`M ${startX} ${startY} C ${startX} ${cp1y}, ${endX} ${cp2y}, ${endX} ${endY}`}
                       fill="none"
                       stroke="#00FFFF"
                       strokeWidth="2"
@@ -455,14 +453,14 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                     <circle
                       cx={startX}
                       cy={startY}
-                      r="3"
+                      r="4"
                       fill="#00FFFF"
                       opacity="0.8"
                     />
                     <circle
                       cx={endX}
                       cy={endY}
-                      r="3"
+                      r="4"
                       fill="#00FFFF"
                       opacity="0.8"
                     />
@@ -475,14 +473,30 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
 
         {connectionMode && wireStart && tempWireEnd && (
           <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
-            <path
-              d={`M ${getComponentCenter(wireStart)?.x || 0} ${getComponentCenter(wireStart)?.y || 0} 
-                 L ${tempWireEnd.x} ${tempWireEnd.y}`}
-              stroke="#00FFFF"
-              strokeWidth="1"
-              strokeDasharray="3,2"
-              strokeOpacity="0.7"
-            />
+            {(() => {
+              const sourceEl = document.getElementById(`component-${wireStart}`);
+              if (!sourceEl || !gridRef.current) return null;
+              
+              const sourceRect = sourceEl.getBoundingClientRect();
+              const gridRect = gridRef.current.getBoundingClientRect();
+              const startX = sourceRect.left - gridRect.left + sourceRect.width / 2;
+              const startY = sourceRect.top - gridRect.top;
+              
+              const heightOffset = 40;
+              const cp1y = Math.min(startY, tempWireEnd.y) - heightOffset;
+              const cp2y = cp1y;
+              
+              return (
+                <path
+                  d={`M ${startX} ${startY} C ${startX} ${cp1y}, ${tempWireEnd.x} ${cp2y}, ${tempWireEnd.x} ${tempWireEnd.y}`}
+                  stroke="#00FFFF"
+                  strokeWidth="1"
+                  strokeDasharray="3,2"
+                  strokeOpacity="0.7"
+                  fill="none"
+                />
+              );
+            })()}
           </svg>
         )}
       </div>
