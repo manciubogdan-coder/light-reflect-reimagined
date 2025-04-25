@@ -1,3 +1,4 @@
+
 export type ComponentType = 
   | 'breaker' 
   | 'rcd' 
@@ -10,6 +11,11 @@ export type ComponentType =
   | 'timeRelay'
   | 'phaseRelay'
   | 'separator';
+
+export type CurveType = 'B' | 'C' | 'D';
+export type RatingType = '6' | '10' | '16' | '20' | '25' | '32' | '40' | '50' | '63';
+export type DiffProtectionType = 'none' | '10mA' | '30mA' | '100mA' | '300mA';
+export type PhaseType = 'L1' | 'L2' | 'L3' | 'N' | 'PE';
 
 export interface PanelComponent {
   id: string;
@@ -141,6 +147,7 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     phases: ['L1', 'L2', 'L3', 'N', 'PE']
   },
   timeRelay: {
+    type: 'timeRelay',
     width: 2,
     rating: '16',
     phases: ['L1'],
@@ -148,6 +155,7 @@ export const COMPONENT_TEMPLATES: Record<ComponentType, Partial<PanelComponent>>
     description: 'Releu de timp'
   },
   phaseRelay: {
+    type: 'phaseRelay',
     width: 2,
     rating: '16',
     phases: ['L1', 'L2', 'L3'],

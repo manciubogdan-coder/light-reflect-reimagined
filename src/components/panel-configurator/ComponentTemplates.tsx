@@ -10,7 +10,9 @@ import {
   CircleX,
   Plug,
   SeparatorHorizontal,
-  Cable
+  Cable,
+  Timer,
+  Activity
 } from 'lucide-react';
 
 interface ComponentCardProps {
@@ -30,7 +32,9 @@ const componentIcons: Record<ComponentType, React.ReactNode> = {
   contactor: <CirclePlus className="size-4" />,
   fuse: <Plug className="size-4" />,
   separator: <SeparatorHorizontal className="size-4" />,
-  terminal: <Cable className="size-4" />
+  terminal: <Cable className="size-4" />,
+  timeRelay: <Timer className="size-4" />,
+  phaseRelay: <Activity className="size-4" />
 };
 
 export const ComponentCard: React.FC<ComponentCardProps> = ({ 

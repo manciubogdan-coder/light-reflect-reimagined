@@ -15,6 +15,7 @@ interface PanelGridProps {
   onComponentEdit: (componentId: string) => void;
   onComponentMove?: (componentId: string, newPosition: number) => void;
   onComponentConnect?: (sourceId: string, targetId: string) => void;
+  onComponentUpdate?: (updatedComponent: PanelComponent) => void;
   showPhases?: boolean;
   highlightPosition?: number | null;
   temperature?: number;
@@ -29,6 +30,7 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
   onComponentEdit,
   onComponentMove,
   onComponentConnect,
+  onComponentUpdate,
   showPhases = true,
   highlightPosition = null,
   temperature = 25,
@@ -364,10 +366,12 @@ export const PanelGrid: React.FC<PanelGridProps> = ({
                         type="text"
                         value={component.name || ''}
                         onChange={(e) => {
-                          const updatedComponents = components.map(c =>
-                            c.id === component.id ? { ...c, name: e.target.value } : c
-                          );
-                          setComponents(updatedComponents);
+                          if (onComponentUpdate) {
+                            onComponentUpdate({
+                              ...component,
+                              name: e.target.value
+                            });
+                          }
                         }}
                         placeholder="Denumire circuit..."
                         className="bg-transparent border-b border-[#253142] text-white text-base px-1 py-0.5 
