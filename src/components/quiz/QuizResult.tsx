@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ElectricianProfile } from "@/lib/quizTypes";
 import { profilesData } from "@/lib/quizData";
@@ -44,10 +43,9 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         // Create a temporary URL for the image
         const blobUrl = URL.createObjectURL(resultImage);
         
-        // Generate a shareable URL - this is a relative path that will work on any domain
-        const relativeUrl = "/tools/electrician-quiz?profile=" + profile;
-        // For sharing, we use the current domain the app is running on
-        const shareUrl = window.location.origin + relativeUrl;
+        // Create a complete absolute URL that will work when shared
+        const baseUrl = window.location.protocol + "//" + window.location.host;
+        const shareUrl = baseUrl + "/tools/electrician-quiz?profile=" + profile;
         
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
@@ -72,9 +70,9 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         link.download = 'rezultat-quiz-electrician.jpg';
         link.click();
         
-        // Generate a shareable URL that will work on the current domain
-        const relativeUrl = "/tools/electrician-quiz?profile=" + profile;
-        const shareUrl = window.location.origin + relativeUrl;
+        // Create a complete absolute URL that will work when shared
+        const baseUrl = window.location.protocol + "//" + window.location.host;
+        const shareUrl = baseUrl + "/tools/electrician-quiz?profile=" + profile;
         
         const shareText = `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}\n${shareUrl}`;
         window.open(

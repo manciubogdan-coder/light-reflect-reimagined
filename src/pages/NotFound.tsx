@@ -1,11 +1,12 @@
-
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Zap } from "lucide-react";
+import { Zap, Home, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.error(
@@ -13,6 +14,23 @@ const NotFound = () => {
       location.pathname
     );
   }, [location.pathname]);
+
+  // Try to determine if this is an electrician quiz URL
+  const isQuizUrl = location.pathname.includes('/tools/electrician-quiz');
+  
+  const handleReturn = () => {
+    // If looks like an electrician quiz link, redirect there
+    if (isQuizUrl) {
+      navigate('/tools/electrician-quiz');
+    } else {
+      // Otherwise go back or home
+      if (window.history.length > 1) {
+        navigate(-1);
+      } else {
+        navigate('/');
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-matter relative">
@@ -26,10 +44,26 @@ const NotFound = () => {
           </div>
           <h1 className="text-6xl font-tech font-bold mb-4 text-hologram-blue">404</h1>
           <p className="text-xl text-white/80 mb-6">Eroare Temporală Detectată</p>
-          <p className="text-white/60 mb-8">Pagina pe care încerci să o accesezi nu există în această dimensiune.</p>
-          <Link to="/" className="electric-button font-tech text-lg tracking-wider inline-block relative overflow-hidden">
-            <span className="relative z-10">Înapoi la Realitate</span>
-          </Link>
+          <p className="text-white/60 mb-8">
+            {isQuizUrl 
+              ? "Link-ul către quiz-ul de electrician este incomplet. Te putem redirecta către quiz."
+              : "Pagina pe care încerci să o accesezi nu există în această dimensiune."}
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={handleReturn}
+              className="electric-button font-tech text-lg tracking-wider inline-block relative overflow-hidden"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              <span>{isQuizUrl ? 'Mergi la quiz' : 'Înapoi'}</span>
+            </Button>
+            
+            <Link to="/" className="electric-button font-tech text-lg tracking-wider inline-block relative overflow-hidden">
+              <Home className="mr-2 h-4 w-4" />
+              <span className="relative z-10">Pagina principală</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

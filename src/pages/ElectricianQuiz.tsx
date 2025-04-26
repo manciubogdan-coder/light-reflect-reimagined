@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "@/components/Nav";
@@ -22,11 +21,19 @@ const ElectricianQuiz = () => {
     const queryParams = new URLSearchParams(location.search);
     const profileParam = queryParams.get('profile') as ElectricianProfile | null;
     
+    // Handle direct navigation to a shared profile URL
     if (profileParam && ["mesterm", "regev", "smart", "stilv"].includes(profileParam)) {
       setProfile(profileParam);
       setShowResult(true);
+      
+      // Update the URL to canonical form without replacing history
+      // This helps with SEO and sharing consistency
+      const cleanUrl = `/tools/electrician-quiz?profile=${profileParam}`;
+      if (window.location.pathname + window.location.search !== cleanUrl) {
+        navigate(cleanUrl, { replace: true });
+      }
     }
-  }, [location.search]);
+  }, [location.search, navigate]);
   
   const handleAnswer = (answerType: number) => {
     const newAnswers = [...answers, answerType];
@@ -116,4 +123,3 @@ const ElectricianQuiz = () => {
 };
 
 export default ElectricianQuiz;
-

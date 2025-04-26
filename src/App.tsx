@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -64,6 +64,11 @@ const AppRoutes = () => {
       <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
       <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
       <Route path="/cookies" element={<Cookies />} />
+      
+      {/* Add redirect paths for direct entry URLs */}
+      <Route path="/tools/electrician-quiz/:profile" element={<Navigate to="/tools/electrician-quiz" replace />} />
+      
+      {/* 404 handler must be last */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -91,4 +96,3 @@ const App = () => {
 };
 
 export default App;
-
