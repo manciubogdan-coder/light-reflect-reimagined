@@ -1,10 +1,10 @@
-
 import React from "react";
 import { ElectricianProfile } from "@/lib/quizTypes";
 import { profilesData } from "@/lib/quizData";
 import { Button } from "@/components/ui/button";
-import { Facebook, Lightbulb, Clock, Wrench, Zap, Share2, RefreshCcw } from "lucide-react";
+import { Facebook, Lightbulb, Clock, Wrench, Zap, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
+import { generateQuizResultImage } from "@/utils/quizImageGenerator";
 
 interface QuizResultProps {
   profile: ElectricianProfile;
@@ -30,30 +30,36 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
     }
   };
   
-  const shareResult = (platform: string) => {
-    const baseUrl = window.location.origin;
-    const cleanUrl = `${baseUrl}/tools/electrician-quiz?profile=${profile}`;
-    
-    // Customized share text with call to action
-    const shareText = encodeURIComponent(`Am făcut testul și sunt ${profileData.title}! Află și tu ce tip de electrician ești pe Light Reflect Electrical. ${profileData.shareText}`);
-    
-    let shareLink = '';
-    
-    switch (platform) {
-      case 'facebook':
-        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(cleanUrl)}&quote=${shareText}`;
-        break;
-      case 'twitter':
-        shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(cleanUrl)}&text=${shareText}`;
-        break;
-      case 'whatsapp':
-        shareLink = `https://api.whatsapp.com/send?text=${shareText} ${encodeURIComponent(cleanUrl)}`;
-        break;
-    }
-    
-    if (shareLink) {
-      window.open(shareLink, '_blank');
-      toast.success(`Rezultat partajat pe ${platform}!`);
+  const shareResult = async (platform: string) => {
+    try {
+      const resultImage = await generateQuizResultImage(
+        profileData.title,
+        `${profileData.description}\n\nAflă și tu ce tip de electrician ești pe Light Reflect Electrical!`
+      );
+      
+      if (platform === 'facebook') {
+        const formData = new FormData();
+        formData.append('file', resultImage);
+        
+        if (navigator.share) {
+          await navigator.share({
+            files: [new File([resultImage], 'quiz-result.jpg', { type: 'image/jpeg' })],
+            title: 'Rezultatul meu Light Reflect',
+            text: `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}`
+          });
+        } else {
+          const blobUrl = URL.createObjectURL(resultImage);
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`,
+            '_blank'
+          );
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        }
+        toast.success('Rezultat partajat pe Facebook!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast.error('Nu am putut partaja rezultatul. Încercați din nou.');
     }
   };
 
@@ -137,4 +143,3 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
 };
 
 export default QuizResult;
-
