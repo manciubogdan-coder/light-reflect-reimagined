@@ -32,7 +32,7 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
   
   const shareResult = (platform: string) => {
     const baseUrl = window.location.origin;
-    const shareUrl = `${baseUrl}/tools/electrician-quiz?profile=${profile}`;
+    const cleanUrl = `${baseUrl}/tools/electrician-quiz?profile=${profile}`;
     
     // Customized share text with call to action
     const shareText = encodeURIComponent(`Am făcut testul și sunt ${profileData.title}! Află și tu ce tip de electrician ești pe Light Reflect Electrical. ${profileData.shareText}`);
@@ -41,13 +41,13 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
     
     switch (platform) {
       case 'facebook':
-        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${shareText}`;
+        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(cleanUrl)}&quote=${shareText}`;
         break;
       case 'twitter':
-        shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${shareText}`;
+        shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(cleanUrl)}&text=${shareText}`;
         break;
       case 'whatsapp':
-        shareLink = `https://api.whatsapp.com/send?text=${shareText} ${encodeURIComponent(shareUrl)}`;
+        shareLink = `https://api.whatsapp.com/send?text=${shareText} ${encodeURIComponent(cleanUrl)}`;
         break;
     }
     
@@ -137,3 +137,4 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
 };
 
 export default QuizResult;
+

@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import QuizContent from "@/components/quiz/QuizContent";
@@ -11,10 +11,22 @@ import { toast } from "sonner";
 
 const ElectricianQuiz = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [answers, setAnswers] = useState<number[]>([]);
   const [profile, setProfile] = useState<ElectricianProfile | null>(null);
+  
+  // Check for profile parameter in URL
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const profileParam = queryParams.get('profile') as ElectricianProfile | null;
+    
+    if (profileParam && ["mesterm", "regev", "smart", "stilv"].includes(profileParam)) {
+      setProfile(profileParam);
+      setShowResult(true);
+    }
+  }, [location.search]);
   
   const handleAnswer = (answerType: number) => {
     const newAnswers = [...answers, answerType];
@@ -55,6 +67,9 @@ const ElectricianQuiz = () => {
     setShowResult(false);
     setAnswers([]);
     setProfile(null);
+    
+    // Clear URL parameters when restarting
+    navigate("/tools/electrician-quiz", { replace: true });
   };
   
   const navigateToBecomePartner = () => {
@@ -101,3 +116,4 @@ const ElectricianQuiz = () => {
 };
 
 export default ElectricianQuiz;
+
