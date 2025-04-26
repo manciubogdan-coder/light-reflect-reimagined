@@ -2,8 +2,7 @@
 import ReactGA from "react-ga4";
 
 export const initGA = () => {
-  // Înlocuiește acest ID cu ID-ul tău real de Google Analytics
-  ReactGA.initialize("G-XXXXXXXXXX");
+  ReactGA.initialize("G-WK6NS9JSN6");
 };
 
 export const logPageView = (path: string) => {
