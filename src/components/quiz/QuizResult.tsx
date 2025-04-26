@@ -44,9 +44,11 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         // Create a temporary URL for the image
         const blobUrl = URL.createObjectURL(resultImage);
         
-        // Use absolute URL for sharing on Facebook
-        // This ensures the URL works regardless of deployment domain
-        const shareUrl = "https://www.lightreflect.ro/tools/electrician-quiz?profile=" + profile;
+        // Generate a shareable URL - this is a relative path that will work on any domain
+        const relativeUrl = "/tools/electrician-quiz?profile=" + profile;
+        // For sharing, we use the current domain the app is running on
+        const shareUrl = window.location.origin + relativeUrl;
+        
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
           '_blank',
@@ -70,8 +72,10 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         link.download = 'rezultat-quiz-electrician.jpg';
         link.click();
         
-        // Use absolute URL for sharing on WhatsApp
-        const shareUrl = "https://www.lightreflect.ro/tools/electrician-quiz?profile=" + profile;
+        // Generate a shareable URL that will work on the current domain
+        const relativeUrl = "/tools/electrician-quiz?profile=" + profile;
+        const shareUrl = window.location.origin + relativeUrl;
+        
         const shareText = `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}\n${shareUrl}`;
         window.open(
           `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,

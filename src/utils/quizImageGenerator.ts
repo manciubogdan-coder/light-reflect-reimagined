@@ -1,3 +1,4 @@
+
 export const generateQuizResultImage = (title: string, description: string): Promise<Blob> => {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -51,7 +52,7 @@ export const generateQuizResultImage = (title: string, description: string): Pro
 
     // Add Light Reflect logo text
     ctx.fillStyle = '#0077FF'; // electric-blue
-    ctx.font = 'bold 40px "Orbitron"';
+    ctx.font = 'bold 40px sans-serif'; // Fallback to sans-serif if Orbitron not available
     ctx.globalAlpha = 1;
     ctx.fillText('Light Reflect Electrical', 50, 80);
 
@@ -59,7 +60,7 @@ export const generateQuizResultImage = (title: string, description: string): Pro
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = '#0077FF';
     ctx.shadowBlur = 10;
-    ctx.font = 'bold 60px "Orbitron"';
+    ctx.font = 'bold 60px sans-serif'; // Fallback to sans-serif
     const titleLines = getTextLines(ctx, title, 1000);
     titleLines.forEach((line, index) => {
       ctx.fillText(line, 50, 180 + (index * 70));
@@ -68,11 +69,28 @@ export const generateQuizResultImage = (title: string, description: string): Pro
     // Add description
     ctx.shadowBlur = 0;
     ctx.fillStyle = '#FFFFFF99';
-    ctx.font = '32px "Rajdhani"';
+    ctx.font = '32px sans-serif'; // Fallback to sans-serif
     const descLines = getTextLines(ctx, description, 1000);
     descLines.forEach((line, index) => {
       ctx.fillText(line, 50, 380 + (index * 40));
     });
+
+    // Add a QR code effect (simulated)
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(canvas.width - 150, canvas.height - 150, 100, 100);
+    ctx.fillStyle = '#121212';
+    const qrSize = 10;
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (Math.random() > 0.5) {
+          ctx.fillRect(
+            canvas.width - 150 + i * qrSize, 
+            canvas.height - 150 + j * qrSize, 
+            qrSize, qrSize
+          );
+        }
+      }
+    }
 
     canvas.toBlob((blob) => {
       if (blob) {
