@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import QuizContent from "@/components/quiz/QuizContent";
@@ -11,29 +12,35 @@ import { toast } from "sonner";
 const ElectricianQuiz = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const params = useParams();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [answers, setAnswers] = useState<number[]>([]);
   const [profile, setProfile] = useState<ElectricianProfile | null>(null);
   
-  // Check for profile parameter in URL
+  // Check for profile parameter in URL or route params
   useEffect(() => {
+    // First check query params
     const queryParams = new URLSearchParams(location.search);
-    const profileParam = queryParams.get('profile') as ElectricianProfile | null;
+    let profileParam = queryParams.get('profile') as ElectricianProfile | null;
+    
+    // If no query param, check URL path params
+    if (!profileParam && params.profile) {
+      profileParam = params.profile as ElectricianProfile;
+    }
     
     // Handle direct navigation to a shared profile URL
     if (profileParam && ["mesterm", "regev", "smart", "stilv"].includes(profileParam)) {
       setProfile(profileParam);
       setShowResult(true);
       
-      // Update the URL to canonical form without replacing history
-      // This helps with SEO and sharing consistency
+      // Normalize to query parameter format for consistency
       const cleanUrl = `/tools/electrician-quiz?profile=${profileParam}`;
       if (window.location.pathname + window.location.search !== cleanUrl) {
         navigate(cleanUrl, { replace: true });
       }
     }
-  }, [location.search, navigate]);
+  }, [location.search, navigate, params]);
   
   const handleAnswer = (answerType: number) => {
     const newAnswers = [...answers, answerType];

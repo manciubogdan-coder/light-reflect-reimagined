@@ -65,8 +65,8 @@ const AppRoutes = () => {
       <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
       <Route path="/cookies" element={<Cookies />} />
       
-      {/* Add redirect paths for direct entry URLs */}
-      <Route path="/tools/electrician-quiz/:profile" element={<Navigate to="/tools/electrician-quiz" replace />} />
+      {/* Add explicit path handlers for direct access URLs */}
+      <Route path="/tools/electrician-quiz/:profile" element={<ElectricianQuiz />} />
       
       {/* 404 handler must be last */}
       <Route path="*" element={<NotFound />} />

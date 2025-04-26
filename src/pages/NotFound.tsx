@@ -1,3 +1,4 @@
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -13,7 +14,28 @@ const NotFound = () => {
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
+    
+    // Check if this is a direct browser access (not from navigation)
+    const isDirectAccess = !document.referrer.includes(window.location.host);
+    if (isDirectAccess) {
+      // If it's a direct access to a specific path, try to handle common cases
+      handleDirectAccess(location.pathname);
+    }
   }, [location.pathname]);
+
+  // Handle direct access to URLs
+  const handleDirectAccess = (path: string) => {
+    // Common path patterns to try to recover from
+    if (path.includes('/tools/electrician-quiz')) {
+      // For quiz URLs, we need to extract profile parameter if any
+      const profileMatch = path.match(/\/tools\/electrician-quiz\/([a-zA-Z0-9_-]+)/);
+      if (profileMatch && profileMatch[1]) {
+        // Redirect to the correct format with query parameter
+        navigate(`/tools/electrician-quiz?profile=${profileMatch[1]}`, { replace: true });
+        return;
+      }
+    }
+  };
 
   // Try to determine if this is an electrician quiz URL
   const isQuizUrl = location.pathname.includes('/tools/electrician-quiz');
