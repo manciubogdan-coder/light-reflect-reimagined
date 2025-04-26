@@ -1,11 +1,11 @@
+
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { initGA, logPageView } from "./lib/analytics";
+import { initGA } from "./lib/analytics";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -33,16 +33,47 @@ import PanelConfiguratorTool from "./pages/PanelConfiguratorTool";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+// Create a separate component for routes to use the useLocation hook
+const AppRoutes = () => {
   const location = useLocation();
 
   useEffect(() => {
-    initGA();
-  }, []);
-
-  useEffect(() => {
+    const { logPageView } = require("./lib/analytics");
     logPageView(location.pathname);
   }, [location]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/servicii" element={<Servicii />} />
+      <Route path="/despre-noi" element={<DespreNoi />} />
+      <Route path="/proiecte" element={<Proiecte />} />
+      <Route path="/franciza" element={<Franciza />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/cariere" element={<Cariere />} />
+      <Route path="/tools" element={<Tools />} />
+      <Route path="/tools/cable-calculator" element={<CableCalculatorTool />} />
+      <Route path="/tools/power-calculator" element={<PowerCalculatorTool />} />
+      <Route path="/tools/lighting-calculator" element={<LightingCalculatorTool />} />
+      <Route path="/tools/energy-efficiency" element={<EnergyEfficiencyTool />} />
+      <Route path="/tools/short-circuit-calculator" element={<ShortCircuitCalculatorTool />} />
+      <Route path="/tools/electrician-quiz" element={<ElectricianQuiz />} />
+      <Route path="/tools/panel-configurator" element={<PanelConfiguratorTool />} />
+      <Route path="/parteneriat" element={<Parteneriat />} />
+      <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
+      <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
+      <Route path="/cookies" element={<Cookies />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
+const App = () => {
+  useEffect(() => {
+    initGA();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -52,30 +83,7 @@ const App = () => {
           <Sonner />
           <CustomCursor />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/servicii" element={<Servicii />} />
-              <Route path="/despre-noi" element={<DespreNoi />} />
-              <Route path="/proiecte" element={<Proiecte />} />
-              <Route path="/franciza" element={<Franciza />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/cariere" element={<Cariere />} />
-              <Route path="/tools" element={<Tools />} />
-              <Route path="/tools/cable-calculator" element={<CableCalculatorTool />} />
-              <Route path="/tools/power-calculator" element={<PowerCalculatorTool />} />
-              <Route path="/tools/lighting-calculator" element={<LightingCalculatorTool />} />
-              <Route path="/tools/energy-efficiency" element={<EnergyEfficiencyTool />} />
-              <Route path="/tools/short-circuit-calculator" element={<ShortCircuitCalculatorTool />} />
-              <Route path="/tools/electrician-quiz" element={<ElectricianQuiz />} />
-              <Route path="/tools/panel-configurator" element={<PanelConfiguratorTool />} />
-              <Route path="/parteneriat" element={<Parteneriat />} />
-              <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
-              <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
-              <Route path="/cookies" element={<Cookies />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AppRoutes />
           </BrowserRouter>
         </TooltipProvider>
       </HelmetProvider>
