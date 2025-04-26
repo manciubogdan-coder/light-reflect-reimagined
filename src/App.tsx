@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { initGA } from "./lib/analytics";
+import { initGA, logPageView } from "./lib/analytics";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,7 +38,6 @@ const AppRoutes = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const { logPageView } = require("./lib/analytics");
     logPageView(location.pathname);
   }, [location]);
 
