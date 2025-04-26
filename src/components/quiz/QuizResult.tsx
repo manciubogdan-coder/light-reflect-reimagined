@@ -1,8 +1,9 @@
+
 import React from "react";
 import { ElectricianProfile } from "@/lib/quizTypes";
 import { profilesData } from "@/lib/quizData";
 import { Button } from "@/components/ui/button";
-import { Facebook, Lightbulb, Clock, Wrench, Zap, RefreshCcw } from "lucide-react";
+import { Facebook, Lightbulb, Clock, Wrench, Zap, RefreshCcw, Share } from "lucide-react";
 import { toast } from "sonner";
 import { generateQuizResultImage } from "@/utils/quizImageGenerator";
 
@@ -32,34 +33,68 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
   
   const shareResult = async (platform: string) => {
     try {
+      toast.info("Se generează imaginea pentru partajare...");
+      
       const resultImage = await generateQuizResultImage(
         profileData.title,
         `${profileData.description}\n\nAflă și tu ce tip de electrician ești pe Light Reflect Electrical!`
       );
       
       if (platform === 'facebook') {
-        const formData = new FormData();
-        formData.append('file', resultImage);
+        // Create a temporary URL for the image
+        const blobUrl = URL.createObjectURL(resultImage);
         
-        if (navigator.share) {
-          await navigator.share({
-            files: [new File([resultImage], 'quiz-result.jpg', { type: 'image/jpeg' })],
-            title: 'Rezultatul meu Light Reflect',
-            text: `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}`
-          });
-        } else {
-          const blobUrl = URL.createObjectURL(resultImage);
-          window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`,
-            '_blank'
-          );
-          setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
-        }
-        toast.success('Rezultat partajat pe Facebook!');
+        // Open Facebook share dialog directly
+        // Note: Facebook doesn't allow direct image sharing this way, but we can share the URL
+        const shareUrl = window.location.origin + '/tools/electrician-quiz?profile=' + profile;
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+          '_blank',
+          'width=600,height=400'
+        );
+        
+        // Download the image for manual sharing
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'rezultat-quiz-electrician.jpg';
+        link.click();
+        
+        // Clean up
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        toast.success('Poză generată cu succes! Folosește imaginea descărcată pentru a o partaja manual pe Facebook.');
+      } else if (platform === 'whatsapp') {
+        // For WhatsApp, download the image and provide a link
+        const blobUrl = URL.createObjectURL(resultImage);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'rezultat-quiz-electrician.jpg';
+        link.click();
+        
+        // Then open WhatsApp with text
+        const shareText = `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}`;
+        window.open(
+          `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
+          '_blank'
+        );
+        
+        // Clean up
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        toast.success('Poză generată cu succes! Folosește imaginea descărcată pentru a o partaja manual pe WhatsApp.');
+      } else if (platform === 'direct') {
+        // Direct sharing fallback - just download the image
+        const blobUrl = URL.createObjectURL(resultImage);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = 'rezultat-quiz-electrician.jpg';
+        link.click();
+        
+        // Clean up
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        toast.success('Imagine descărcată! Acum o poți partaja unde dorești.');
       }
     } catch (error) {
       console.error('Error sharing:', error);
-      toast.error('Nu am putut partaja rezultatul. Încercați din nou.');
+      toast.error('Nu am putut genera imaginea. Încercați din nou.');
     }
   };
 
@@ -101,6 +136,7 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
               size="icon" 
               className="border-blue-500 hover:bg-blue-500/20"
               onClick={() => shareResult('facebook')}
+              title="Partajează pe Facebook"
             >
               <Facebook className="h-5 w-5 text-blue-500" />
             </Button>
@@ -109,12 +145,22 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
               size="icon" 
               className="border-green-500 hover:bg-green-500/20"
               onClick={() => shareResult('whatsapp')}
+              title="Partajează pe WhatsApp"
             >
               <div className="flex items-center justify-center h-5 w-5 text-green-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17.4 22h-.2c-5.3-.3-3.7-1.5-7.5-5.8-4-4.5-5-8.2-5-10.9C5 2 6 1 9 1h1c1 0 1 0 2 2.5.7 2 1 2.5 1 2.5 0 1-3 2-3 3.5 0 1.6 3.2 7 8.5 7 1.5 0 2.5-3 3.5-3 .5 0 1 .5 2.5 2 1.5 1.5 2.5 1.5 2.5 2.5V21c0 .5-.5 1-2.5 1H17.4Z"/>
                 </svg>
               </div>
+            </Button>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="border-purple-500 hover:bg-purple-500/20"
+              onClick={() => shareResult('direct')}
+              title="Descarcă imaginea"
+            >
+              <Share className="h-5 w-5 text-purple-500" />
             </Button>
           </div>
         </div>
