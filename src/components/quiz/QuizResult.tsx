@@ -44,9 +44,9 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         // Create a temporary URL for the image
         const blobUrl = URL.createObjectURL(resultImage);
         
-        // Open Facebook share dialog directly
-        // Note: Facebook doesn't allow direct image sharing this way, but we can share the URL
-        const shareUrl = window.location.origin + '/tools/electrician-quiz?profile=' + profile;
+        // Use absolute URL for sharing on Facebook
+        // This ensures the URL works regardless of deployment domain
+        const shareUrl = "https://www.lightreflect.ro/tools/electrician-quiz?profile=" + profile;
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
           '_blank',
@@ -70,8 +70,9 @@ const QuizResult = ({ profile, onRestart, onBecomePartner }: QuizResultProps) =>
         link.download = 'rezultat-quiz-electrician.jpg';
         link.click();
         
-        // Then open WhatsApp with text
-        const shareText = `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}`;
+        // Use absolute URL for sharing on WhatsApp
+        const shareUrl = "https://www.lightreflect.ro/tools/electrician-quiz?profile=" + profile;
+        const shareText = `Am făcut testul și sunt ${profileData.title}! ${profileData.shareText}\n${shareUrl}`;
         window.open(
           `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
           '_blank'
