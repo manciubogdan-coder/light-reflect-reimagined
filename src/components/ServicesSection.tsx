@@ -39,16 +39,6 @@ const ServicesSection = () => {
             description="Tablouri electrice cu monitorizare în timp real a consumului și protecție avansată împotriva suprasarcinilor."
           />
           <ServiceCard 
-            icon={<Home />}
-            title="Smart Home"
-            description="Sisteme complete de automatizare a locuinței, controlabile prin smartphone sau voce."
-          />
-          <ServiceCard 
-            icon={<Bolt />}
-            title="Panouri Solare"
-            description="Soluții de energie regenerabilă cu panouri fotovoltaice de ultimă generație."
-          />
-          <ServiceCard 
             icon={<Settings />}
             title="Siguranțe Automate"
             description="Siguranțe electrice cu întrerupere automată în caz de defecte, protejând echipamentele și locuința."
