@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Lightbulb, 
@@ -40,11 +39,6 @@ const Servicii = () => {
               icon={<Lightbulb />}
               title="Tablouri Electrice Smart"
               description="Tablouri electrice cu monitorizare în timp real a consumului și protecție avansată împotriva suprasarcinilor."
-            />
-            <ServiceCard 
-              icon={<Home />}
-              title="Smart Home"
-              description="Sisteme complete de automatizare a locuinței, controlabile prin smartphone sau voce."
             />
             <ServiceCard 
               icon={<Award className="text-yellow-300" />}
