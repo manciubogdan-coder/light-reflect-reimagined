@@ -3,18 +3,14 @@ import { Link } from "react-router-dom";
 import { Bolt, Lightbulb, Plug, CircuitBoard, BatteryCharging } from "lucide-react";
 import HolographicButton from "./HolographicButton";
 import ElectricText from "./ElectricText";
-
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-
   useEffect(() => {
     setTimeout(() => {
       setIsLoaded(true);
     }, 500);
   }, []);
-
-  return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+  return <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden hidden lg:block">
         <div className="absolute inset-0 bg-grid-lines bg-[size:50px_50px] opacity-25"></div>
         <div className="absolute top-0 left-1/5 w-px h-full bg-hologram-blue/20 animate-pulse"></div>
@@ -27,11 +23,7 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-10 lg:gap-12 z-10">
-        <div 
-          className={`w-full lg:w-1/2 transition-all duration-700 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        >
+        <div className={`w-full lg:w-1/2 transition-all duration-700 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
           <div className="flex items-center gap-3 mb-2 lg:mb-3">
             <span className="hidden lg:inline-block w-10 h-px bg-electric-blue"></span>
             <h4 className="text-electric-blue font-tech text-lg lg:text-xl flex items-center gap-1 lg:gap-2">
@@ -54,21 +46,13 @@ const Hero = () => {
             <span className="block lg:hidden text-electric-blue font-tech mt-1 text-lg">începe acum</span>
           </h1>
 
-          <ElectricText 
-            text="Instalații electrice făcute ca la carte. Cu oameni serioși, echipamente moderne și un plan clar: să devenim rețeaua #1 de electricieni din Europa."
-            className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8"
-            delay={800}
-            glitchProb={0}
-          />
+          <ElectricText text="Instalații electrice făcute ca la carte. Cu oameni serioși, echipamente moderne și un plan clar: să devenim rețeaua #1 de electricieni din Europa." className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8" delay={800} glitchProb={0} />
 
           <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
             <HolographicButton to="/contact" className="neon-glow">
               Solicită o ofertă
             </HolographicButton>
-            <Link 
-              to="/servicii" 
-              className="tech-border py-2 px-4 text-center font-tech uppercase tracking-wider text-white hover:bg-electric-blue/10 transition-all duration-300 group relative overflow-hidden text-sm lg:text-base"
-            >
+            <Link to="/servicii" className="tech-border py-2 px-4 text-center font-tech uppercase tracking-wider text-white hover:bg-electric-blue/10 transition-all duration-300 group relative overflow-hidden text-sm lg:text-base">
               <span className="relative z-10">Vezi Serviciile</span>
               <span className="hidden lg:block absolute inset-0 bg-gradient-to-r from-electric-blue/0 via-electric-blue/10 to-electric-blue/0 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></span>
             </Link>
@@ -81,12 +65,7 @@ const Hero = () => {
               </span>
               <p className="text-xs text-white/60">Eficiență</p>
             </div>
-            <div className="hidden lg:flex glass-panel p-3 text-center flex-col items-center gap-1">
-              <span className="text-electric-blue font-tech text-xl flex items-center gap-1">
-                10+ <Plug size={18} className="inline text-electric-blue" />
-              </span>
-              <p className="text-xs text-white/60">Ani experiență</p>
-            </div>
+            
             <div className="hidden lg:flex glass-panel p-3 text-center flex-col items-center gap-1">
               <span className="text-neon-red font-tech text-xl flex items-center gap-1">
                 A++ <CircuitBoard size={19} className="inline text-neon-red" />
@@ -102,21 +81,12 @@ const Hero = () => {
           </div>
         </div>
 
-        <div 
-          className={`w-full lg:w-1/2 transition-all duration-1000 delay-300 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          } flex justify-center`}
-        >
+        <div className={`w-full lg:w-1/2 transition-all duration-1000 delay-300 ${isLoaded ? "opacity-100" : "opacity-0"} flex justify-center`}>
           <div className="relative w-56 sm:w-72 md:w-80 lg:w-auto holographic-card">
             <div className="relative z-10 tech-border p-1 sm:p-2 bg-dark-matter/60 rounded-lg animate-float">
-              <img 
-                src="/lovable-uploads/9081ef31-81b5-4f9b-9248-872b2d6d6389.png" 
-                alt="Light Reflect Electrician" 
-                className="rounded-lg w-full h-auto object-cover max-h-72 sm:max-h-80 lg:max-h-max"
-                style={{
-                  transition: 'transform 0.2s cubic-bezier(.4,2,.6,1)'
-                }}
-              />
+              <img src="/lovable-uploads/9081ef31-81b5-4f9b-9248-872b2d6d6389.png" alt="Light Reflect Electrician" className="rounded-lg w-full h-auto object-cover max-h-72 sm:max-h-80 lg:max-h-max" style={{
+              transition: 'transform 0.2s cubic-bezier(.4,2,.6,1)'
+            }} />
               <div className="hidden lg:block absolute -inset-1 rounded-lg border border-electric-blue/30 animate-pulse-glow"></div>
               <div className="hidden lg:block absolute -top-7 left-10 rotate-12 opacity-40">
                 <Plug className="w-8 h-8 text-hologram-blue/70" />
@@ -136,21 +106,10 @@ const Hero = () => {
                 <span className="font-tech text-xs text-electric-blue">ID.8734</span>
                 <div className="w-2 h-2 bg-electric-blue rounded-full animate-pulse"></div>
               </div>
-              <svg className="hidden lg:block absolute left-0 top-0 z-0 opacity-15" width={64} height={40}><polyline points="2,20 30,3 62,15 60,36 10,38 2,20" fill="none" stroke="#00FFFF" strokeWidth="2" strokeDasharray="5,5"/></svg>
+              <svg className="hidden lg:block absolute left-0 top-0 z-0 opacity-15" width={64} height={40}><polyline points="2,20 30,3 62,15 60,36 10,38 2,20" fill="none" stroke="#00FFFF" strokeWidth="2" strokeDasharray="5,5" /></svg>
             </div>
 
-            <div className="hidden lg:block absolute bottom-4 right-4 tech-panel z-20 w-64 neon-glow">
-              <div className="flex justify-between items-center mb-3">
-                <h5 className="font-tech text-electric-blue flex gap-1 items-center">Proiecte <Bolt className="w-4 h-4" /> Realizate</h5>
-              </div>
-              <div className="flex items-end gap-2">
-                <span className="text-3xl font-tech text-white">237+</span>
-                <span className="text-green-400 text-sm">↑ 24% față de 2023</span>
-              </div>
-              <div className="w-full h-1 bg-electric-blue/20 rounded mt-3 overflow-hidden">
-                <div className="h-full w-3/4 bg-gradient-to-r from-electric-blue to-hologram-blue"></div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -166,8 +125,6 @@ const Hero = () => {
       <div className="hidden lg:block absolute top-6 right-6 w-16 h-16 border-r-2 border-t-2 border-hologram-blue/30 rounded-tr-lg"></div>
       <div className="hidden lg:block absolute bottom-6 left-6 w-16 h-16 border-l-2 border-b-2 border-neon-red/30 rounded-bl-lg"></div>
       <div className="hidden lg:block absolute bottom-6 right-6 w-16 h-16 border-r-2 border-b-2 border-electric-blue/30 rounded-br-lg"></div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
