@@ -19,6 +19,12 @@ const AboutSection = () => {
               care redefinesc standardele de confort și eficiență energetică în România și Europa.
             </p>
             
+            <div className="tech-border p-4 mb-6">
+              <p className="text-electric-blue font-tech text-lg">
+                Capacitate de mobilizare prin rețeaua proprie de electricieni certificați
+              </p>
+            </div>
+
             {/* Efficiency Comparison Table */}
             <div className="mb-8">
               <h3 className="text-2xl md:text-3xl font-tech font-bold mb-6 text-white">
