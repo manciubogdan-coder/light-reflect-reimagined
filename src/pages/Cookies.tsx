@@ -27,7 +27,7 @@ const Cookies = () => (
             Acest site poate utiliza cookie-uri pentru a analiza traficul și modul de utilizare, fără a identifica utilizatorii în mod individual.
           </p>
           <p>
-            Pentru mai multe detalii despre cookie-uri sau drepturile dvs. vă rugăm să ne contactați la <a href="mailto:manciubogdan999@gmail.com" className="text-neon-red underline">manciubogdan999@gmail.com</a>.
+            Pentru mai multe detalii despre cookie-uri sau drepturile dvs. vă rugăm să ne contactați la <a href="mailto:office@lightreflect.ro" className="text-neon-red underline">office@lightreflect.ro</a>.
           </p>
         </div>
       </div>
