@@ -28,7 +28,7 @@ const PoliticaDeConfidentialitate = () => (
           </p>
           <p>
             <strong>5. Drepturile dvs.</strong><br />
-            Aveți dreptul să solicitați accesul la datele personale, rectificarea sau ștergerea acestora, restricționarea prelucrării sau portarea lor. Pentru orice solicitare, ne puteți contacta la <a href="mailto:manciubogdan999@gmail.com" className="text-hologram-blue underline">manciubogdan999@gmail.com</a>.
+            Aveți dreptul să solicitați accesul la datele personale, rectificarea sau ștergerea acestora, restricționarea prelucrării sau portarea lor. Pentru orice solicitare, ne puteți contacta la <a href="mailto:office@lightreflect.ro" className="text-hologram-blue underline">office@lightreflect.ro</a>.
           </p>
           <p>
             <strong>6. Modificări ale politicii</strong><br />

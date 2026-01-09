@@ -36,7 +36,7 @@ const TermeniSiConditii = () => (
             Ne rezervăm dreptul de a modifica acești termeni oricând, fără o notificare prealabilă. Versiunea curentă va fi disponibilă permanent pe această pagină.
           </p>
           <p>
-            Pentru întrebări ne puteți contacta la <a href="mailto:manciubogdan999@gmail.com" className="text-electric-blue underline">manciubogdan999@gmail.com</a>.
+            Pentru întrebări ne puteți contacta la <a href="mailto:office@lightreflect.ro" className="text-electric-blue underline">office@lightreflect.ro</a>.
           </p>
         </div>
       </div>
