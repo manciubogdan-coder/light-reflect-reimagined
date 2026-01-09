@@ -19,10 +19,48 @@ const AboutSection = () => {
               care redefinesc standardele de confort și eficiență energetică în România și Europa.
             </p>
             
-            <div className="tech-border p-4 mb-8">
-              <p className="text-electric-blue font-tech text-lg">
-                Capacitate de mobilizare prin rețeaua proprie de electricieni certificați
-              </p>
+            {/* Efficiency Comparison Table */}
+            <div className="mb-8">
+              <h3 className="text-2xl md:text-3xl font-tech font-bold mb-6 text-white">
+                Eficiență în <span className="text-electric-blue">Cifre</span>
+              </h3>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-white/20">
+                      <th className="py-3 pr-4 text-white/60 font-tech text-sm">Etapa Proiectului</th>
+                      <th className="py-3 px-4 text-white/60 font-tech text-sm text-center">Metoda Clasică</th>
+                      <th className="py-3 pl-4 text-electric-blue font-tech text-sm text-center">Metoda Light Reflect</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-white/10">
+                      <td className="py-4 pr-4 text-white/80 text-sm">Trasare & canelare</td>
+                      <td className="py-4 px-4 text-white/60 text-center font-tech">4-5 zile</td>
+                      <td className="py-4 pl-4 text-electric-blue text-center font-tech font-bold">2 zile</td>
+                    </tr>
+                    <tr className="border-b border-white/10">
+                      <td className="py-4 pr-4 text-white/80 text-sm">Cablare & infrastructură</td>
+                      <td className="py-4 px-4 text-white/60 text-center font-tech">6-7 zile</td>
+                      <td className="py-4 pl-4 text-electric-blue text-center font-tech font-bold">3 zile</td>
+                    </tr>
+                    <tr className="border-b border-white/10">
+                      <td className="py-4 pr-4 text-white/80 text-sm">Montaj aparataj & tablou</td>
+                      <td className="py-4 px-4 text-white/60 text-center font-tech">3-4 zile</td>
+                      <td className="py-4 pl-4 text-center">
+                        <span className="text-electric-blue font-tech font-bold">2 zile</span>
+                        <p className="text-electric-blue/70 text-xs mt-1">Proiectare prealabilă în Planner5D inclusă.</p>
+                      </td>
+                    </tr>
+                    <tr className="bg-electric-blue/10 rounded-lg">
+                      <td className="py-4 pr-4 text-white font-tech font-bold text-sm">TOTAL TIMP EXECUȚIE</td>
+                      <td className="py-4 px-4 text-white/60 text-center font-tech">13-16 zile</td>
+                      <td className="py-4 pl-4 text-electric-blue text-center font-tech font-bold text-xl">7 zile</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             
             <Link to="/despre-noi" className="font-tech text-electric-blue group flex items-center gap-2">
