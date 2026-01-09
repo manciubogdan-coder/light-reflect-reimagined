@@ -32,7 +32,8 @@ const Contact = () => {
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      // Save to database
+      const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert({
           name: formData.nume,
@@ -40,7 +41,21 @@ const Contact = () => {
           message: formData.mesaj
         });
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          nume: formData.nume,
+          email: formData.email,
+          mesaj: formData.mesaj
+        }
+      });
+
+      if (emailError) {
+        console.warn("Email notification failed:", emailError);
+        // Don't throw - the submission was saved successfully
+      }
 
       toast.success("Mesajul tău a fost trimis cu succes!");
       setSent(true);
