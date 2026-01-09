@@ -16,6 +16,11 @@ interface ContactEmailRequest {
   mesaj: string;
 }
 
+function isValidEmail(email: string) {
+  // Simple, safe validator (avoid overly strict RFC regex)
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -23,33 +28,74 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { nume, email, mesaj }: ContactEmailRequest = await req.json();
+    const body: Partial<ContactEmailRequest> = await req.json();
 
-    console.log("Received email request:", { nume, email, mesaj });
+    const nume = String(body.nume ?? "").trim();
+    const email = String(body.email ?? "").trim();
+    const mesaj = String(body.mesaj ?? "").trim();
 
-    // Pentru conturile Resend gratuite, putem trimite doar către adresa proprie de email
-    // Așa că folosim o singură trimitere cu toate informațiile
-    const emailTo = "office@lightreflect.ro"; // Adresa de email verificată în Resend
+    // Server-side validation
+    if (!nume || nume.length > 100) {
+      return new Response(JSON.stringify({ error: "Numele este invalid." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+    if (!email || email.length > 255 || !isValidEmail(email)) {
+      return new Response(JSON.stringify({ error: "Email invalid." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+    if (!mesaj || mesaj.length > 5000) {
+      return new Response(JSON.stringify({ error: "Mesaj invalid." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    // Avoid logging PII content
+    console.log("Received contact email request", {
+      nameLen: nume.length,
+      emailDomain: email.split("@")[1] ?? "",
+      messageLen: mesaj.length,
+    });
+
+    // Destination inbox
+    const emailTo = "office@lightreflect.ro";
+
+    // IMPORTANT:
+    // - If your Resend account is still in "testing" mode, Resend only allows sending to your own email.
+    // - To send to office@lightreflect.ro, verify the domain in Resend and use a FROM address on that domain.
+    const from = "Light Reflect <no-reply@lightreflect.ro>";
 
     const emailResponse = await resend.emails.send({
-      from: "Light Reflect <onboarding@resend.dev>",
+      from,
       to: [emailTo],
       reply_to: email,
-      subject: `Solicitare parteneriat de la ${nume}`,
+      subject: `Solicitare nouă de la ${nume}`,
       html: `
-        <h2>Solicitare nouă de parteneriat</h2>
+        <h2>Mesaj nou din formularul de contact</h2>
         <p><strong>Nume:</strong> ${nume}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Telefon:</strong> ${mesaj.includes('Telefon:') ? mesaj.split('Telefon:')[1].split('\n')[0].trim() : 'Nu este specificat'}</p>
-        <p><strong>Oraș:</strong> ${mesaj.includes('Oraș:') ? mesaj.split('Oraș:')[1].split('\n')[0].trim() : 'Nu este specificat'}</p>
-        <p><strong>Experiență:</strong> ${mesaj.includes('Experiență:') ? mesaj.split('Experiență:')[1].split('\n')[0].trim() : 'Nu este specificată'}</p>
-        <p><strong>Mesaj:</strong> ${mesaj.includes('Mesaj:') ? mesaj.split('Mesaj:')[1].trim() : mesaj}</p>
+        <p><strong>Mesaj:</strong></p>
+        <p>${mesaj.replace(/\n/g, "<br />")}</p>
         <hr>
-        <p>Notă: Acest email a fost trimis prin sistemul de solicitări de parteneriat Light Reflect.</p>
+        <p>Notă: Acest email a fost trimis prin formularul de contact Light Reflect.</p>
       `,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    if ((emailResponse as any)?.error) {
+      console.error("Resend error:", (emailResponse as any).error);
+      const msg = (emailResponse as any).error?.message ?? "Failed to send email";
+      const status = Number((emailResponse as any).error?.statusCode ?? 500);
+      return new Response(JSON.stringify({ error: msg }), {
+        status: status >= 400 && status < 600 ? status : 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    console.log("Email sent successfully");
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
@@ -60,13 +106,10 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error sending email:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
   }
 };
 

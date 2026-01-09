@@ -54,6 +54,9 @@ const Contact = () => {
 
       if (emailError) {
         console.warn("Email notification failed:", emailError);
+        toast.warning(
+          "Mesajul a fost înregistrat, dar emailul nu a putut fi trimis încă (configurare Resend)."
+        );
         // Don't throw - the submission was saved successfully
       }
 
