@@ -29,7 +29,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Pentru conturile Resend gratuite, putem trimite doar către adresa proprie de email
     // Așa că folosim o singură trimitere cu toate informațiile
-    const emailTo = "manciubogdan999@gmail.com"; // Adresa ta de email verificată în Resend
+    const emailTo = "office@lightreflect.ro"; // Adresa de email verificată în Resend
 
     const emailResponse = await resend.emails.send({
       from: "Light Reflect <onboarding@resend.dev>",
