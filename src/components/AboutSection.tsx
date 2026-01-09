@@ -19,10 +19,10 @@ const AboutSection = () => {
               care redefinesc standardele de confort și eficiență energetică în România și Europa.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <Stat value="10+" label="Ani de experiență" />
-              <Stat value="50+" label="Specialiști" />
-              <Stat value="1200+" label="Clienți mulțumiți" />
+            <div className="tech-border p-4 mb-8">
+              <p className="text-electric-blue font-tech text-lg">
+                Capacitate de mobilizare prin rețeaua proprie de electricieni certificați
+              </p>
             </div>
             
             <Link to="/despre-noi" className="font-tech text-electric-blue group flex items-center gap-2">
