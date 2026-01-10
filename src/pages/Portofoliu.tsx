@@ -16,6 +16,16 @@ import project4 from "@/assets/projects/project-4.jpg";
 import project5 from "@/assets/projects/project-5.jpg";
 import project6 from "@/assets/projects/project-6.jpg";
 import project7 from "@/assets/projects/project-7.jpg";
+import panel1 from "@/assets/projects/panel-1.jpg";
+import panel2 from "@/assets/projects/panel-2.jpg";
+import panel3 from "@/assets/projects/panel-3.jpg";
+import panel4 from "@/assets/projects/panel-4.jpg";
+import panel5 from "@/assets/projects/panel-5.jpg";
+import panel6 from "@/assets/projects/panel-6.jpg";
+import panel7 from "@/assets/projects/panel-7.jpg";
+import industrial1 from "@/assets/projects/industrial-1.jpg";
+import industrial2 from "@/assets/projects/industrial-2.jpg";
+import industrial3 from "@/assets/projects/industrial-3.jpg";
 
 type ProjectCategory = "all" | "rezidential" | "industrial" | "smart-home";
 
@@ -37,6 +47,146 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
+    title: "Tablou Electric Industrial - Proiect Major",
+    category: ["industrial"],
+    image: panel1,
+    badges: ["Execuție în 10 zile", "Standard Industrial", "Conformitate CE"],
+    description: "Tablou electric industrial complet cu protecții diferențiale, întrerupătoare automate și sistem de distribuție profesional.",
+    technicalDetails: {
+      duration: "10 zile",
+      area: "Industrial",
+      circuits: 48,
+      features: ["Întrerupătoare Schrack", "Protecții diferențiale 30mA", "Bare de distribuție cupru", "Cablare structurată cu canal PVC"]
+    }
+  },
+  {
+    id: 2,
+    title: "Panou Control Automatizare - Industrie",
+    category: ["industrial"],
+    image: panel2,
+    badges: ["Conformitate CE", "IP65"],
+    description: "Panou de control pentru linii de producție cu contactoare și relee de interfață.",
+    technicalDetails: {
+      duration: "5 zile",
+      area: "Panou control",
+      circuits: 16,
+      features: ["Contactoare industriale", "Relee de interfață", "Carcasă inox IP65", "Etichetare profesională"]
+    }
+  },
+  {
+    id: 3,
+    title: "Tablou Distribuție - În Execuție",
+    category: ["rezidential", "industrial"],
+    image: panel3,
+    badges: ["Execuție în 3 zile", "Milwaukee Tools"],
+    description: "Tablou de distribuție în proces de asamblare cu echipamente profesionale Milwaukee.",
+    technicalDetails: {
+      duration: "3 zile",
+      area: "Multi-zonă",
+      circuits: 32,
+      features: ["Echipamente Schrack", "Cablare profesională", "Protecții diferențiale multiple", "Șine DIN multiple"]
+    }
+  },
+  {
+    id: 4,
+    title: "Tablou Rezidențial Încastrat - Finisaj Premium",
+    category: ["rezidential"],
+    image: panel4,
+    badges: ["Finisaj Premium", "Design Integrat"],
+    description: "Tablou electric rezidențial încastrat cu finisaj alb și organizare impecabilă pe 3 rânduri.",
+    technicalDetails: {
+      duration: "2 zile",
+      area: "120 mp",
+      circuits: 30,
+      features: ["Carcasă încastrată", "Întrerupătoare modulare", "Protecție diferențială", "Etichetare circuite"]
+    }
+  },
+  {
+    id: 5,
+    title: "Linie Ambalare Automată - Instalație Completă",
+    category: ["industrial"],
+    image: industrial1,
+    badges: ["Execuție în 14 zile", "Automatizare Completă"],
+    description: "Instalație electrică pentru linie de ambalare automată cu sistem de cântărire și control PLC.",
+    technicalDetails: {
+      duration: "14 zile",
+      area: "800 mp",
+      circuits: 64,
+      features: ["Alimentare trifazată", "Control PLC", "Senzori industriali", "HMI touchscreen"]
+    }
+  },
+  {
+    id: 6,
+    title: "Mașină Ambalare - Conexiuni Electrice",
+    category: ["industrial"],
+    image: industrial2,
+    badges: ["Instalație Specializată", "Siguranță Maximă"],
+    description: "Instalație electrică pentru mașină de ambalare cu sistem de siguranță și control temperatura.",
+    technicalDetails: {
+      duration: "7 zile",
+      area: "Echipament",
+      circuits: 12,
+      features: ["Control temperatură", "Senzori siguranță", "Afișaje digitale", "Sistem stop urgență"]
+    }
+  },
+  {
+    id: 7,
+    title: "Tablou Automatizare PowerFlex",
+    category: ["industrial"],
+    image: industrial3,
+    badges: ["Allen-Bradley", "VFD Control"],
+    description: "Tablou de automatizare cu variatore de frecvență PowerFlex și sistem de control avansat.",
+    technicalDetails: {
+      duration: "8 zile",
+      area: "Control motoare",
+      circuits: 24,
+      features: ["Variatore Allen-Bradley", "PLC integrat", "Contactoare industriale", "Protecții termice"]
+    }
+  },
+  {
+    id: 8,
+    title: "Tablou Rezidențial - Asamblare Profesională",
+    category: ["rezidential"],
+    image: panel5,
+    badges: ["Execuție în 4 zile", "Cablare Color-Coded"],
+    description: "Tablou electric rezidențial cu cablare color-coded și organizare profesională pe bare de distribuție.",
+    technicalDetails: {
+      duration: "4 zile",
+      area: "200 mp",
+      circuits: 36,
+      features: ["Cablare color-coded", "Bare cupru", "Protecții Schrack", "Cleme Wago"]
+    }
+  },
+  {
+    id: 9,
+    title: "Tablou Modular ETI - În Asamblare",
+    category: ["rezidential"],
+    image: panel6,
+    badges: ["Componente ETI", "Standard European"],
+    description: "Tablou modular cu componente ETI în curs de asamblare pentru casă unifamilială.",
+    technicalDetails: {
+      duration: "3 zile",
+      area: "150 mp",
+      circuits: 28,
+      features: ["Întrerupătoare ETI", "Protecții diferențiale", "Spațiu extensie", "Montaj șină DIN"]
+    }
+  },
+  {
+    id: 10,
+    title: "Tablou Complet ETI - Finalizat",
+    category: ["rezidential", "smart-home"],
+    image: panel7,
+    badges: ["Execuție în 5 zile", "Smart Ready"],
+    description: "Tablou electric complet cu întrerupătoare ETI, relee de impuls și programator orar pentru automatizări.",
+    technicalDetails: {
+      duration: "5 zile",
+      area: "180 mp",
+      circuits: 42,
+      features: ["Întrerupătoare ETI", "Relee de impuls", "Programator orar", "Cleme de distribuție"]
+    }
+  },
+  {
+    id: 11,
     title: "Casă Unifamilială Premium - Oradea",
     category: ["rezidential", "smart-home"],
     image: project1,
@@ -50,7 +200,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 2,
+    id: 12,
     title: "Apartament Studio Modern - Bihor",
     category: ["rezidential"],
     image: project2,
@@ -64,7 +214,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 3,
+    id: 13,
     title: "Garsonieră Minimalistă - Oradea",
     category: ["rezidential", "smart-home"],
     image: project3,
@@ -78,7 +228,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 4,
+    id: 14,
     title: "Vilă Modernă cu Domotică - Sânmartin",
     category: ["rezidential", "smart-home"],
     image: project4,
@@ -92,7 +242,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 5,
+    id: 15,
     title: "Living Room Smart - Renovare Completă",
     category: ["rezidential", "smart-home"],
     image: project5,
@@ -106,7 +256,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 6,
+    id: 16,
     title: "Spațiu Industrial - Depozit Oradea",
     category: ["industrial"],
     image: project6,
@@ -120,7 +270,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 7,
+    id: 17,
     title: "Open Space Rezidențial - Bihor",
     category: ["rezidential"],
     image: project7,
