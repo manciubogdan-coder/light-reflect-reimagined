@@ -180,7 +180,7 @@ const projects: Project[] = [
     description: "Tablou electric complet cu întrerupătoare ETI, relee de impuls și programator orar pentru automatizări.",
     technicalDetails: {
       duration: "1 zi",
-      area: "180 mp",
+      area: "64 mp",
       circuits: 28,
       features: ["Întrerupătoare ETI", "Relee de impuls", "Programator orar", "Cleme de distribuție"]
     }
