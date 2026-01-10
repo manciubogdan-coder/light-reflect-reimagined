@@ -137,7 +137,7 @@ const projects: Project[] = [
     badges: ["Allen-Bradley", "VFD Control"],
     description: "Tablou de automatizare cu variatore de frecvență PowerFlex și sistem de control avansat.",
     technicalDetails: {
-      duration: "8 zile",
+      duration: "2 zile",
       area: "Control motoare",
       circuits: 24,
       features: ["Variatore Allen-Bradley", "PLC integrat", "Contactoare industriale", "Protecții termice"]
