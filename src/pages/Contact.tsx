@@ -33,7 +33,7 @@ const Contact = () => {
             <div className="flex items-center justify-center gap-3">
               <span className="text-electric-blue text-xl">📍</span>
               <span className="text-white/90 font-tech text-lg">
-                Str. Principală Nr. 123, București, România
+                Str. Andrei Mureșanu nr. 32, Salonta, Bihor, România
               </span>
             </div>
           </div>
