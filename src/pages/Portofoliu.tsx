@@ -194,7 +194,7 @@ const projects: Project[] = [
     description: "Instalație electrică completă pentru casă cu 5 camere, automatizări smart home și sistem de iluminat LED integrat.",
     technicalDetails: {
       duration: "7 zile",
-      area: "180 mp",
+      area: "120 mp",
       circuits: 24,
       features: ["Tablou electric modular ABB", "Prize și întrerupătoare Legrand Mosaic", "Iluminat LED dimabil", "Sistem KNX pentru automatizări"]
     }
