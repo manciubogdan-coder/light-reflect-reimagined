@@ -50,7 +50,7 @@ const projects: Project[] = [
     title: "Tablou Electric Industrial - Proiect Major",
     category: ["industrial"],
     image: panel1,
-    badges: ["Execuție în 4 zile", "Standard Industrial", "Conformitate CE"],
+    badges: ["Execuție în 3 zile", "Standard Industrial", "Conformitate CE"],
     description: "Tablou electric industrial complet cu protecții diferențiale, întrerupătoare automate și sistem de distribuție profesional.",
     technicalDetails: {
       duration: "4 zile",
