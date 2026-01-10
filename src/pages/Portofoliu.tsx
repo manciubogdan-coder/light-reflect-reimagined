@@ -179,7 +179,7 @@ const projects: Project[] = [
     badges: ["Execuție în 1 zi", "Smart Ready"],
     description: "Tablou electric complet cu întrerupătoare ETI, relee de impuls și programator orar pentru automatizări.",
     technicalDetails: {
-      duration: "5 zile",
+      duration: "1 zi",
       area: "180 mp",
       circuits: 42,
       features: ["Întrerupătoare ETI", "Relee de impuls", "Programator orar", "Cleme de distribuție"]
