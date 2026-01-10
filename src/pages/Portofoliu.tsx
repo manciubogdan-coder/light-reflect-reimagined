@@ -95,7 +95,7 @@ const projects: Project[] = [
     badges: ["Finisaj Premium", "Design Integrat"],
     description: "Tablou electric rezidențial încastrat cu finisaj alb și organizare impecabilă pe 3 rânduri.",
     technicalDetails: {
-      duration: "2 zile",
+      duration: "1 zi",
       area: "120 mp",
       circuits: 30,
       features: ["Carcasă încastrată", "Întrerupătoare modulare", "Protecție diferențială", "Etichetare circuite"]
