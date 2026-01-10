@@ -87,10 +87,39 @@ const Contact = () => {
         <div className="absolute inset-0 bg-circuit-pattern bg-cover bg-center opacity-20 z-0" />
         <div className="absolute inset-0 bg-gradient-to-br from-dark-matter/80 via-hologram-blue/10 to-electric-blue/10 z-0" />
 
+        {/* Contact Info Section */}
+        <div className="relative z-20 max-w-xl w-full tech-panel shadow-xl p-8 mb-8">
+          <ElectricText text="Informații Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue text-center" />
+          
+          <div className="space-y-4 text-center">
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-electric-blue text-xl">📞</span>
+              <a href="tel:+40752954772" className="text-white/90 font-tech text-lg hover:text-electric-blue transition-colors">
+                +40 752 954 772
+              </a>
+            </div>
+            
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-electric-blue text-xl">✉️</span>
+              <a href="mailto:office@lightreflect.ro" className="text-white/90 font-tech text-lg hover:text-electric-blue transition-colors">
+                office@lightreflect.ro
+              </a>
+            </div>
+            
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-electric-blue text-xl">📍</span>
+              <span className="text-white/90 font-tech text-lg">
+                Str. Principală Nr. 123, București, România
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Form Section */}
         <div className="relative z-20 max-w-xl w-full tech-panel shadow-xl p-8">
-          <ElectricText text="Contact" className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue text-center" />
+          <ElectricText text="Trimite un mesaj" className="text-2xl md:text-3xl font-tech mb-6 text-hologram-blue text-center" />
           <p className="text-white/70 mb-8 font-future text-lg text-center">
-            Trimite-ne un mesaj și revenim cât mai curând posibil ⚡
+            Completează formularul și revenim cât mai curând posibil ⚡
           </p>
           
           {sent ? (
