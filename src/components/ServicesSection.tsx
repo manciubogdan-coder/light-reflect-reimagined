@@ -55,37 +55,6 @@ const ServicesSection = () => {
           />
         </div>
 
-        <div className="mt-16 tech-panel max-w-4xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-8">
-            <div className="w-full lg:w-1/2">
-              <h3 className="text-2xl font-tech font-bold mb-4">
-                Soluții Smart Complete
-              </h3>
-              <p className="text-white/60 mb-4">
-                Pachetele noastre integrează toate sistemele electrice într-o singură interfață ușor de utilizat, oferind control total și monitorizare în timp real.
-              </p>
-              <ul className="space-y-2">
-                <Feature>Control de la distanță prin aplicație mobilă</Feature>
-                <Feature>Monitorizare în timp real a consumului energetic</Feature>
-                <Feature>Integrare cu asistenți vocali (Google, Alexa, Siri)</Feature>
-                <Feature>Alertare în caz de anomalii sau defecțiuni</Feature>
-              </ul>
-            </div>
-            <div className="w-full lg:w-1/2 tech-border p-4 hologram">
-              <div className="aspect-video relative overflow-hidden rounded">
-                <MonitorSmartphone className="absolute inset-0 text-electric-blue w-full h-full p-10 opacity-20" />
-                <div className="absolute inset-0 bg-circuit-blue/20 backdrop-blur-sm"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <Bolt className="w-16 h-16 text-hologram-blue mx-auto mb-4 animate-pulse" />
-                    <h4 className="text-hologram-blue font-tech text-xl">Smart Control Panel</h4>
-                    <p className="text-white/80 mt-2">Tot controlul într-un singur loc</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
