@@ -34,11 +34,6 @@ const ServicesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <ServiceCard 
-            icon={<Lightbulb />}
-            title="Tablouri Electrice Smart"
-            description="Tablouri electrice cu monitorizare în timp real a consumului și protecție avansată împotriva suprasarcinilor."
-          />
-          <ServiceCard 
             icon={<Settings />}
             title="Siguranțe Automate"
             description="Siguranțe electrice cu întrerupere automată în caz de defecte, protejând echipamentele și locuința."
