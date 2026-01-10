@@ -176,7 +176,7 @@ const projects: Project[] = [
     title: "Tablou Complet ETI - Finalizat",
     category: ["rezidential", "smart-home"],
     image: panel7,
-    badges: ["Execuție în 5 zile", "Smart Ready"],
+    badges: ["Execuție în 1 zi", "Smart Ready"],
     description: "Tablou electric complet cu întrerupătoare ETI, relee de impuls și programator orar pentru automatizări.",
     technicalDetails: {
       duration: "5 zile",
