@@ -17,6 +17,10 @@ const Nav = () => {
       url: "/servicii",
     },
     {
+      title: "Portofoliu",
+      url: "/portofoliu",
+    },
+    {
       title: "Tools",
       url: "/tools",
     },
