@@ -213,20 +213,6 @@ const projects: Project[] = [
       features: ["Tablou electric Schneider", "Cablare structurată Cat6", "Prize USB integrate", "Iluminat de ambient"]
     }
   },
-  {
-    id: 13,
-    title: "Garsonieră Minimalistă - Oradea",
-    category: ["rezidential", "smart-home"],
-    image: project3,
-    badges: ["Execuție în 2 zile", "Smart Ready"],
-    description: "Instalație modernă pentru garsonieră cu pregătire completă pentru automatizări smart home.",
-    technicalDetails: {
-      duration: "2 zile",
-      area: "35 mp",
-      circuits: 6,
-      features: ["Tablou cu protecție diferențială", "Prize smart compatibile", "Iluminat zonificat", "Sistem de încărcare EV ready"]
-    }
-  },
 ];
 
 const stats = [
