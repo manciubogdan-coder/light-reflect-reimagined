@@ -35,7 +35,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <FooterLink href="/despre-noi">Despre Noi</FooterLink>
               <FooterLink href="/proiecte">Proiecte</FooterLink>
-              <FooterLink href="/franciza">Franciză</FooterLink>
+              
               <FooterLink href="/blog">Blog</FooterLink>
               <FooterLink href="/cariere">Cariere</FooterLink>
               <FooterLink href="/contact">Contact</FooterLink>
