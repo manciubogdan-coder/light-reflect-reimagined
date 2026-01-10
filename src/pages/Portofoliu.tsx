@@ -151,7 +151,7 @@ const projects: Project[] = [
     badges: ["Execuție în 1 zi", "Cablare Color-Coded"],
     description: "Tablou electric rezidențial cu cablare color-coded și organizare profesională pe bare de distribuție.",
     technicalDetails: {
-      duration: "3 zile",
+      duration: "1 zi",
       area: "200 mp",
       circuits: 36,
       features: ["Cablare color-coded", "Bare cupru", "Protecții Schrack", "Cleme Wago"]
