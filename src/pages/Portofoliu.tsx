@@ -165,7 +165,7 @@ const projects: Project[] = [
     badges: ["Componente ETI", "Standard European"],
     description: "Tablou modular cu componente ETI în curs de asamblare pentru casă unifamilială.",
     technicalDetails: {
-      duration: "3 zile",
+      duration: "1 zi",
       area: "150 mp",
       circuits: 28,
       features: ["Întrerupătoare ETI", "Protecții diferențiale", "Spațiu extensie", "Montaj șină DIN"]
