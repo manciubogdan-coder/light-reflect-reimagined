@@ -196,7 +196,7 @@ const projects: Project[] = [
       duration: "7 zile",
       area: "120 mp",
       circuits: 24,
-      features: ["Tablou electric modular ABB", "Prize și întrerupătoare Legrand Mosaic", "Iluminat LED dimabil", "Sistem KNX pentru automatizări"]
+      features: ["Tablou electric modular ABB", "Prize și întrerupătoare Legrand Mosaic", "Iluminat LED dimabil"]
     }
   },
   {
