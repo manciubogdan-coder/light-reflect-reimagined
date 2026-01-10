@@ -148,7 +148,7 @@ const projects: Project[] = [
     title: "Tablou Rezidențial - Asamblare Profesională",
     category: ["rezidential"],
     image: panel5,
-    badges: ["Execuție în 4 zile", "Cablare Color-Coded"],
+    badges: ["Execuție în 1 zi", "Cablare Color-Coded"],
     description: "Tablou electric rezidențial cu cablare color-coded și organizare profesională pe bare de distribuție.",
     technicalDetails: {
       duration: "3 zile",
