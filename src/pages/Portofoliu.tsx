@@ -53,7 +53,7 @@ const projects: Project[] = [
     badges: ["Execuție în 4 zile", "Standard Industrial", "Conformitate CE"],
     description: "Tablou electric industrial complet cu protecții diferențiale, întrerupătoare automate și sistem de distribuție profesional.",
     technicalDetails: {
-      duration: "10 zile",
+      duration: "4 zile",
       area: "Industrial",
       circuits: 48,
       features: ["Întrerupătoare Schrack", "Protecții diferențiale 30mA", "Bare de distribuție cupru", "Cablare structurată cu canal PVC"]
