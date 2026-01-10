@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Bolt, Lightbulb, Plug, CircuitBoard, BatteryCharging } from "lucide-react";
 import HolographicButton from "./HolographicButton";
-import ElectricText from "./ElectricText";
+
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -46,7 +46,9 @@ const Hero = () => {
             <span className="block lg:hidden text-electric-blue font-tech mt-1 text-lg">începe acum</span>
           </h1>
 
-          <ElectricText text="Instalații electrice făcute ca la carte. Cu oameni serioși, echipamente moderne și un plan clar: să devenim rețeaua #1 de electricieni din Europa." className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8" delay={800} glitchProb={0} />
+          <p className="text-base md:text-xl lg:text-2xl font-tech text-white/80 mb-4 lg:mb-8">
+            Instalații electrice făcute ca la carte. Cu oameni serioși, echipamente moderne și un plan clar: să devenim rețeaua #1 de electricieni din Europa.
+          </p>
 
           <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
             <HolographicButton to="/contact" className="neon-glow">
