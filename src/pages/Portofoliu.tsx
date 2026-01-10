@@ -123,7 +123,7 @@ const projects: Project[] = [
     badges: ["Instalație Specializată", "Siguranță Maximă"],
     description: "Instalație electrică pentru mașină de ambalare cu sistem de siguranță și control temperatura.",
     technicalDetails: {
-      duration: "7 zile",
+      duration: "1 zi",
       area: "Echipament",
       circuits: 12,
       features: ["Control temperatură", "Senzori siguranță", "Afișaje digitale", "Sistem stop urgență"]
