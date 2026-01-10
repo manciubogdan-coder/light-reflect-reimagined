@@ -227,62 +227,6 @@ const projects: Project[] = [
       features: ["Tablou cu protecție diferențială", "Prize smart compatibile", "Iluminat zonificat", "Sistem de încărcare EV ready"]
     }
   },
-  {
-    id: 14,
-    title: "Vilă Modernă cu Domotică - Sânmartin",
-    category: ["rezidential", "smart-home"],
-    image: project4,
-    badges: ["Execuție în 14 zile", "Premium Plus", "Planner5D Mapping"],
-    description: "Proiect complex cu sistem complet de domotică, iluminat inteligent și panouri solare integrate.",
-    technicalDetails: {
-      duration: "14 zile",
-      area: "320 mp",
-      circuits: 42,
-      features: ["Sistem Loxone complet", "Invertor solar Fronius", "Stație încărcare EV", "Control vocal Alexa/Google"]
-    }
-  },
-  {
-    id: 15,
-    title: "Living Room Smart - Renovare Completă",
-    category: ["rezidential", "smart-home"],
-    image: project5,
-    badges: ["Execuție în 5 zile", "Smart Home"],
-    description: "Transformare living în spațiu smart cu iluminat adaptiv și control prin aplicație mobilă.",
-    technicalDetails: {
-      duration: "5 zile",
-      area: "50 mp",
-      circuits: 10,
-      features: ["Iluminat Philips Hue", "Scene predefinite", "Senzori prezență", "Sistem audio multi-room"]
-    }
-  },
-  {
-    id: 16,
-    title: "Spațiu Industrial - Depozit Oradea",
-    category: ["industrial"],
-    image: project6,
-    badges: ["Execuție în 21 zile", "Conformitate CE"],
-    description: "Instalație electrică industrială cu tablouri de distribuție, iluminat industrial și sistem de siguranță.",
-    technicalDetails: {
-      duration: "21 zile",
-      area: "1200 mp",
-      circuits: 86,
-      features: ["Tablouri industriale IP65", "Iluminat LED industrial", "Sistem de alarmă", "UPS pentru echipamente critice"]
-    }
-  },
-  {
-    id: 17,
-    title: "Open Space Rezidențial - Bihor",
-    category: ["rezidential"],
-    image: project7,
-    badges: ["Execuție în 4 zile", "Design Minimalist"],
-    description: "Instalație pentru spațiu open-space cu accent pe estetică și funcționalitate maximă.",
-    technicalDetails: {
-      duration: "4 zile",
-      area: "85 mp",
-      circuits: 14,
-      features: ["Prize încastrate în mobilier", "Iluminat pe șine", "Zone de lucru dedicate", "Sistem ventilație integrată"]
-    }
-  }
 ];
 
 const stats = [
