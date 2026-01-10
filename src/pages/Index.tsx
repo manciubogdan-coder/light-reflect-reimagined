@@ -4,7 +4,7 @@ import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import ServicesSection from "../components/ServicesSection";
 import AboutSection from "../components/AboutSection";
-import CallToAction from "../components/CallToAction";
+
 import Footer from "../components/Footer";
 import BackgroundParticles from "../components/BackgroundParticles";
 import GlowingCircuit from "../components/GlowingCircuit";
@@ -36,7 +36,7 @@ const Index = () => {
       <Hero />
       <ServicesSection />
       <AboutSection />
-      <CallToAction />
+      
       <Footer />
     </div>
   );

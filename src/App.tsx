@@ -19,7 +19,7 @@ import Cookies from "./pages/Cookies";
 import DespreNoi from "./pages/DespreNoi";
 import Proiecte from "./pages/Proiecte";
 import Portofoliu from "./pages/Portofoliu";
-import Franciza from "./pages/Franciza";
+
 import Blog from "./pages/Blog";
 import Cariere from "./pages/Cariere";
 import Tools from "./pages/Tools";
@@ -51,7 +51,7 @@ const AppRoutes = () => {
       <Route path="/despre-noi" element={<DespreNoi />} />
       <Route path="/proiecte" element={<Proiecte />} />
       <Route path="/portofoliu" element={<Portofoliu />} />
-      <Route path="/franciza" element={<Franciza />} />
+      
       <Route path="/blog" element={<Blog />} />
       <Route path="/cariere" element={<Cariere />} />
       <Route path="/tools" element={<Tools />} />
