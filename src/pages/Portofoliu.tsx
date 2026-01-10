@@ -67,7 +67,7 @@ const projects: Project[] = [
     badges: ["Conformitate CE", "IP65"],
     description: "Panou de control pentru linii de producție cu contactoare și relee de interfață.",
     technicalDetails: {
-      duration: "5 zile",
+      duration: "2 zile",
       area: "Panou control",
       circuits: 16,
       features: ["Contactoare industriale", "Relee de interfață", "Carcasă inox IP65", "Etichetare profesională"]
