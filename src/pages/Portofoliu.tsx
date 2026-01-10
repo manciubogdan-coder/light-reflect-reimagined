@@ -181,7 +181,7 @@ const projects: Project[] = [
     technicalDetails: {
       duration: "1 zi",
       area: "180 mp",
-      circuits: 42,
+      circuits: 28,
       features: ["Întrerupătoare ETI", "Relee de impuls", "Programator orar", "Cleme de distribuție"]
     }
   },
