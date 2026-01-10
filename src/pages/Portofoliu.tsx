@@ -109,7 +109,7 @@ const projects: Project[] = [
     badges: ["Execuție în 14 zile", "Automatizare Completă"],
     description: "Instalație electrică pentru linie de ambalare automată cu sistem de cântărire și control PLC.",
     technicalDetails: {
-      duration: "14 zile",
+      duration: "2 zile",
       area: "800 mp",
       circuits: 64,
       features: ["Alimentare trifazată", "Control PLC", "Senzori industriali", "HMI touchscreen"]
