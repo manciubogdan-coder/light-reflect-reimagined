@@ -25,6 +25,10 @@ const Nav = () => {
       url: "/tools",
     },
     {
+      title: "Ghidul Eficienței",
+      url: "/ghid",
+    },
+    {
       title: "Despre",
       url: "/about",
     },

@@ -31,6 +31,7 @@ import ShortCircuitCalculatorTool from "./pages/ShortCircuitCalculatorTool";
 import ElectricianQuiz from "./pages/ElectricianQuiz";
 import Parteneriat from "./pages/Parteneriat";
 import PanelConfiguratorTool from "./pages/PanelConfiguratorTool";
+import Ghid from "./pages/Ghid";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const AppRoutes = () => {
       <Route path="/tools/electrician-quiz" element={<ElectricianQuiz />} />
       <Route path="/tools/panel-configurator" element={<PanelConfiguratorTool />} />
       <Route path="/parteneriat" element={<Parteneriat />} />
+      <Route path="/ghid" element={<Ghid />} />
       <Route path="/termeni-si-conditii" element={<TermeniSiConditii />} />
       <Route path="/politica-de-confidentialitate" element={<PoliticaDeConfidentialitate />} />
       <Route path="/cookies" element={<Cookies />} />
