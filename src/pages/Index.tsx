@@ -4,6 +4,7 @@ import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import ServicesSection from "../components/ServicesSection";
 import AboutSection from "../components/AboutSection";
+import LeadMagnetSection from "../components/LeadMagnetSection";
 
 import Footer from "../components/Footer";
 import BackgroundParticles from "../components/BackgroundParticles";
@@ -34,6 +35,7 @@ const Index = () => {
       <HologramOverlay />
       <Nav />
       <Hero />
+      <LeadMagnetSection />
       <ServicesSection />
       <AboutSection />
       
