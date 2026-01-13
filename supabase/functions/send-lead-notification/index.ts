@@ -63,8 +63,10 @@ const handler = async (req: Request): Promise<Response> => {
       phoneLen: phone.length,
     });
 
+    // TODO: Once lightreflect.ro is verified in Resend, change back to:
+    // const from = "Light Reflect <no-reply@lightreflect.ro>";
     const emailTo = "office@lightreflect.ro";
-    const from = "Light Reflect <no-reply@lightreflect.ro>";
+    const from = "Light Reflect <onboarding@resend.dev>";
 
     const emailResponse = await resend.emails.send({
       from,
