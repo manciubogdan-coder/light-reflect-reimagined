@@ -120,7 +120,7 @@ const LeadMagnetSection = () => {
               
               {/* Book image with 3D effect */}
               <div className="relative transform hover:scale-105 transition-transform duration-500 hover:-rotate-2">
-                <img src={ebookCover} alt="Manualul Eficienței Electrice - Ghid PDF" className="w-full max-w-[320px] h-auto drop-shadow-2xl rounded-lg" />
+                <img alt="Manualul Eficienței Electrice - Ghid PDF" className="w-full max-w-[320px] h-auto drop-shadow-2xl rounded-lg" src="/lovable-uploads/daddce4f-d880-47c0-9453-70edb79fbbe1.webp" />
                 
                 {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent rounded-lg pointer-events-none" />
