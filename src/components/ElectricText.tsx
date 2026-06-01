@@ -42,8 +42,8 @@ const ElectricText = ({
 
   // Typing effect
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    let interval: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
+    let interval: ReturnType<typeof setInterval>;
     let typingIndex = 0;
 
     // Start typing after delay
