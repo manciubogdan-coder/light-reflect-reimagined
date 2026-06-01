@@ -21,13 +21,22 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-white/60 mb-6">
-              Light Reflect Electrical este o companie românească în plină expansiune, specializată în instalații electrice moderne pentru locuințe și spații comerciale.
-              Combinăm rigurozitatea testelor profesionale cu tehnologia actuală pentru a livra lucrări sigure, curate și pregătite pentru viitor.<br/>
-              Ne-am propus să construim cea mai eficientă rețea de electricieni din Europa – un sistem unde calitatea, transparența și digitalizarea devin standard.
+              Light Reflect Electrical este o companie românească în plină expansiune, specializată în instalații
+              electrice moderne pentru locuințe și spații comerciale. Combinăm rigurozitatea testelor profesionale cu
+              tehnologia actuală pentru a livra lucrări sigure, curate și pregătite pentru viitor.
+              <br />
+              Ne-am propus să construim cea mai eficientă rețea de electricieni din Europa – un sistem unde calitatea,
+              transparența și digitalizarea devin standard.
             </p>
             <div className="flex items-center gap-4">
-              <SocialLink href="https://www.facebook.com/profile.php?id=61550260625143" icon={<Facebook className="w-4 h-4" />} />
-              <SocialLink href="https://www.youtube.com/@lightreflectelectrical" icon={<Youtube className="w-4 h-4" />} />
+              <SocialLink
+                href="https://www.facebook.com/profile.php?id=61550260625143"
+                icon={<Facebook className="w-4 h-4" />}
+              />
+              <SocialLink
+                href="https://www.youtube.com/@lightreflectelectrical"
+                icon={<Youtube className="w-4 h-4" />}
+              />
             </div>
           </div>
           <div>
@@ -35,7 +44,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <FooterLink href="/despre-noi">Despre Noi</FooterLink>
               <FooterLink href="/proiecte">Proiecte</FooterLink>
-              
+
               <FooterLink href="/blog">Blog</FooterLink>
               <FooterLink href="/cariere">Cariere</FooterLink>
               <FooterLink href="/contact">Contact</FooterLink>
@@ -46,19 +55,20 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-electric-blue shrink-0 mt-1" />
-                <span className="text-white/70">
-                  România, Salonta, Str. Andrei Mureșanu nr. 32
-                </span>
+                <span className="text-white/70">România, Salonta, Str. Andrei Mureșanu nr. 32</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-electric-blue shrink-0" />
                 <a href="tel:004075209540772" className="text-white/70 hover:text-white transition-colors duration-300">
-                  004 075209540772
+                  0752954772
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-electric-blue shrink-0" />
-                <a href="mailto:office@lightreflect.ro" className="text-white/70 hover:text-white transition-colors duration-300">
+                <a
+                  href="mailto:office@lightreflect.ro"
+                  className="text-white/70 hover:text-white transition-colors duration-300"
+                >
                   office@lightreflect.ro
                 </a>
               </li>
@@ -71,10 +81,16 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Light Reflect Electrical. Toate drepturile rezervate.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/termeni-si-conditii" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
+            <Link
+              to="/termeni-si-conditii"
+              className="text-white/50 text-sm hover:text-white transition-colors duration-300"
+            >
               Termeni și Condiții
             </Link>
-            <Link to="/politica-de-confidentialitate" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
+            <Link
+              to="/politica-de-confidentialitate"
+              className="text-white/50 text-sm hover:text-white transition-colors duration-300"
+            >
               Politica de Confidențialitate
             </Link>
             <Link to="/cookies" className="text-white/50 text-sm hover:text-white transition-colors duration-300">
@@ -93,7 +109,7 @@ interface SocialLinkProps {
 }
 
 const SocialLink = ({ href, icon }: SocialLinkProps) => (
-  <a 
+  <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
@@ -110,10 +126,7 @@ interface FooterLinkProps {
 
 const FooterLink = ({ href, children }: FooterLinkProps) => (
   <li>
-    <Link 
-      to={href}
-      className="text-white/70 hover:text-white transition-colors duration-300 hover:pl-1 block"
-    >
+    <Link to={href} className="text-white/70 hover:text-white transition-colors duration-300 hover:pl-1 block">
       {children}
     </Link>
   </li>
