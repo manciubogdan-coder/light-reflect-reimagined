@@ -45,6 +45,14 @@ const services = [
 const About = () => {
   return (
     <div className="min-h-screen bg-dark-matter overflow-hidden">
+      <Helmet>
+        <title>Despre Light Reflect Electrical | Echipa și viziunea noastră</title>
+        <meta name="description" content="Aflați povestea Light Reflect Electrical: echipă de profesioniști în instalații electrice, garanție pe lucrări, certificări și viziune europeană." />
+        <link rel="canonical" href="https://light-reflect-reimagined.lovable.app/about" />
+        <meta property="og:title" content="Despre Light Reflect Electrical" />
+        <meta property="og:description" content="Echipă de profesioniști în instalații electrice cu garanție, certificări și viziune europeană." />
+        <meta property="og:url" content="https://light-reflect-reimagined.lovable.app/about" />
+      </Helmet>
       <Nav />
       <section className="relative py-24 min-h-[80vh] flex flex-col items-center justify-center">
         {/* Decorative background wires/cables */}
@@ -56,6 +64,7 @@ const About = () => {
         </div>
         <div className="relative z-10 max-w-3xl w-full tech-panel hologram backdrop-blur-lg p-10 shadow-2xl">
           <ElectricText 
+            as="h1"
             text="Despre Light Reflect Electrical"
             className="text-3xl md:text-4xl font-tech text-hologram-blue mb-3 text-center"
           />
