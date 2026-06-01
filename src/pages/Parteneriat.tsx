@@ -68,7 +68,7 @@ const Parteneriat = () => {
   const sendEmail = async (data: FormValues) => {
     try {
       // First, save to database
-      const { error: dbError } = await supabase.from("partnership_requests").insert({
+      const { error: dbError } = await supabase.from("partnership_requests" as any).insert([{
         name: data.name,
         email: data.email,
         phone: data.phone,
@@ -76,7 +76,7 @@ const Parteneriat = () => {
         experience: data.experience,
         message: data.message || "",
         profile_type: profileType || null,
-      });
+      }] as any);
 
       if (dbError) throw dbError;
 
