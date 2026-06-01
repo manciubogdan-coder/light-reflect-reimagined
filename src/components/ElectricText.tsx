@@ -79,6 +79,6 @@ const ElectricText = ({
     }} className="pune spatiu">
           {char}
         </span>)}
-    </div>;
+    </Tag>;
 };
 export default ElectricText;
