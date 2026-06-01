@@ -93,7 +93,9 @@ const App = () => {
           <Sonner />
           <CustomCursor />
           <BrowserRouter>
+            <ScrollToTop />
             <AppRoutes />
+            <WhatsAppButton />
           </BrowserRouter>
         </TooltipProvider>
       </HelmetProvider>
