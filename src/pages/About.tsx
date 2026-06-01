@@ -3,6 +3,7 @@ import ElectricText from "../components/ElectricText";
 import { Cable, ShieldCheck, CheckCircle, Home, Users, Cpu, FileCheck2, Wrench } from "lucide-react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { Helmet } from "react-helmet-async";
 
 const highlights = [
   {
