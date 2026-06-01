@@ -70,7 +70,7 @@ const ElectricText = ({
       clearInterval(interval);
     };
   }, [text, delay, typeDelay, glitchProb]);
-  return <div ref={containerRef} className={`${className} ${isTyping ? 'blinking-cursor' : ''} ${neonEffect ? 'neon-text' : ''}`} style={neonEffect ? {
+  return <Tag ref={containerRef as any} className={`${className} ${isTyping ? 'blinking-cursor' : ''} ${neonEffect ? 'neon-text' : ''}`} style={neonEffect ? {
     textShadow: '0 0 5px rgba(0, 119, 255, 0.7), 0 0 10px rgba(0, 119, 255, 0.5)'
   } : undefined}>
       {displayText.split('').map((char, index) => <span key={index} style={{
