@@ -1,0 +1,34 @@
+# Light Reflect Electrical
+
+> Companie românească de instalații electrice smart pentru locuințe, spații comerciale și industriale. Oferim tablouri electrice inteligente, automatizări, soluții Smart Home, stații de încărcare EV și mentenanță industrială.
+
+## Pages
+
+- [Acasă](/): Prezentare generală a serviciilor și viziunii Light Reflect Electrical.
+- [Servicii](/servicii): Servicii de instalații electrice smart, tablouri, automatizări și mentenanță.
+- [Despre](/about): Echipa, valorile și viziunea Light Reflect Electrical.
+- [Despre Noi](/despre-noi): Povestea și misiunea companiei.
+- [Portofoliu](/portofoliu): Proiecte realizate.
+- [Proiecte](/proiecte): Studii de caz și implementări.
+- [Ghidul Eficienței Electrice](/ghid): Manual gratuit cu standarde de proiectare și execuție pentru dezvoltatori.
+- [Blog](/blog): Articole despre energie și instalații electrice.
+- [Cariere](/cariere): Oportunități profesionale.
+- [Parteneriat](/parteneriat): Program de franciză și colaborare.
+- [Contact](/contact): Telefon +40 752 954 772, email office@lightreflect.ro, Salonta (Bihor).
+
+## Tools
+
+- [Instrumente Electrice](/tools): Set de calculatoare profesionale pentru electricieni.
+- [Calculator Putere](/tools/power-calculator): Estimează necesarul de putere.
+- [Calculator Iluminat](/tools/lighting-calculator): Necesarul de corpuri de iluminat.
+- [Calculator Secțiune Cablu](/tools/cable-calculator): Secțiunea optimă a cablurilor.
+- [Calculator Scurtcircuit](/tools/short-circuit-calculator): Curent de scurtcircuit.
+- [Eficiență Energetică](/tools/energy-efficiency): Analiză consum.
+- [Configurator Tablou Electric](/tools/panel-configurator): Proiectare tablou electric.
+- [Quiz Electrician](/tools/electrician-quiz): Test interactiv.
+
+## Optional
+
+- [Termeni și Condiții](/termeni-si-conditii)
+- [Politica de Confidențialitate](/politica-de-confidentialitate)
+- [Cookies](/cookies)
