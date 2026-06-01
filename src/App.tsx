@@ -32,6 +32,8 @@ import ElectricianQuiz from "./pages/ElectricianQuiz";
 import Parteneriat from "./pages/Parteneriat";
 import PanelConfiguratorTool from "./pages/PanelConfiguratorTool";
 import Ghid from "./pages/Ghid";
+import ScrollToTop from "./components/ScrollToTop";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
@@ -91,7 +93,9 @@ const App = () => {
           <Sonner />
           <CustomCursor />
           <BrowserRouter>
+            <ScrollToTop />
             <AppRoutes />
+            <WhatsAppButton />
           </BrowserRouter>
         </TooltipProvider>
       </HelmetProvider>

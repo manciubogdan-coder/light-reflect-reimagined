@@ -92,7 +92,7 @@ const Nav = () => {
         
         {/* Mobile Menu */}
         <div 
-          className={`absolute top-full left-0 w-full glass-panel md:hidden transform transition-transform duration-300 ease-in-out ${
+          className={`absolute top-full left-0 w-full bg-dark-matter/95 backdrop-blur-xl border-b border-electric-blue/20 shadow-2xl md:hidden transform transition-transform duration-300 ease-in-out ${
             menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
           }`}
         >
