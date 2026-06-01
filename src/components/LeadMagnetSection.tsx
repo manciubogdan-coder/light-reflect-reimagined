@@ -59,12 +59,12 @@ const LeadMagnetSection = () => {
       // Save lead to database
       const {
         error: dbError
-      } = await supabase.from('leads' as any).insert({
+      } = await supabase.from('leads' as any).insert([{
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
         source: 'lead_magnet'
-      });
+      }] as any);
       if (dbError) {
         console.error("Database error:", dbError);
         throw new Error("Nu am putut salva datele");
