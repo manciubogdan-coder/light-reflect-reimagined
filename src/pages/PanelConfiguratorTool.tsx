@@ -166,7 +166,7 @@ const PanelConfiguratorTool = () => {
       };
       
       const { error: dbError } = await supabase
-        .from('panel_configurations')
+        .from('panel_configurations' as any)
         .insert({
           name: configName,
           configuration: config,
