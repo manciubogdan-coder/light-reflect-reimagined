@@ -31,6 +31,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-dark-matter overflow-hidden relative">
+      <Helmet>
+        <title>Light Reflect Electrical | Instalații Electrice Smart România</title>
+        <meta name="description" content="Instalații electrice smart, tablouri, automatizări și soluții Smart Home în România. Garanție, certificări și echipă de profesioniști." />
+        <link rel="canonical" href="https://light-reflect-reimagined.lovable.app/" />
+        <meta property="og:title" content="Light Reflect Electrical | Instalații Electrice Smart" />
+        <meta property="og:description" content="Instalații electrice smart, tablouri, automatizări și soluții Smart Home în România." />
+        <meta property="og:url" content="https://light-reflect-reimagined.lovable.app/" />
+      </Helmet>
       <BackgroundParticles />
       <GlowingCircuit />
       <HologramOverlay />
