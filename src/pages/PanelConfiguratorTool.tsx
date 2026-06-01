@@ -166,8 +166,8 @@ const PanelConfiguratorTool = () => {
       };
       
       const { error: dbError } = await supabase
-        .from('panel_configurations')
-        .insert({
+        .from('panel_configurations' as any)
+        .insert([{
           name: configName,
           configuration: config,
           total_current: analysis.totalCurrent,
@@ -175,7 +175,7 @@ const PanelConfiguratorTool = () => {
           supply_type: supplyType,
           module_count: moduleCount,
           component_count: components.length
-        });
+        }] as any);
         
       if (dbError) throw new Error(dbError.message);
       
