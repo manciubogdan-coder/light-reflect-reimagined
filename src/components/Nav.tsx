@@ -77,6 +77,8 @@ const Nav = () => {
         <button 
           className="block md:hidden text-white p-2 rounded-md"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Închide meniul" : "Deschide meniul"}
+          aria-expanded={menuOpen}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

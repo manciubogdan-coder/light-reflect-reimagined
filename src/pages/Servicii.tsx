@@ -3,16 +3,49 @@ import {
   Lightbulb, 
   Home, 
   Settings,
-  Award, // Lucide icon for quality
+  Award,
   Zap
 } from "lucide-react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import ElectricText from "../components/ElectricText";
+import { Helmet } from "react-helmet-async";
+
+const serviceList = [
+  { name: "Tablouri Electrice Smart", description: "Tablouri electrice cu monitorizare în timp real a consumului și protecție avansată împotriva suprasarcinilor." },
+  { name: "Siguranțe Automate", description: "Siguranțe electrice cu întrerupere automată în caz de defecte." },
+  { name: "Încărcătoare Vehicule Electrice", description: "Stații de încărcare pentru vehicule electrice integrate." },
+  { name: "Montaj Linii Industriale de Ambalat", description: "Instalare și punere în funcțiune a liniilor industriale." },
+  { name: "Mentenanță Utilaje Industriale", description: "Servicii de mentenanță și reparații pentru echipamente industriale." },
+];
 
 const Servicii = () => {
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": serviceList.map((s) => ({
+      "@type": "Service",
+      name: s.name,
+      description: s.description,
+      provider: {
+        "@type": "Organization",
+        name: "Light Reflect Electrical",
+        url: "https://light-reflect-reimagined.lovable.app"
+      },
+      areaServed: "RO"
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-dark-matter overflow-hidden">
+      <Helmet>
+        <title>Servicii Instalații Electrice Smart | Light Reflect</title>
+        <meta name="description" content="Servicii complete de instalații electrice: tablouri smart, stații încărcare EV, automatizări, linii industriale și mentenanță. Garanție și certificări incluse." />
+        <link rel="canonical" href="https://light-reflect-reimagined.lovable.app/servicii" />
+        <meta property="og:title" content="Servicii Instalații Electrice | Light Reflect" />
+        <meta property="og:description" content="Tablouri smart, EV charging, automatizări și mentenanță industrială cu garanție și certificări." />
+        <meta property="og:url" content="https://light-reflect-reimagined.lovable.app/servicii" />
+        <script type="application/ld+json">{JSON.stringify(serviceJsonLd)}</script>
+      </Helmet>
       <Nav />
       <section className="py-24 relative min-h-screen">
         {/* Background Elements */}
@@ -26,6 +59,7 @@ const Servicii = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <ElectricText 
+              as="h1"
               text="Servicii Instalații Electrice" 
               className="text-3xl md:text-4xl font-tech mb-6 text-hologram-blue"
             />
@@ -34,6 +68,7 @@ const Servicii = () => {
             </p>
           </div>
 
+          <h2 className="sr-only">Serviciile noastre</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <ServiceCard 
               icon={<Lightbulb />}
@@ -68,9 +103,9 @@ const Servicii = () => {
           </div>
 
           <div className="tech-panel p-8 max-w-4xl mx-auto hologram backdrop-blur-sm">
-            <h3 className="text-2xl font-tech text-hologram-blue mb-4 text-center">
+            <h2 className="text-2xl font-tech text-hologram-blue mb-4 text-center">
               Procesul Nostru Futurist
-            </h3>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <ProcessStep 
                 number="01" 
@@ -138,7 +173,7 @@ const ProcessStep = ({ number, title, description }: ProcessStepProps) => (
       <span className="text-2xl font-tech text-hologram-blue">{number}</span>
       <div className="absolute -inset-1 rounded-full border border-hologram-blue/40 animate-pulse"></div>
     </div>
-    <h4 className="text-xl font-tech text-white mb-2">{title}</h4>
+    <h3 className="text-xl font-tech text-white mb-2">{title}</h3>
     <p className="text-white/60">{description}</p>
   </div>
 );
