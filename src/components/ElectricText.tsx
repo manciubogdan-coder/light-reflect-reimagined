@@ -6,7 +6,7 @@ interface ElectricTextProps {
   typeDelay?: number;
   glitchProb?: number;
   neonEffect?: boolean;
-  as?: keyof JSX.IntrinsicElements;
+  as?: any;
 }
 const ElectricText = ({
   text,
@@ -15,7 +15,7 @@ const ElectricText = ({
   typeDelay = 100,
   glitchProb = 0.1,
   neonEffect = false,
-  as: Tag = "div"
+  as: Tag = "div" as any
 }: ElectricTextProps) => {
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
