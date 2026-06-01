@@ -32,10 +32,12 @@ const Footer = () => {
               <SocialLink
                 href="https://www.facebook.com/profile.php?id=61550260625143"
                 icon={<Facebook className="w-4 h-4" />}
+                label="Facebook Light Reflect Electrical"
               />
               <SocialLink
                 href="https://www.youtube.com/@lightreflectelectrical"
                 icon={<Youtube className="w-4 h-4" />}
+                label="YouTube Light Reflect Electrical"
               />
             </div>
           </div>
