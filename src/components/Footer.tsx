@@ -108,13 +108,15 @@ const Footer = () => {
 interface SocialLinkProps {
   href: string;
   icon: React.ReactNode;
+  label: string;
 }
 
-const SocialLink = ({ href, icon }: SocialLinkProps) => (
+const SocialLink = ({ href, icon, label }: SocialLinkProps) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
+    aria-label={label}
     className="w-8 h-8 rounded-full bg-electric-blue/10 flex items-center justify-center text-electric-blue hover:bg-electric-blue hover:text-white transition-all duration-300"
   >
     {icon}
